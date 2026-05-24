@@ -1,0 +1,72 @@
+{
+  "name": "@limulus/delto",
+  "version": "1.0.0",
+  "description": "Keep a backlog. With your code. Give agents context.",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "type": "module",
+  "scripts": {
+    "prebuild": "npm run clean",
+    "build": "concurrently -c auto 'npm:build:*'",
+    "build:cjs": "tsc --incremental false --module commonjs --outDir dist/cjs",
+    "build:dts": "tsc --incremental false --declaration --declarationMap --emitDeclarationOnly --outDir dist/types",
+    "build:esm": "tsc --incremental false --outDir dist/esm",
+    "postbuild:cjs": "echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
+    "clean": "del-cli *.tsbuildinfo coverage dist",
+    "lint": "eslint *.ts src",
+    "lint:fix": "npm run lint -- --fix",
+    "prepack": "npm run build",
+    "prepare": "is-ci || husky",
+    "test": "vitest run --coverage",
+    "tscc": "tsc --noEmit",
+    "verify": "concurrently -c cyan,magenta,blue npm:lint npm:test npm:tscc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/limulus/@limulus/delto.git"
+  },
+  "author": {
+    "name": "Eric McCarthy",
+    "email": "eric@limulus.net",
+    "url": "https://limulus.net/"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/limulus/@limulus/delto/issues"
+  },
+  "homepage": "https://github.com/limulus/@limulus/delto#readme",
+  "dependencies": {
+    "tslib": "^2.8.1"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@limulus/eslint-config": "^6.0.0",
+    "@types/node": "^22.15.29",
+    "@vitest/coverage-v8": "^3.1.4",
+    "concurrently": "^9.1.2",
+    "del-cli": "^6.0.0",
+    "eslint": "^9.28.0",
+    "husky": "^9.1.7",
+    "is-ci": "^4.1.0",
+    "mkdirp": "^3.0.1",
+    "semantic-release": "^24.2.5",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.4"
+  }
+}
