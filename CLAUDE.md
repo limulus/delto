@@ -14,8 +14,14 @@
 ## Code Style Guidelines
 
 - **ESM**: Use ES Modules (`import/export` not `require()`)
-- **File Extensions**: Always include `.js` in imports (e.g., `import x from './x.js'`)
+  - Use `node:` prefix for Node.js built-ins
+- **File Extensions**: Always include `.ts` in imports (e.g., `import x from './x.ts'`).
+  Node runs `.ts` files directly via its built-in type-stripping — no build step needed
+  for scripts. The build emits `.js` via `rewriteRelativeImportExtensions`.
 - **Typing**: Use strict TypeScript typing, prefer interfaces for object types
+  - `erasableSyntaxOnly` and `verbatimModuleSyntax` are on — no enums, namespaces, or
+    parameter properties; prefer inline `type` specifiers
+    (e.g., `import { foo, type Bar } from './baz.ts'`)
 - **Semicolons**: Do not use semicolons to end statements (rely on ASI)
 - **Naming**:
   - Classes: PascalCase
