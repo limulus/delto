@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * find-eligible-tasks.ts
  *
@@ -20,18 +19,14 @@
  *   node .claude/skills/plan-backlog-item/find-eligible-tasks.ts [--json]
  *   node .claude/skills/plan-backlog-item/find-eligible-tasks.ts --claim <id>
  *   node .claude/skills/plan-backlog-item/find-eligible-tasks.ts --release <id>
- *
- * Runs on Node's built-in TypeScript type-stripping — no build step, no flag. Keep this
- * file to erasable-only syntax (no enums, namespaces, or parameter properties).
  */
 
 import { relative } from 'node:path'
 
+import { type MainOpts, defaults } from './main.ts'
 import { ID, findRepoRoot, parseBacklog } from '../lib/backlog-parser.ts'
-import { CLAIMS_FILE, claim, claimedIds, release } from '../lib/claims-ledger.ts'
+import { claim, claimedIds, claimsFile, release } from '../lib/claims-ledger.ts'
 import { computeEligibility, type ItemEligibility } from '../lib/eligibility.ts'
-
-const repoRoot = findRepoRoot()
 
 function chunk<T>(arr: T[], n: number): T[][] {
   const out: T[][] = []
@@ -39,48 +34,19 @@ function chunk<T>(arr: T[], n: number): T[][] {
   return out
 }
 
-// --- Subcommands ------------------------------------------------------------
-
-const argv = process.argv.slice(2)
-
-function flagValue(flag: string): string | null {
+function flagValue(argv: string[], flag: string): string | null {
   const i = argv.indexOf(flag)
   return i === -1 ? null : (argv[i + 1] ?? '')
 }
 
-function requireId(raw: string, flag: string): string {
+function requireId(raw: string, flag: string, err: (line: string) => void): string | null {
   const id = raw.replace(/^∆/, '').trim()
   if (!new RegExp(`^${ID}$`).test(id)) {
-    console.error(`${flag} needs a 3-char task ID (got: ${JSON.stringify(raw)})`)
-    process.exit(1)
+    err(`${flag} needs a 3-char task ID (got: ${JSON.stringify(raw)})`)
+    return null
   }
   return id
 }
-
-const claimArg = flagValue('--claim')
-if (claimArg !== null) {
-  const id = requireId(claimArg, '--claim')
-  claim(id)
-  console.log(`Claimed ∆${id} — recorded in ${relative(repoRoot, CLAIMS_FILE)}.`)
-  console.log(`Release it with --release ${id} if you abandon planning.`)
-  process.exit(0)
-}
-
-const releaseArg = flagValue('--release')
-if (releaseArg !== null) {
-  const id = requireId(releaseArg, '--release')
-  release(id)
-  console.log(`Released ∆${id} — eligible for planning again.`)
-  process.exit(0)
-}
-
-// --- Report -----------------------------------------------------------------
-
-const items = parseBacklog(repoRoot)
-const claimed = claimedIds()
-const { order, dependents } = computeEligibility(items, claimed)
-
-const eligible = order.filter((e) => e.eligible).map((e) => e.id)
 
 /** Spell out, in priority order, why an excluded task is not free to plan. */
 function reasonFor(e: ItemEligibility): string {
@@ -97,29 +63,59 @@ function reasonFor(e: ItemEligibility): string {
   return reasons.join('; ')
 }
 
-const excluded = order
-  .filter((e) => !e.eligible)
-  .map((e) => ({ id: e.id, reason: reasonFor(e) }))
+export function main(argv: string[], opts: MainOpts = {}): number {
+  const { log, err, cwd } = defaults(opts)
+  const repoRoot = findRepoRoot(cwd)
 
-/** `∆id`, suffixed with `→N` when N other items name it as a `needs:` prerequisite. */
-function eligibleLabel(id: string): string {
-  const n = (dependents.get(id) ?? []).length
-  return '∆' + id + (n > 0 ? '→' + n : '')
-}
+  const claimArg = flagValue(argv, '--claim')
+  if (claimArg !== null) {
+    const id = requireId(claimArg, '--claim', err)
+    if (id === null) return 1
+    claim(repoRoot, id)
+    log(`Claimed ∆${id} — recorded in ${relative(repoRoot, claimsFile(repoRoot))}.`)
+    log(`Release it with --release ${id} if you abandon planning.`)
+    return 0
+  }
 
-if (argv.includes('--json')) {
-  console.log(
-    JSON.stringify(
-      {
-        eligible: eligible.map((id) => ({ id, unblocks: dependents.get(id) ?? [] })),
-        excluded,
-        claimed: [...claimed],
-      },
-      null,
-      2
+  const releaseArg = flagValue(argv, '--release')
+  if (releaseArg !== null) {
+    const id = requireId(releaseArg, '--release', err)
+    if (id === null) return 1
+    release(repoRoot, id)
+    log(`Released ∆${id} — eligible for planning again.`)
+    return 0
+  }
+
+  const items = parseBacklog(repoRoot)
+  const claimed = claimedIds(repoRoot)
+  const { order, dependents } = computeEligibility(items, claimed)
+
+  const eligible = order.filter((e) => e.eligible).map((e) => e.id)
+  const excluded = order
+    .filter((e) => !e.eligible)
+    .map((e) => ({ id: e.id, reason: reasonFor(e) }))
+
+  /** `∆id`, suffixed with `→N` when N other items name it as a `needs:` prerequisite. */
+  const eligibleLabel = (id: string): string => {
+    const n = (dependents.get(id) ?? []).length
+    return '∆' + id + (n > 0 ? '→' + n : '')
+  }
+
+  if (argv.includes('--json')) {
+    log(
+      JSON.stringify(
+        {
+          eligible: eligible.map((id) => ({ id, unblocks: dependents.get(id) ?? [] })),
+          excluded,
+          claimed: [...claimed],
+        },
+        null,
+        2
+      )
     )
-  )
-} else {
+    return 0
+  }
+
   const lines: string[] = []
   lines.push(
     `ELIGIBLE — ${eligible.length} of ${items.length} backlog task(s) free to plan, in priority order.`
@@ -152,5 +148,6 @@ if (argv.includes('--json')) {
   lines.push(
     'priorities are close, a higher `→N` unblocks more of the backlog. --claim <id> first.'
   )
-  console.log(lines.join('\n'))
+  log(lines.join('\n'))
+  return 0
 }

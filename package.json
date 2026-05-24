@@ -4,6 +4,9 @@
   "description": "Keep a backlog. With your code. Give agents context.",
   "main": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
+  "bin": {
+    "delto": "dist/esm/bin/cli.js"
+  },
   "exports": {
     ".": {
       "import": "./dist/esm/index.js",
@@ -12,14 +15,17 @@
   },
   "files": [
     "dist",
-    "src"
+    "skills",
+    "src",
+    "!src/**/*.spec.ts",
+    "!src/mocks"
   ],
   "type": "module",
   "scripts": {
     "prebuild": "npm run clean",
     "build": "concurrently -c auto 'npm:build:*'",
-    "build:dts": "tsc --incremental false --declaration --declarationMap --emitDeclarationOnly --outDir dist/types",
-    "build:esm": "tsc --incremental false --outDir dist/esm",
+    "build:dts": "tsc -p tsconfig.build.json --incremental false --declaration --declarationMap --emitDeclarationOnly --outDir dist/types",
+    "build:esm": "tsc -p tsconfig.build.json --incremental false --outDir dist/esm",
     "clean": "del-cli *.tsbuildinfo coverage dist",
     "lint": "eslint *.ts src",
     "lint:fix": "npm run lint -- --fix",

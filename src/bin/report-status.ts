@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * report-status.ts
  *
@@ -20,11 +19,9 @@
  *
  * Usage:
  *   node .claude/skills/backlog-status/report-status.ts [--json]
- *
- * Runs on Node's built-in TypeScript type-stripping — no build step, no flag. Keep this
- * file to erasable-only syntax (no enums, namespaces, or parameter properties).
  */
 
+import { type MainOpts, defaults } from './main.ts'
 import {
   findRepoRoot,
   journalIds,
@@ -36,85 +33,10 @@ import { computeEligibility } from '../lib/eligibility.ts'
 
 const REFACTORS = 'Refactors'
 
-const repoRoot = findRepoRoot()
-const items = parseBacklog(repoRoot)
-const completed = journalIds(repoRoot).size
-const { byId } = computeEligibility(items, claimedIds())
-
-// --- Group items by their `##` initiative, in document (priority) order ------
-
 interface Initiative {
   name: string
   items: BacklogItem[]
 }
-const initiatives: Initiative[] = []
-const initiativeByName = new Map<string, Initiative>()
-for (const it of items) {
-  const name = it.initiativeHeading?.text ?? '(no initiative)'
-  let group = initiativeByName.get(name)
-  if (!group) {
-    group = { name, items: [] }
-    initiativeByName.set(name, group)
-    initiatives.push(group)
-  }
-  group.items.push(it)
-}
-
-// --- Planning-state buckets --------------------------------------------------
-
-// Exactly one bucket per item: in-flight (someone is on it) wins over blocked (an open
-// prerequisite or a same-file conflict), which wins over eligible.
-function bucketOf(id: string): 'inFlight' | 'blocked' | 'eligible' {
-  const v = byId.get(id)
-  if (!v || v.claimed) return 'inFlight'
-  if (v.eligible) return 'eligible'
-  return 'blocked'
-}
-
-// --- Deepest `needs:` chain among the open items -----------------------------
-
-const openIds = new Set(items.map((i) => i.id))
-const needsOf = new Map<string, string[]>()
-for (const it of items) {
-  needsOf.set(
-    it.id,
-    it.needs.filter((n) => openIds.has(n))
-  )
-}
-
-// Longest chain of open items ending at `id`, walking `needs:` down to a leaf
-// prerequisite. Memoized. `onPath` cuts the back-edge of a malformed `needs:` cycle
-// (refine-backlog flags cycles separately) so this terminates instead of recursing
-// forever; on an acyclic graph — the lint-enforced norm — the memo is exact.
-const chainMemo = new Map<string, string[]>()
-const onPath = new Set<string>()
-function longestChain(id: string): string[] {
-  const cached = chainMemo.get(id)
-  if (cached) return cached
-  if (onPath.has(id)) return [id]
-  onPath.add(id)
-  let deepest: string[] = []
-  for (const n of needsOf.get(id) ?? []) {
-    const c = longestChain(n)
-    if (c.length > deepest.length) deepest = c
-  }
-  onPath.delete(id)
-  const chain = [...deepest, id]
-  chainMemo.set(id, chain)
-  return chain
-}
-
-/** The deepest `needs:` chain ending at any open item of the initiative. */
-function criticalPath(group: Initiative): string[] {
-  let best: string[] = []
-  for (const it of group.items) {
-    const c = longestChain(it.id)
-    if (c.length > best.length) best = c
-  }
-  return best
-}
-
-// --- Assemble per-initiative rows --------------------------------------------
 
 interface Row {
   name: string
@@ -124,58 +46,119 @@ interface Row {
   inFlight: string[]
   criticalPath: string[]
 }
-const rows: Row[] = initiatives.map((group) => {
-  const row: Row = {
-    name: group.name,
-    open: group.items.length,
-    eligible: [],
-    blocked: [],
-    inFlight: [],
-    criticalPath: criticalPath(group),
+
+export function main(argv: string[], opts: MainOpts = {}): number {
+  const { log, cwd } = defaults(opts)
+  const repoRoot = findRepoRoot(cwd)
+  const items = parseBacklog(repoRoot)
+  const completed = journalIds(repoRoot).size
+  const { byId } = computeEligibility(items, claimedIds(repoRoot))
+
+  const initiatives: Initiative[] = []
+  const initiativeByName = new Map<string, Initiative>()
+  for (const it of items) {
+    const name = it.initiativeHeading?.text ?? '(no initiative)'
+    let group = initiativeByName.get(name)
+    if (!group) {
+      group = { name, items: [] }
+      initiativeByName.set(name, group)
+      initiatives.push(group)
+    }
+    group.items.push(it)
   }
-  for (const it of group.items) row[bucketOf(it.id)].push(it.id)
-  return row
-})
 
-// The next milestone is the first initiative with open work that is not the standing
-// `## Refactors` list.
-const nextMilestone = rows.find((r) => r.name !== REFACTORS) ?? rows[0] ?? null
+  const bucketOf = (id: string): 'inFlight' | 'blocked' | 'eligible' => {
+    const v = byId.get(id)!
+    if (v.claimed) return 'inFlight'
+    if (v.eligible) return 'eligible'
+    return 'blocked'
+  }
 
-const totalOpen = items.length
-const totalEligible = rows.reduce((n, r) => n + r.eligible.length, 0)
-const totalBlocked = rows.reduce((n, r) => n + r.blocked.length, 0)
-const totalInFlight = rows.reduce((n, r) => n + r.inFlight.length, 0)
-
-// --- Output ------------------------------------------------------------------
-
-if (process.argv.includes('--json')) {
-  console.log(
-    JSON.stringify(
-      {
-        openItems: totalOpen,
-        completed,
-        initiatives: rows.map((r) => ({
-          name: r.name,
-          open: r.open,
-          eligible: r.eligible,
-          blocked: r.blocked,
-          inFlight: r.inFlight,
-          criticalPath: r.criticalPath,
-        })),
-        nextMilestone: nextMilestone ? nextMilestone.name : null,
-      },
-      null,
-      2
+  const openIds = new Set(items.map((i) => i.id))
+  const needsOf = new Map<string, string[]>()
+  for (const it of items) {
+    needsOf.set(
+      it.id,
+      it.needs.filter((n) => openIds.has(n))
     )
-  )
-} else {
+  }
+
+  const chainMemo = new Map<string, string[]>()
+  const onPath = new Set<string>()
+  const longestChain = (id: string): string[] => {
+    const cached = chainMemo.get(id)
+    if (cached) return cached
+    if (onPath.has(id)) return [id]
+    onPath.add(id)
+    let deepest: string[] = []
+    for (const n of needsOf.get(id)!) {
+      const c = longestChain(n)
+      if (c.length > deepest.length) deepest = c
+    }
+    onPath.delete(id)
+    const chain = [...deepest, id]
+    chainMemo.set(id, chain)
+    return chain
+  }
+
+  const criticalPath = (group: Initiative): string[] => {
+    let best: string[] = []
+    for (const it of group.items) {
+      const c = longestChain(it.id)
+      if (c.length > best.length) best = c
+    }
+    return best
+  }
+
+  const rows: Row[] = initiatives.map((group) => {
+    const row: Row = {
+      name: group.name,
+      open: group.items.length,
+      eligible: [],
+      blocked: [],
+      inFlight: [],
+      criticalPath: criticalPath(group),
+    }
+    for (const it of group.items) row[bucketOf(it.id)].push(it.id)
+    return row
+  })
+
+  const nextMilestone = rows.find((r) => r.name !== REFACTORS) ?? rows[0] ?? null
+
+  const totalOpen = items.length
+  const totalEligible = rows.reduce((n, r) => n + r.eligible.length, 0)
+  const totalBlocked = rows.reduce((n, r) => n + r.blocked.length, 0)
+  const totalInFlight = rows.reduce((n, r) => n + r.inFlight.length, 0)
+
+  if (argv.includes('--json')) {
+    log(
+      JSON.stringify(
+        {
+          openItems: totalOpen,
+          completed,
+          initiatives: rows.map((r) => ({
+            name: r.name,
+            open: r.open,
+            eligible: r.eligible,
+            blocked: r.blocked,
+            inFlight: r.inFlight,
+            criticalPath: r.criticalPath,
+          })),
+          nextMilestone: nextMilestone ? nextMilestone.name : null,
+        },
+        null,
+        2
+      )
+    )
+    return 0
+  }
+
   const out: string[] = []
   out.push(
     `BACKLOG STATUS — ${totalOpen} open item(s) across ${rows.length} initiative(s) · ` +
       `${completed} completed (docs/journal/)`
   )
 
-  // Per-initiative table.
   out.push('')
   out.push('PROGRESS BY INITIATIVE')
   out.push('')
@@ -213,7 +196,6 @@ if (process.argv.includes('--json')) {
       cell('', 6)
   )
 
-  // Eligible IDs, grouped by initiative.
   out.push('')
   out.push(`ELIGIBLE NOW — ${totalEligible} task(s) free to plan`)
   out.push('')
@@ -228,7 +210,6 @@ if (process.argv.includes('--json')) {
     }
   }
 
-  // Critical path to the next milestone.
   out.push('')
   if (!nextMilestone) {
     out.push('CRITICAL PATH — no open items.')
@@ -237,9 +218,6 @@ if (process.argv.includes('--json')) {
     out.push('')
     const path = nextMilestone.criticalPath
     if (new Set(path).size < path.length) {
-      // A repeated ID means longestChain() walked into a needs: cycle and the
-      // cycle guard cut it — the depth is not a real critical path. refine-backlog
-      // is the authority on cycles; just point there.
       out.push('  This milestone has a needs: cycle, so its critical path cannot be')
       out.push('  measured. Run the refine-backlog skill to locate and fix it. Chain:')
       out.push('')
@@ -260,5 +238,6 @@ if (process.argv.includes('--json')) {
       for (const id of path) out.push(`    ∆${id}  ${bucketOf(id)}`)
     }
   }
-  console.log(out.join('\n'))
+  log(out.join('\n'))
+  return 0
 }

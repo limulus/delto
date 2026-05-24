@@ -6,7 +6,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['html', 'json', 'text', 'text-summary'],
       include: ['src/**/*.ts'],
-      exclude: ['**/node_modules/**', '**/mocks/**'],
+      exclude: ['**/node_modules/**', '**/mocks/**', 'src/bin/cli.ts'],
       thresholds: {
         branches: 100,
         functions: 100,

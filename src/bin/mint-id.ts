@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * mint-id.ts
  *
@@ -16,22 +15,20 @@
  *   node .claude/skills/add-backlog-item/mint-id.ts --count 3  # N mutually-distinct IDs
  *
  * Output is one `∆xxx` per line and nothing else, so it can be consumed directly.
- *
- * Runs on Node's built-in TypeScript type-stripping — no build step, no flag. Keep this
- * file to erasable-only syntax (no enums, namespaces, or parameter properties).
  */
 
 import { randomInt } from 'node:crypto'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
+import { type MainOpts, defaults } from './main.ts'
 import { ID, findRepoRoot } from '../lib/backlog-parser.ts'
 
 /** The 62-char alphabet of the 3-char ID body, per the BACKLOG.md header. */
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
 /** Every `∆xxx` ID body that already appears anywhere in BACKLOG.md or docs/journal/. */
-function takenIds(repoRoot: string): Set<string> {
+export function takenIds(repoRoot: string): Set<string> {
   const taken = new Set<string>()
   const scan = (text: string): void => {
     for (const m of text.matchAll(new RegExp(`∆(${ID})`, 'g'))) taken.add(m[1])
@@ -46,18 +43,22 @@ function takenIds(repoRoot: string): Set<string> {
   return taken
 }
 
-function randomId(): string {
+export function randomId(): string {
   let s = ''
   for (let i = 0; i < 3; i++) s += ALPHABET[randomInt(ALPHABET.length)]
   return s
 }
 
 /** Mint `count` IDs distinct from each other and from every already-taken ID. */
-function mint(count: number, taken: Set<string>): string[] {
+export function mint(
+  count: number,
+  taken: Set<string>,
+  next: () => string = randomId
+): string[] {
   const used = new Set(taken)
   const out: string[] = []
   while (out.length < count) {
-    const id = randomId()
+    const id = next()
     if (used.has(id)) continue
     used.add(id)
     out.push(id)
@@ -65,23 +66,19 @@ function mint(count: number, taken: Set<string>): string[] {
   return out
 }
 
-// --- Arguments --------------------------------------------------------------
-
-const argv = process.argv.slice(2)
-let count = 1
-const countFlag = argv.indexOf('--count')
-if (countFlag !== -1) {
-  const n = Number(argv[countFlag + 1])
-  if (!Number.isInteger(n) || n < 1) {
-    console.error(
-      `--count needs a positive integer (got: ${JSON.stringify(argv[countFlag + 1])})`
-    )
-    process.exit(1)
+export function main(argv: string[], opts: MainOpts = {}): number {
+  const { log, err, cwd } = defaults(opts)
+  let count = 1
+  const countFlag = argv.indexOf('--count')
+  if (countFlag !== -1) {
+    const n = Number(argv[countFlag + 1])
+    if (!Number.isInteger(n) || n < 1) {
+      err(`--count needs a positive integer (got: ${JSON.stringify(argv[countFlag + 1])})`)
+      return 1
+    }
+    count = n
   }
-  count = n
+  const repoRoot = findRepoRoot(cwd)
+  for (const id of mint(count, takenIds(repoRoot))) log('∆' + id)
+  return 0
 }
-
-// --- Mint -------------------------------------------------------------------
-
-const repoRoot = findRepoRoot()
-for (const id of mint(count, takenIds(repoRoot))) console.log('∆' + id)

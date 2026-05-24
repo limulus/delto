@@ -37,15 +37,19 @@ export interface BacklogItem {
   epicHeading: HeadingRef | null
 }
 
+export class RepoRootNotFoundError extends Error {
+  constructor(start: string) {
+    super(`no BACKLOG.md found in ${start} or any parent directory`)
+    this.name = 'RepoRootNotFoundError'
+  }
+}
+
 /** Walk up from `start` to the directory that holds BACKLOG.md. */
 export function findRepoRoot(start: string = process.cwd()): string {
   let dir = start
   while (!existsSync(join(dir, 'BACKLOG.md'))) {
     const parent = dirname(dir)
-    if (parent === dir) {
-      console.error('backlog-parser: no BACKLOG.md found in any parent directory.')
-      process.exit(1)
-    }
+    if (parent === dir) throw new RepoRootNotFoundError(start)
     dir = parent
   }
   return dir

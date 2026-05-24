@@ -19,22 +19,17 @@
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 
-import { findRepoRoot } from './backlog-parser.ts'
-
-/** The append-only claim ledger — `.gitignore`'d, owned by the plan-backlog-item skill. */
-export const CLAIMS_FILE = join(
-  findRepoRoot(),
-  '.claude',
-  'skills',
-  'plan-backlog-item',
-  'claims.local.jsonl'
-)
+/** Compute the path to the append-only claim ledger for the given repo root. */
+export function claimsFile(repoRoot: string): string {
+  return join(repoRoot, '.claude', 'skills', 'plan-backlog-item', 'claims.local.jsonl')
+}
 
 /** The set of currently-claimed IDs (append-only ledger, last record per ID wins). */
-export function claimedIds(): Set<string> {
+export function claimedIds(repoRoot: string): Set<string> {
   const state = new Map<string, boolean>()
-  if (existsSync(CLAIMS_FILE)) {
-    for (const line of readFileSync(CLAIMS_FILE, 'utf8').split('\n')) {
+  const file = claimsFile(repoRoot)
+  if (existsSync(file)) {
+    for (const line of readFileSync(file, 'utf8').split('\n')) {
       const t = line.trim()
       if (!t) continue
       try {
@@ -53,17 +48,18 @@ export function claimedIds(): Set<string> {
 }
 
 /** Append a raw record to the ledger, creating the file and its directory if needed. */
-export function appendLedger(record: Record<string, unknown>): void {
-  mkdirSync(dirname(CLAIMS_FILE), { recursive: true })
-  appendFileSync(CLAIMS_FILE, JSON.stringify(record) + '\n')
+export function appendLedger(repoRoot: string, record: Record<string, unknown>): void {
+  const file = claimsFile(repoRoot)
+  mkdirSync(dirname(file), { recursive: true })
+  appendFileSync(file, JSON.stringify(record) + '\n')
 }
 
 /** Record a task as in-flight. */
-export function claim(id: string): void {
-  appendLedger({ id })
+export function claim(repoRoot: string, id: string): void {
+  appendLedger(repoRoot, { id })
 }
 
 /** Record the end of a task's claim — abandoned planning, or the task shipped. */
-export function release(id: string): void {
-  appendLedger({ id, released: true })
+export function release(repoRoot: string, id: string): void {
+  appendLedger(repoRoot, { id, released: true })
 }
