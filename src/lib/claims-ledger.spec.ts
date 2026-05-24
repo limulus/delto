@@ -1,5 +1,5 @@
 import { writeFileSync, mkdirSync } from 'node:fs'
-import { dirname } from 'node:path'
+import { dirname, join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 import { appendLedger, claim, claimedIds, claimsFile, release } from './claims-ledger.ts'
@@ -10,7 +10,7 @@ describe('claimsFile', () => {
     const repo = makeRepo()
     try {
       expect(claimsFile(repo.root)).toBe(
-        `${repo.root}/.claude/skills/plan-backlog-item/claims.local.jsonl`
+        join(repo.root, '.claude', 'skills', 'plan-backlog-item', 'claims.local.jsonl')
       )
     } finally {
       repo.cleanup()

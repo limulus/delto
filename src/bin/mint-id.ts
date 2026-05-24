@@ -10,11 +10,9 @@
  *
  * Print-only — it never edits BACKLOG.md; the add-backlog-item skill drives the edit.
  *
- * Usage:
- *   node .claude/skills/add-backlog-item/mint-id.ts            # one ID
- *   node .claude/skills/add-backlog-item/mint-id.ts --count 3  # N mutually-distinct IDs
- *
- * Output is one `∆xxx` per line and nothing else, so it can be consumed directly.
+ * Library entry point — exposes `main(argv, opts)` for the `delto` CLI dispatcher.
+ * End users invoke it as `delto mint [--count N]` (or `delto add`). Output is one
+ * `∆xxx` per line and nothing else, so it can be consumed directly.
  */
 
 import { randomInt } from 'node:crypto'

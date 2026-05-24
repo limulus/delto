@@ -17,8 +17,8 @@
  * picking the "next milestone"; it still appears in the per-initiative table when it
  * holds open items.
  *
- * Usage:
- *   node .claude/skills/backlog-status/report-status.ts [--json]
+ * Library entry point — exposes `main(argv, opts)` for the `delto` CLI dispatcher.
+ * End users invoke it as `delto status [--json]`.
  */
 
 import { type MainOpts, defaults } from './main.ts'

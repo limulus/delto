@@ -1,4 +1,4 @@
-import { mkdirSync } from 'node:fs'
+import { mkdirSync, realpathSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 
 import {
@@ -40,9 +40,12 @@ describe('findRepoRoot', () => {
   it('uses process.cwd by default', () => {
     const orig = process.cwd()
     const repo = makeRepo()
+    // macOS resolves /tmp through /private/tmp; normalize both sides so the
+    // assertion compares apples-to-apples.
+    const realRoot = realpathSync(repo.root)
     try {
       process.chdir(repo.root)
-      expect(findRepoRoot()).toBe(repo.root)
+      expect(findRepoRoot()).toBe(realRoot)
     } finally {
       process.chdir(orig)
       repo.cleanup()

@@ -8,7 +8,7 @@
  */
 
 import { existsSync, readFileSync } from 'node:fs'
-import { dirname } from 'node:path'
+import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { main as completeItem } from './complete-item.ts'
@@ -27,7 +27,7 @@ export interface CommandEntry {
   run: Subcommand
 }
 
-export const COMMANDS: CommandEntry[] = [
+export const COMMANDS: readonly CommandEntry[] = [
   {
     names: ['mint', 'add'],
     summary: 'Mint fresh ∆xxx backlog IDs (one per line). --count N for N distinct IDs.',
@@ -57,34 +57,47 @@ export const COMMANDS: CommandEntry[] = [
   },
 ]
 
-function usage(log: (line: string) => void, commands: CommandEntry[]): void {
-  log('Usage: delto <command> [...args]')
-  log('')
-  log('Commands:')
-  const width = Math.max(...commands.map((c) => c.names.join(', ').length))
+function usage(out: (line: string) => void, commands: readonly CommandEntry[]): void {
+  out('Usage: delto <command> [...args]')
+  out('')
+  out('Commands:')
+  const width = Math.max(0, ...commands.map((c) => c.names.join(', ').length))
   for (const c of commands) {
-    log('  ' + c.names.join(', ').padEnd(width) + '  ' + c.summary)
+    out('  ' + c.names.join(', ').padEnd(width) + '  ' + c.summary)
   }
-  log('')
-  log('Run `delto <command> --help` for command-specific options (where supported).')
+  out('')
+  out('Global flags: --help, -h, help · --version, -v')
 }
 
 export interface DispatcherOpts extends MainOpts {
-  commands?: CommandEntry[]
+  commands?: readonly CommandEntry[]
 }
+
+const HELP_FLAGS = new Set(['--help', '-h', 'help'])
+const VERSION_FLAGS = new Set(['--version', '-v'])
 
 export function main(argv: string[], opts: DispatcherOpts = {}): number {
   const { log, err } = defaults(opts)
   const commands = opts.commands ?? COMMANDS
-  const [command, ...rest] = argv
-  if (!command || command === '--help' || command === '-h' || command === 'help') {
+
+  // --help / --version are honoured at ANY position so `delto --help mint`,
+  // `delto mint --help`, and `delto -v plan` all do the right thing instead of
+  // silently dropping a token.
+  if (argv.some((a) => HELP_FLAGS.has(a))) {
     usage(log, commands)
-    return command ? 0 : 1
+    return 0
   }
-  if (command === '--version' || command === '-v') {
+  if (argv.some((a) => VERSION_FLAGS.has(a))) {
     log(readVersion())
     return 0
   }
+
+  if (argv.length === 0) {
+    usage(err, commands)
+    return 1
+  }
+
+  const [command, ...rest] = argv
   const entry = commands.find((c) => c.names.includes(command))
   if (!entry) {
     err(`delto: unknown command "${command}"`)
@@ -92,11 +105,18 @@ export function main(argv: string[], opts: DispatcherOpts = {}): number {
     usage(err, commands)
     return 1
   }
+  // Strip the dispatcher's own fields so subcommands see only what they expect.
+  const { commands: _commands, ...rest_opts } = opts
+  void _commands
   try {
-    return entry.run(rest, opts)
+    return entry.run(rest, rest_opts)
   } catch (e) {
     if (e instanceof RepoRootNotFoundError) {
       err(`delto: ${e.message}`)
+      return 1
+    }
+    if (e instanceof Error) {
+      err(`delto ${command}: ${e.message}`)
       return 1
     }
     throw e
@@ -109,10 +129,15 @@ export function readVersion(
 ): string {
   let dir = startDir
   for (;;) {
-    const candidate = dir + '/package.json'
+    const candidate = join(dir, 'package.json')
     if (existsSync(candidate)) {
-      const pkg = JSON.parse(readFileSync(candidate, 'utf8'))
-      if (pkg.name === '@limulus/delto') return String(pkg.version)
+      try {
+        const pkg = JSON.parse(readFileSync(candidate, 'utf8'))
+        if (pkg.name === '@limulus/delto') return String(pkg.version)
+      } catch {
+        // Skip an unreadable/malformed ancestor package.json and keep walking;
+        // we only care about the one whose name matches.
+      }
     }
     const parent = dirname(dir)
     if (parent === dir) return 'unknown'

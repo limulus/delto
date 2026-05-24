@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import { main, readVersion } from './delto.ts'
+import { type MainOpts } from './main.ts'
 import { capture, makeRepo } from '../mocks/test-helpers.ts'
 
 describe('delto dispatcher', () => {
@@ -96,11 +97,37 @@ describe('delto dispatcher', () => {
     expect(sink.out.join('\n')).toContain('Usage: delto <command>')
   })
 
-  it('prints usage when called with no command (exit 1)', () => {
+  it('prints usage on stderr when called with no command (exit 1)', () => {
     const sink = capture()
     const code = main([], { log: sink.log, err: sink.err })
     expect(code).toBe(1)
-    expect(sink.out.join('\n')).toContain('Usage: delto <command>')
+    expect(sink.errs.join('\n')).toContain('Usage: delto <command>')
+    expect(sink.out).toEqual([])
+  })
+
+  it('handles --help anywhere in argv (delto --help mint, delto mint --help)', () => {
+    for (const argv of [
+      ['--help', 'mint'],
+      ['mint', '--help'],
+      ['plan', '-h'],
+    ]) {
+      const sink = capture()
+      const code = main(argv, { log: sink.log, err: sink.err })
+      expect(code).toBe(0)
+      expect(sink.out.join('\n')).toContain('Usage: delto')
+    }
+  })
+
+  it('handles --version anywhere in argv (delto -v plan, delto status --version)', () => {
+    for (const argv of [
+      ['-v', 'plan'],
+      ['status', '--version'],
+    ]) {
+      const sink = capture()
+      const code = main(argv, { log: sink.log, err: sink.err })
+      expect(code).toBe(0)
+      expect(sink.out[0]).toMatch(/^\d+\.\d+\.\d+/)
+    }
   })
 
   it('handles --help', () => {
@@ -142,18 +169,55 @@ describe('delto dispatcher', () => {
     expect(sink.errs[0]).toContain('delto: no BACKLOG.md found in')
   })
 
-  it('rethrows non-RepoRootNotFoundError errors from a subcommand', () => {
+  it('frames an Error thrown from a subcommand with `delto <cmd>: <message>`', () => {
     const sink = capture()
     const commands = [
       {
         names: ['boom'],
         summary: 'throws for testing',
         run: () => {
-          throw new Error('boom')
+          throw new Error('boom went off')
         },
       },
     ]
-    expect(() => main(['boom'], { commands, log: sink.log, err: sink.err })).toThrow('boom')
+    const code = main(['boom'], { commands, log: sink.log, err: sink.err })
+    expect(code).toBe(1)
+    expect(sink.errs[0]).toBe('delto boom: boom went off')
+  })
+
+  it('rethrows non-Error throws (defensive — should never happen in practice)', () => {
+    const sink = capture()
+    const bareString: unknown = 'a bare string'
+    const commands = [
+      {
+        names: ['boom'],
+        summary: 'throws for testing',
+        run: (): number => {
+          throw bareString
+        },
+      },
+    ]
+    expect(() => main(['boom'], { commands, log: sink.log, err: sink.err })).toThrow(
+      'a bare string'
+    )
+  })
+
+  it('strips the dispatcher-only `commands` field before invoking a subcommand', () => {
+    let seen: MainOpts | null = null
+    const commands = [
+      {
+        names: ['probe'],
+        summary: 'probe what its opts look like',
+        run: (_argv: string[], opts: MainOpts): number => {
+          seen = opts
+          return 0
+        },
+      },
+    ]
+    main(['probe'], { commands, log: () => {}, err: () => {} })
+    expect(seen).not.toBeNull()
+    const opts = seen as unknown as MainOpts & { commands?: unknown }
+    expect(opts.commands).toBeUndefined()
   })
 
   it('errors on an unknown command and prints usage on stderr', () => {
@@ -180,5 +244,20 @@ describe('readVersion', () => {
     // walks past them to keep climbing.
     const startInDep = `${process.cwd()}/node_modules/vitest`
     expect(readVersion(startInDep)).toMatch(/^\d+\.\d+\.\d+/)
+  })
+
+  it('skips a malformed ancestor package.json without crashing', async () => {
+    const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs')
+    const { tmpdir } = await import('node:os')
+    const { join } = await import('node:path')
+    const dir = mkdtempSync(join(tmpdir(), 'delto-readversion-'))
+    try {
+      writeFileSync(join(dir, 'package.json'), '{ this is not json')
+      // With no @limulus/delto package.json reachable from this dir, the walk
+      // returns 'unknown'. The malformed file is skipped via try/catch.
+      expect(readVersion(dir)).toBe('unknown')
+    } finally {
+      rmSync(dir, { recursive: true, force: true })
+    }
   })
 })

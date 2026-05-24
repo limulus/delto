@@ -11,8 +11,8 @@
  *
  * Exit 0 when clean, 1 when any violation is found. `--json` for machine-readable output.
  *
- * Usage:
- *   node .claude/skills/refine-backlog/lint-backlog.ts [--json]
+ * Library entry point — exposes `main(argv, opts)` for the `delto` CLI dispatcher.
+ * End users invoke it as `delto refine [--json]` (or `delto lint`).
  */
 
 import { type MainOpts, defaults } from './main.ts'

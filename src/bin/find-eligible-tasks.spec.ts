@@ -104,6 +104,22 @@ describe('find-eligible-tasks main()', () => {
     }
   })
 
+  it('rejects --claim and --release together as mutually exclusive', () => {
+    const repo = makeRepo('## I\n\n- ∆AAA First.\n')
+    const sink = capture()
+    try {
+      const code = main(['--claim', 'AAA', '--release', 'BBB'], {
+        cwd: repo.root,
+        log: sink.log,
+        err: sink.err,
+      })
+      expect(code).toBe(1)
+      expect(sink.errs[0]).toContain('mutually exclusive')
+    } finally {
+      repo.cleanup()
+    }
+  })
+
   it('rejects a malformed --claim id', () => {
     const repo = makeRepo(BACKLOG)
     const sink = capture()

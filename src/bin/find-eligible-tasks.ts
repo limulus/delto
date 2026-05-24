@@ -15,10 +15,8 @@
  * backlog-status skill so both agree on what "eligible" means; this file is the
  * plan-backlog-item CLI around it.
  *
- * Usage:
- *   node .claude/skills/plan-backlog-item/find-eligible-tasks.ts [--json]
- *   node .claude/skills/plan-backlog-item/find-eligible-tasks.ts --claim <id>
- *   node .claude/skills/plan-backlog-item/find-eligible-tasks.ts --release <id>
+ * Library entry point — exposes `main(argv, opts)` for the `delto` CLI dispatcher.
+ * End users invoke it as `delto plan [--json | --claim <id> | --release <id>]`.
  */
 
 import { relative } from 'node:path'
@@ -68,6 +66,11 @@ export function main(argv: string[], opts: MainOpts = {}): number {
   const repoRoot = findRepoRoot(cwd)
 
   const claimArg = flagValue(argv, '--claim')
+  const releaseArg = flagValue(argv, '--release')
+  if (claimArg !== null && releaseArg !== null) {
+    err('--claim and --release are mutually exclusive')
+    return 1
+  }
   if (claimArg !== null) {
     const id = requireId(claimArg, '--claim', err)
     if (id === null) return 1
@@ -76,8 +79,6 @@ export function main(argv: string[], opts: MainOpts = {}): number {
     log(`Release it with --release ${id} if you abandon planning.`)
     return 0
   }
-
-  const releaseArg = flagValue(argv, '--release')
   if (releaseArg !== null) {
     const id = requireId(releaseArg, '--release', err)
     if (id === null) return 1
@@ -127,11 +128,14 @@ export function main(argv: string[], opts: MainOpts = {}): number {
   if (eligible.length === 0) {
     lines.push('  (none — every backlog task is claimed, blocked, or conflicting)')
   }
+  // Pad width: the widest label across all eligible items, plus a 2-char gap.
+  // Keeps the grid aligned even when a high `→N` overflows the 8-char default.
+  const cellWidth = Math.max(8, ...eligible.map((id) => eligibleLabel(id).length + 2))
   for (const row of chunk(eligible, 8)) {
     lines.push(
       '  ' +
         row
-          .map((id) => eligibleLabel(id).padEnd(8))
+          .map((id) => eligibleLabel(id).padEnd(cellWidth))
           .join('')
           .trimEnd()
     )

@@ -1,7 +1,8 @@
 /**
  * Shared test fixtures: a throwaway repo on disk with a minimal BACKLOG.md, and small
- * capture sinks for the bin scripts' log/err output. Kept under `src/lib/` so the
- * coverage report includes it — the file's exports are exercised by every spec.
+ * capture sinks for the bin scripts' log/err output. Lives under `src/mocks/`, which
+ * `vitest.config.ts` excludes from coverage — test scaffolding shouldn't count toward
+ * the 100% threshold.
  */
 
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'

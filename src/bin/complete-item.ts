@@ -15,20 +15,23 @@
  * delete (and whether an emptied epic/initiative heading goes with them) so the edit is
  * unambiguous.
  *
- * Usage:
- *   node .claude/skills/complete-backlog-item/complete-item.ts <id> \
- *     [--slug <kebab-slug>] [--title <title>] [--dry-run]
- *
+ * Library entry point — exposes `main(argv, opts)` for the `delto` CLI dispatcher.
+ * End users invoke it as `delto complete <id> [--slug <kebab>] [--title <title>] [--dry-run]`.
  * --slug and --title default to values derived from the backlog text; pass them to
  * override when the derived value reads poorly. --dry-run prints everything and writes
  * nothing (neither the journal file nor the claim release).
  */
 
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 import { type MainOpts, defaults } from './main.ts'
-import { ID, findRepoRoot, parseBacklog } from '../lib/backlog-parser.ts'
+import {
+  ID,
+  findRepoRoot,
+  parseBacklogLines,
+  readBacklogLines,
+} from '../lib/backlog-parser.ts'
 import { claimedIds, release } from '../lib/claims-ledger.ts'
 
 function kebab(s: string): string {
@@ -55,14 +58,35 @@ export function main(argv: string[], opts: MainOpts = {}): number {
   let slugArg: string | null = null
   let titleArg: string | null = null
   let dryRun = false
+  const takeValue = (i: number, flag: string): string | null => {
+    const v = argv[i + 1]
+    if (v === undefined || v.startsWith('-')) {
+      fail(`${flag} requires a value`)
+      return null
+    }
+    return v
+  }
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i]
-    if (a === '--dry-run') dryRun = true
-    else if (a === '--slug') slugArg = argv[++i] ?? ''
-    else if (a === '--title') titleArg = argv[++i] ?? ''
-    else if (a.startsWith('-')) return fail(`unknown flag: ${a}`)
-    else if (!idArg) idArg = a
-    else return fail(`unexpected argument: ${a}`)
+    if (a === '--dry-run') {
+      dryRun = true
+    } else if (a === '--slug') {
+      const v = takeValue(i, '--slug')
+      if (v === null) return 1
+      slugArg = v
+      i++
+    } else if (a === '--title') {
+      const v = takeValue(i, '--title')
+      if (v === null) return 1
+      titleArg = v
+      i++
+    } else if (a.startsWith('-')) {
+      return fail(`unknown flag: ${a}`)
+    } else if (!idArg) {
+      idArg = a
+    } else {
+      return fail(`unexpected argument: ${a}`)
+    }
   }
   if (!idArg) {
     return fail(
@@ -76,7 +100,10 @@ export function main(argv: string[], opts: MainOpts = {}): number {
 
   const repoRoot = findRepoRoot(cwd)
 
-  const all = parseBacklog(repoRoot)
+  // Read BACKLOG.md once and reuse the lines so the parsed items' lineStart
+  // offsets are guaranteed to match the buffer we slice from later.
+  const lines = readBacklogLines(repoRoot)
+  const all = parseBacklogLines(lines)
   const item = all.find((x) => x.id === id)
   if (!item) {
     return fail(`∆${id} is not in BACKLOG.md — already completed, or wrong ID.`)
@@ -96,8 +123,6 @@ export function main(argv: string[], opts: MainOpts = {}): number {
       `docs/journal/${existingEntry} already exists — ∆${id} looks already completed.`
     )
   }
-
-  const lines = readFileSync(join(repoRoot, 'BACKLOG.md'), 'utf8').split('\n')
 
   const headings: { level: number; line: number }[] = []
   for (let i = 0; i < lines.length; i++) {
@@ -136,6 +161,8 @@ export function main(argv: string[], opts: MainOpts = {}): number {
 
   const bulletLines = lines.slice(item.lineStart - 1, item.lineStart - 1 + item.lineCount)
   const prefix = `- ∆${id} `
+  // parseBacklogLines and this slice operate on the same `lines` buffer, so the
+  // item's lineStart is guaranteed to point at a `- ∆id ` bullet.
   const itemText = [
     bulletLines[0].slice(prefix.length),
     ...bulletLines.slice(1).map((l) => l.trim()),
@@ -146,6 +173,11 @@ export function main(argv: string[], opts: MainOpts = {}): number {
   }
 
   const slug = slugArg !== null ? slugArg.trim() : kebab(title)
+  if (slugArg === null && slug === '') {
+    return fail(
+      `could not derive a kebab-case slug from title ${JSON.stringify(title)} — pass --slug <kebab-slug>.`
+    )
+  }
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) {
     return fail(
       `--slug must be kebab-case (lowercase letters, digits, single dashes) — got ${JSON.stringify(slug)}`

@@ -66,8 +66,14 @@ export function suffixIds(body: string, label: string): string[] {
   return ids
 }
 
-/** Parse BACKLOG.md items in document order (which is priority order). */
-export function parseBacklog(repoRoot: string): BacklogItem[] {
+/** Read BACKLOG.md from `repoRoot` and split into lines. Exposed so callers
+ *  (e.g. complete-item) can avoid a second filesystem read after parseBacklog. */
+export function readBacklogLines(repoRoot: string): string[] {
+  return readFileSync(join(repoRoot, 'BACKLOG.md'), 'utf8').split('\n')
+}
+
+/** Parse pre-read BACKLOG.md lines into items, in document (priority) order. */
+export function parseBacklogLines(lines: string[]): BacklogItem[] {
   const items: BacklogItem[] = []
   const itemStart = new RegExp(`^- ∆(${ID}) (.*)$`)
   const headingStart = /^(#+)\s+(.*\S)\s*$/
@@ -94,7 +100,6 @@ export function parseBacklog(repoRoot: string): BacklogItem[] {
     lineStart = 0
     lineCount = 0
   }
-  const lines = readFileSync(join(repoRoot, 'BACKLOG.md'), 'utf8').split('\n')
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
     if (line.startsWith('#')) {
@@ -140,6 +145,12 @@ export function parseBacklog(repoRoot: string): BacklogItem[] {
   }
   flush()
   return items
+}
+
+/** Read BACKLOG.md from `repoRoot` and parse it. Convenience over
+ *  `parseBacklogLines(readBacklogLines(repoRoot))`. */
+export function parseBacklog(repoRoot: string): BacklogItem[] {
+  return parseBacklogLines(readBacklogLines(repoRoot))
 }
 
 /**

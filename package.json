@@ -26,6 +26,7 @@
     "build": "concurrently -c auto 'npm:build:*'",
     "build:dts": "tsc -p tsconfig.build.json --incremental false --declaration --declarationMap --emitDeclarationOnly --outDir dist/types",
     "build:esm": "tsc -p tsconfig.build.json --incremental false --outDir dist/esm",
+    "postbuild": "chmod +x dist/esm/bin/cli.js",
     "clean": "del-cli *.tsbuildinfo coverage dist",
     "lint": "eslint *.ts src",
     "lint:fix": "npm run lint -- --fix",

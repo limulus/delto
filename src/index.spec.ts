@@ -5,6 +5,8 @@ import * as delto from './index.ts'
 describe('public exports', () => {
   it('re-exports the parser, ledger, and eligibility surface', () => {
     expect(typeof delto.parseBacklog).toBe('function')
+    expect(typeof delto.parseBacklogLines).toBe('function')
+    expect(typeof delto.readBacklogLines).toBe('function')
     expect(typeof delto.findRepoRoot).toBe('function')
     expect(typeof delto.journalIds).toBe('function')
     expect(typeof delto.suffixIds).toBe('function')

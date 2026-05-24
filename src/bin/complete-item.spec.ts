@@ -299,7 +299,7 @@ describe('complete-item main()', () => {
     }
   })
 
-  it('handles --slug with a missing value (next-arg slurped as empty string)', () => {
+  it('rejects --slug with no value following', () => {
     const repo = makeRepo(RICH)
     const sink = capture()
     try {
@@ -309,13 +309,29 @@ describe('complete-item main()', () => {
         err: sink.err,
       })
       expect(code).toBe(1)
-      expect(sink.errs[0]).toContain('--slug must be kebab-case')
+      expect(sink.errs[0]).toContain('--slug requires a value')
     } finally {
       repo.cleanup()
     }
   })
 
-  it('handles --title with a missing value', () => {
+  it('rejects --slug when followed by another flag (no value swallowed)', () => {
+    const repo = makeRepo(RICH)
+    const sink = capture()
+    try {
+      const code = main(['AAA', '--slug', '--dry-run'], {
+        cwd: repo.root,
+        log: sink.log,
+        err: sink.err,
+      })
+      expect(code).toBe(1)
+      expect(sink.errs[0]).toContain('--slug requires a value')
+    } finally {
+      repo.cleanup()
+    }
+  })
+
+  it('rejects --title with no value following', () => {
     const repo = makeRepo(RICH)
     const sink = capture()
     try {
@@ -325,7 +341,19 @@ describe('complete-item main()', () => {
         err: sink.err,
       })
       expect(code).toBe(1)
-      expect(sink.errs[0]).toContain('could not derive a title')
+      expect(sink.errs[0]).toContain('--title requires a value')
+    } finally {
+      repo.cleanup()
+    }
+  })
+
+  it('errors with a derived-slug message when the title has no kebab-able characters', () => {
+    const repo = makeRepo('## I\n\n- ∆AAA 日本語 — description.\n')
+    const sink = capture()
+    try {
+      const code = main(['AAA'], { cwd: repo.root, log: sink.log, err: sink.err })
+      expect(code).toBe(1)
+      expect(sink.errs[0]).toContain('could not derive a kebab-case slug')
     } finally {
       repo.cleanup()
     }

@@ -4,6 +4,8 @@ export {
   findRepoRoot,
   journalIds,
   parseBacklog,
+  parseBacklogLines,
+  readBacklogLines,
   suffixIds,
   type BacklogItem,
   type HeadingRef,

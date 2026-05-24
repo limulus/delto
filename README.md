@@ -37,8 +37,14 @@ Every command operates on the `BACKLOG.md` at the nearest ancestor directory.
 ## Library
 
 ```javascript
-import { parseBacklog, computeEligibility, claimedIds } from '@limulus/delto'
+import {
+  findRepoRoot,
+  parseBacklog,
+  computeEligibility,
+  claimedIds,
+} from '@limulus/delto'
 
-const items = parseBacklog(process.cwd())
-const { order } = computeEligibility(items, claimedIds(process.cwd()))
+const repoRoot = findRepoRoot()
+const items = parseBacklog(repoRoot)
+const { order } = computeEligibility(items, claimedIds(repoRoot))
 ```
