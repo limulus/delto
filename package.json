@@ -2,14 +2,6 @@
   "name": "@limulus/delto",
   "version": "1.0.0",
   "description": "Keep a backlog. With your code. Give agents context.",
-  "main": "dist/esm/index.js",
-  "types": "dist/types/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/esm/index.js",
-      "types": "./dist/types/index.d.ts"
-    }
-  },
   "files": [
     "dist",
     "src"

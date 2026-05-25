@@ -21,6 +21,12 @@ Same-area collisions use `; touches: ∆OID[, ∆OID]` so parallel work knows to
 
 Standing initiative — do not remove, even if no items.
 
+- ∆uaD `complete-item.ts` title/slug derivation produces unusable defaults when an
+  item's first ` — `-delimited segment is long or contains backticks — every recent
+  completion has needed `--title`/`--slug` overrides. Strip backticks and cap title
+  length (re-deriving the slug from the trimmed title) so the overrides are rarely
+  needed
+
 ## First npm Publish
 
 Foundational initiative — what `@limulus/delto` needs before it can be published with
@@ -29,10 +35,6 @@ captured in [ADR-001](./docs/decisions/001-delto-cli-and-skill-shape.md).
 
 ### Library & CLI
 
-- ∆iDx Replace `src/lib/Example.ts` and the `src/index.ts` placeholder with the real
-  public surface — `parseBacklog`, `computeEligibility`, `journalIds`, `claimedIds`,
-  `claim`, `release`, plus the `BacklogItem` / `ItemEligibility` / `EligibilityResult`
-  types. Delete `Example.ts`
 - ∆qBS Build the `delto` CLI per ADR-001 — `src/bin/delto.ts` router + subcommand
   modules at `src/bin/<subcommand>.ts` sharing `src/lib/`; `package.json` `bin: {
   "delto": "./dist/esm/bin/delto.js" }`; per-subcommand `--help` carries the
@@ -58,7 +60,7 @@ captured in [ADR-001](./docs/decisions/001-delto-cli-and-skill-shape.md).
 
 - ∆Lcv Unit tests for the library at 100% coverage — `src/lib/backlog-parser.ts`,
   `src/lib/eligibility.ts`, `src/lib/claims-ledger.ts`. Vitest's threshold is
-  already 100/100/100/100, so the tests are the gate; needs: ∆iDx
+  already 100/100/100/100, so the tests are the gate
 - ∆Bcv Tests for the `delto` CLI — exercise each subcommand against fixture
   `BACKLOG.md` / `docs/journal/` trees to hit 100% coverage on `src/bin/`;
   needs: ∆Lcv, ∆qBS
@@ -70,9 +72,9 @@ captured in [ADR-001](./docs/decisions/001-delto-cli-and-skill-shape.md).
   @limulus/delto` or rely on the `npx -p` fallback), and the full backlog
   lifecycle linked to each subcommand's `--help`; needs: ∆IsK
 - ∆Sre Verify `semantic-release` produces the expected `@limulus/delto` tarball —
-  the `delto` `bin` entry, `files`, `exports`, type definitions, and the bundled
-  templates per ADR-001's `src/` layout. Skill discovery is verified separately by
-  ∆IsK (Git-driven, not tarball-driven); needs: ∆iDx, ∆qBS, ∆Tmp
+  the `delto` `bin` entry, `files`, and the bundled templates per ADR-001's `src/`
+  layout. No `main`/`exports` (bin-only per ∆iDx). Skill discovery is verified
+  separately by ∆IsK (Git-driven, not tarball-driven); needs: ∆qBS, ∆Tmp
 - ∆Bpr Enable GitHub branch protection on `main` — require PR + passing CI before
   merge so an accidental push (e.g. an agent in YOLO mode) cannot trigger an
   unreviewed publish
