@@ -21,12 +21,6 @@ Same-area collisions use `; touches: ∆OID[, ∆OID]` so parallel work knows to
 
 Standing initiative — do not remove, even if no items.
 
-- ∆uaD Remove `complete-item.ts`'s title/slug auto-derivation entirely — picking a
-  good title from a backlog bullet is LLM judgment, not regex work, and the
-  fallback has produced unusable defaults on every recent completion. Make
-  `--title` and `--slug` required (keep the slug-format validator), and update
-  `SKILL.md` to instruct the agent to pick them from the item before invoking
-
 ## First npm Publish
 
 Foundational initiative — what `@limulus/delto` needs before it can be published with

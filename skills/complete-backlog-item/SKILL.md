@@ -30,6 +30,9 @@ delete (and whether an emptied epic/initiative heading goes with them); *you* ma
 edit. This is the same script-detects / agent-edits split that `refine-backlog` and
 `plan-backlog-item` use.
 
+You supply the journal title and slug via `--title` and `--slug` — the script writes
+them into the frontmatter and filename verbatim. Step 2 covers how to pick them.
+
 ## Steps
 
 1. **Confirm the item is done.** Its implementation is complete, tests pass, and the user
@@ -39,18 +42,25 @@ edit. This is the same script-detects / agent-edits split that `refine-backlog` 
    stale base, and syncing up front keeps the later `BACKLOG.md` removal and the merge
    conflict-free.
 
-2. **Preview with `--dry-run`.** From anywhere in the repo:
+2. **Pick a title and slug, then preview with `--dry-run`.** Read the item in
+   `BACKLOG.md` and choose:
+
+   - `--title` — a concise summary of what the item achieves (≈5–8 words, sentence
+     case). Favor a paraphrase of what was done over a literal restatement of the
+     bullet — e.g. "Drop placeholder library API surface" rather than ``Drop
+     `index.ts` and `Example.ts` ``.
+   - `--slug` — kebab-case (`[a-z0-9-]+`), ≈3–6 words, used as the journal filename.
+     Derive it from the title rather than from the bullet text.
+
+   Then preview:
 
    ```bash
-   node .claude/skills/complete-backlog-item/complete-item.ts <id> --dry-run
+   node .claude/skills/complete-backlog-item/complete-item.ts <id> \
+     --title "<title>" --slug <slug> --dry-run
    ```
 
-   Check the derived title and slug in the preview. Re-run with `--title "<title>"`
-   and/or `--slug <kebab-slug>` if either reads poorly (e.g. too long, or it kept
-   backticks from the backlog text).
-
-3. **Run it for real.** Drop `--dry-run`, keep any `--title`/`--slug` overrides. It writes
-   the journal file, releases the claim, and prints the `BACKLOG.md` deletion to make.
+3. **Run it for real.** Drop `--dry-run`, keep `--title` and `--slug`. It writes the
+   journal file, releases the claim, and prints the `BACKLOG.md` deletion to make.
    Run this *before* editing `BACKLOG.md` — it reads the live item to build the journal.
 
 4. **Apply the `BACKLOG.md` deletion** the script printed — remove the item's lines, and

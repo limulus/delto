@@ -18,11 +18,11 @@
  *
  * Usage:
  *   node .claude/skills/complete-backlog-item/complete-item.ts <id> \
- *     [--slug <kebab-slug>] [--title <title>] [--dry-run]
+ *     --title <title> --slug <kebab-slug> [--dry-run]
  *
- * --slug and --title default to values derived from the backlog text; pass them to
- * override when the derived value reads poorly. --dry-run prints everything and writes
- * nothing (neither the journal file nor the claim release).
+ * --title and --slug are required; SKILL.md covers how the caller picks them. The
+ * script validates --slug is kebab-case. --dry-run prints everything and writes nothing
+ * (neither the journal file nor the claim release).
  *
  * Runs on Node's built-in TypeScript type-stripping — no build step, no flag. Keep this
  * file to erasable-only syntax (no enums, namespaces, or parameter properties).
@@ -43,25 +43,34 @@ function fail(msg: string): never {
 
 const argv = process.argv.slice(2)
 let idArg = ''
-let slugArg: string | null = null
-let titleArg: string | null = null
+let slugArg = ''
+let titleArg = ''
 let dryRun = false
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i]
   if (a === '--dry-run') dryRun = true
-  else if (a === '--slug') slugArg = argv[++i] ?? ''
-  else if (a === '--title') titleArg = argv[++i] ?? ''
+  else if (a === '--slug') slugArg = (argv[++i] ?? '').trim()
+  else if (a === '--title') titleArg = (argv[++i] ?? '').trim()
   else if (a.startsWith('-')) fail(`unknown flag: ${a}`)
   else if (!idArg) idArg = a
   else fail(`unexpected argument: ${a}`)
 }
 if (!idArg) {
-  fail('usage: complete-item.ts <id> [--slug <slug>] [--title <title>] [--dry-run]')
+  fail('usage: complete-item.ts <id> --title <title> --slug <kebab-slug> [--dry-run]')
 }
 const id = idArg.replace(/^∆/, '').trim()
 if (!new RegExp(`^${ID}$`).test(id)) {
   fail(`<id> must be a 3-char task ID (got: ${JSON.stringify(idArg)})`)
 }
+if (!titleArg) fail('--title <title> is required.')
+const title = titleArg
+if (!slugArg) fail('--slug <kebab-slug> is required.')
+if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slugArg)) {
+  fail(
+    `--slug must be kebab-case (lowercase letters, digits, single dashes) — got ${JSON.stringify(slugArg)}`,
+  )
+}
+const slug = slugArg
 
 const repoRoot = findRepoRoot()
 
@@ -131,28 +140,9 @@ if (initiativeEmptied && !isRefactors) {
   removeEnd = item.lineStart + item.lineCount - 1
 }
 
-// --- Derive title and slug --------------------------------------------------
+// --- Extract item lines for the journal blockquote --------------------------
 
 const bulletLines = lines.slice(item.lineStart - 1, item.lineStart - 1 + item.lineCount)
-const prefix = `- ∆${id} `
-const itemText = [
-  bulletLines[0].startsWith(prefix) ? bulletLines[0].slice(prefix.length) : bulletLines[0],
-  ...bulletLines.slice(1).map((l) => l.trim()),
-].join(' ')
-// BACKLOG.md separates an item's name from its description with a spaced em dash.
-const title = (titleArg ?? itemText.split(' — ')[0]).trim()
-if (!title) fail('could not derive a title from the backlog text — pass --title <title>.')
-
-function kebab(s: string): string {
-  return s
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-}
-const slug = slugArg !== null ? slugArg.trim() : kebab(title)
-if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(slug)) {
-  fail(`--slug must be kebab-case (lowercase letters, digits, single dashes) — got ${JSON.stringify(slug)}`)
-}
 
 // --- Build the journal entry ------------------------------------------------
 
@@ -162,11 +152,14 @@ function today(): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
 }
 
+// Single-quote the title in YAML so backticks, colons, and other reserved indicators
+// pass through unharmed. Embedded single quotes double per the YAML spec.
+const yamlTitle = `'${title.replace(/'/g, "''")}'`
 const journalRel = `docs/journal/∆${id}-${slug}.md`
 const journalBody = `---
 id: ∆${id}
 date: ${today()}
-title: ${title}
+title: ${yamlTitle}
 ---
 
 ## Backlog item
