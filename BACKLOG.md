@@ -29,22 +29,38 @@ captured in [ADR-001](./docs/decisions/001-delto-cli-and-skill-shape.md).
 
 ### Library & CLI
 
-- ∆qBS Build the `delto` CLI per ADR-001 — `src/bin/delto.ts` router + subcommand
-  modules at `src/bin/<subcommand>.ts` sharing `src/lib/`; `package.json` `bin: {
-  "delto": "./dist/esm/bin/delto.js" }`; per-subcommand `--help` carries the
-  contract; templates under `src/lib/templates/` for the bootstrap subcommand;
-  touches: ∆Tmp
+- ∆qBS Scaffold the `delto` CLI per ADR-001 — `src/bin/delto.ts` router with no
+  subcommands wired (`--help` lists nothing yet), `package.json` `bin: { "delto":
+  "./dist/esm/bin/delto.js" }`, and an empty `skills/delto/SKILL.md` skeleton for
+  per-subcommand sections to append into. Tests written TDD-style. Each migration
+  plugs in from here; touches: ∆Tmp
+- ∆6zh Migrate `add-backlog-item` into `delto add` — review the skill, port its
+  logic to `src/lib/` + `src/bin/add.ts` test-first (red/green), register in the
+  router, append the subcommand's section to `skills/delto/SKILL.md`. Legacy
+  `skills/add-backlog-item/` stays live until cutover (∆Rnm); needs: ∆qBS
+- ∆SYk Migrate `plan-backlog-item` into `delto plan` — likewise: review, port to
+  `src/lib/` + `src/bin/plan.ts` test-first, register in the router, append
+  SKILL.md section. Legacy directory stays until ∆Rnm; needs: ∆qBS
+- ∆PZ3 Migrate `refine-backlog` into `delto refine` — likewise: review, port to
+  `src/lib/` + `src/bin/refine.ts` test-first, register in the router, append
+  SKILL.md section. Legacy directory stays until ∆Rnm; needs: ∆qBS
+- ∆yNQ Migrate `complete-backlog-item` into `delto complete` — likewise: review,
+  port to `src/lib/` + `src/bin/complete.ts` test-first, register in the router,
+  append SKILL.md section. Legacy directory stays until ∆Rnm; needs: ∆qBS
+- ∆Stb Migrate `backlog-status` into `delto status` — likewise: review, port to
+  `src/lib/` + `src/bin/status.ts` test-first, register in the router, append
+  SKILL.md section. Legacy directory stays until ∆Rnm; needs: ∆qBS
 - ∆Tmp Bundle the consumer-facing templates with the package — a starter
   `BACKLOG.md` (this file's header structure, parameterized by project name) and a
   `docs/journal/README.md` (template + workflow) under `src/lib/templates/`,
-  materialized by `delto bootstrap`; touches: ∆qBS
+  materialized by a new `delto bootstrap` subcommand (TDD); touches: ∆qBS
 
 ### Skill Packaging
 
-- ∆Rnm Write the consolidated `/delto` skill per ADR-001 — `skills/delto/SKILL.md`
-  (prose-only, covers the full backlog lifecycle; `--help` is the subcommand
-  contract); remove any legacy per-script skill directories and their embedded
-  `lib/`; retarget `.claude/skills/` symlinks; needs: ∆qBS; touches: ∆IsK
+- ∆Rnm Cut over to the consolidated `/delto` skill — retarget `.claude/skills/`
+  symlinks to `skills/delto/`, delete the legacy `skills/<name>/` directories and
+  the embedded `skills/lib/`. Per-subcommand SKILL.md prose was already written by
+  each migration; needs: ∆6zh, ∆SYk, ∆PZ3, ∆yNQ, ∆Stb; touches: ∆IsK
 - ∆IsK Verify `npx skills add` reaches the consolidated `/delto` skill from the Git
   ref — directory layout, `SKILL.md` frontmatter, and the `command -v / npx -p`
   fallback for invoking the `delto` bin all work end-to-end on a fresh consumer
@@ -52,12 +68,10 @@ captured in [ADR-001](./docs/decisions/001-delto-cli-and-skill-shape.md).
 
 ### Testing & QA
 
-- ∆Lcv Unit tests for the library at 100% coverage — `src/lib/backlog-parser.ts`,
-  `src/lib/eligibility.ts`, `src/lib/claims-ledger.ts`. Vitest's threshold is
-  already 100/100/100/100, so the tests are the gate
-- ∆Bcv Tests for the `delto` CLI — exercise each subcommand against fixture
-  `BACKLOG.md` / `docs/journal/` trees to hit 100% coverage on `src/bin/`;
-  needs: ∆Lcv, ∆qBS
+- ∆Lcv Back-fill unit tests at 100% coverage for the grandfathered `src/lib/`
+  modules — `backlog-parser.ts`, `eligibility.ts`, `claims-ledger.ts`. Vitest's
+  threshold is already 100/100/100/100, so the tests are the gate. New code in
+  `src/` lands TDD-style per CLAUDE.md, so this item is the one-time catch-up
 
 ### Packaging & Release
 
