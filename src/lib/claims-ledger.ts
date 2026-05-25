@@ -21,14 +21,8 @@ import { dirname, join } from 'node:path'
 
 import { findRepoRoot } from './backlog-parser.ts'
 
-/** The append-only claim ledger — `.gitignore`'d, owned by the plan-backlog-item skill. */
-export const CLAIMS_FILE = join(
-  findRepoRoot(),
-  '.claude',
-  'skills',
-  'plan-backlog-item',
-  'claims.local.jsonl'
-)
+/** The append-only claim ledger — `.gitignore`'d, sits alongside `BACKLOG.md`. */
+export const CLAIMS_FILE = join(findRepoRoot(), '.delto-claims.local.jsonl')
 
 /** The set of currently-claimed IDs (append-only ledger, last record per ID wins). */
 export function claimedIds(): Set<string> {

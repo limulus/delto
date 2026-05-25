@@ -104,3 +104,6 @@ dist
 .tern-port
 
 dist
+
+# Delto plan-backlog-item claim ledger (sits alongside BACKLOG.md)
+.delto-claims.local.jsonl

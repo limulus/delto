@@ -21,10 +21,6 @@ Same-area collisions use `; touches: ∆OID[, ∆OID]` so parallel work knows to
 
 Standing initiative — do not remove, even if no items.
 
-- ∆HmI Place the claim ledger next to `BACKLOG.md` as a `.gitignore`d file, located
-  via the `find-up` package — the ledger path is derived from the backlog's
-  location; touches: ∆Rnm
-
 ## First npm Publish
 
 Foundational initiative — what `@limulus/delto` needs before it can be published with
@@ -52,7 +48,7 @@ captured in [ADR-001](./docs/decisions/001-delto-cli-and-skill-shape.md).
 - ∆Rnm Write the consolidated `/delto` skill per ADR-001 — `skills/delto/SKILL.md`
   (prose-only, covers the full backlog lifecycle; `--help` is the subcommand
   contract); remove any legacy per-script skill directories and their embedded
-  `lib/`; retarget `.claude/skills/` symlinks; needs: ∆qBS; touches: ∆IsK, ∆HmI
+  `lib/`; retarget `.claude/skills/` symlinks; needs: ∆qBS; touches: ∆IsK
 - ∆IsK Verify `npx skills add` reaches the consolidated `/delto` skill from the Git
   ref — directory layout, `SKILL.md` frontmatter, and the `command -v / npx -p`
   fallback for invoking the `delto` bin all work end-to-end on a fresh consumer

@@ -72,7 +72,7 @@ The script combines those suffixes with the claim ledger and excludes an item th
 
 ## Notes
 
-- **Claim ledger:** `claims.local.jsonl` (in this skill directory, `.gitignore`'d,
+- **Claim ledger:** `.delto-claims.local.jsonl` (alongside `BACKLOG.md`, `.gitignore`'d,
   append-only). Claims never expire — they persist through long reviews. A claim ends
   when you `--release` it, or when the task is completed and removed from `BACKLOG.md`
   (after which the script simply stops listing it).

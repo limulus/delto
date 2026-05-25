@@ -10,6 +10,7 @@
  * file to erasable-only syntax (no enums, namespaces, or parameter properties).
  */
 
+import { findUpSync } from 'find-up-simple'
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 
@@ -39,16 +40,12 @@ export interface BacklogItem {
 
 /** Walk up from `start` to the directory that holds BACKLOG.md. */
 export function findRepoRoot(start: string = process.cwd()): string {
-  let dir = start
-  while (!existsSync(join(dir, 'BACKLOG.md'))) {
-    const parent = dirname(dir)
-    if (parent === dir) {
-      console.error('backlog-parser: no BACKLOG.md found in any parent directory.')
-      process.exit(1)
-    }
-    dir = parent
+  const backlog = findUpSync('BACKLOG.md', { cwd: start })
+  if (!backlog) {
+    console.error('backlog-parser: no BACKLOG.md found in any parent directory.')
+    process.exit(1)
   }
-  return dir
+  return dirname(backlog)
 }
 
 /** Extract the `∆xxx` IDs from a `; <label>: ∆a, ∆b` dependency suffix. */
