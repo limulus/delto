@@ -11,6 +11,16 @@
 - Test (single file): `npm test -- src/path/to/file.spec.ts`
 - Verify (lint+test+typecheck): `npm run verify`
 
+## Architecture Decisions
+
+Significant architectural decisions are captured in `docs/decisions/` as numbered ADRs.
+Reference them as `ADR-NNN` (e.g. `ADR-001`) in prose, commits, and journal entries.
+Read the relevant ADR before working on an area it covers.
+
+- [ADR-001 — `delto` CLI and skill shape](./docs/decisions/001-delto-cli-and-skill-shape.md):
+  single `delto` binary, consolidated `/delto` skill, prose-only `SKILL.md`, `--help` as
+  the contract, `npx skills add` reads from Git.
+
 ## Code Style Guidelines
 
 - **ESM**: Use ES Modules (`import/export` not `require()`)
