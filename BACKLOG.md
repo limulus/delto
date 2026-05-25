@@ -25,7 +25,10 @@ Standing initiative — do not remove, even if no items.
   `skills/add-backlog-item/mint-id.ts` are drifted copies (the in-`skills/` version still
   has the menschen-relative `..` import paths and was committed verbatim from the
   originating project). Pick one as the source of truth and delete or generate the other;
-  touches: ∆bSx, ∆IsK
+  touches: ∆bSx, ∆IsK, ∆HmI
+- ∆HmI Move the claim ledger to a `.gitignore`d file alongside `BACKLOG.md` (currently
+  `.claude/skills/plan-backlog-item/claims.local.jsonl`) — use the `find-up` package to
+  locate the backlog and derive the ledger path; touches: ∆7sR
 
 ## First npm Publish
 
