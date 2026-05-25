@@ -21,11 +21,11 @@ Same-area collisions use `; touches: ∆OID[, ∆OID]` so parallel work knows to
 
 Standing initiative — do not remove, even if no items.
 
-- ∆uaD `complete-item.ts` title/slug derivation produces unusable defaults when an
-  item's first ` — `-delimited segment is long or contains backticks — every recent
-  completion has needed `--title`/`--slug` overrides. Strip backticks and cap title
-  length (re-deriving the slug from the trimmed title) so the overrides are rarely
-  needed
+- ∆uaD Remove `complete-item.ts`'s title/slug auto-derivation entirely — picking a
+  good title from a backlog bullet is LLM judgment, not regex work, and the
+  fallback has produced unusable defaults on every recent completion. Make
+  `--title` and `--slug` required (keep the slug-format validator), and update
+  `SKILL.md` to instruct the agent to pick them from the item before invoking
 
 ## First npm Publish
 
