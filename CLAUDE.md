@@ -37,7 +37,11 @@ Read the relevant ADR before working on an area it covers.
   - Classes: PascalCase
   - Methods/variables: camelCase
   - Files: kebab-case for modules
-- **Testing**: 100% coverage required (functions, branches, lines, statements)
+- **Testing**: 100% coverage required for all production code
+  - Vitest enforces the gate via `100/100/100/100` (functions/branches/lines/statements)
+  - Write tests first — red/green/refactor: a failing test, the code that makes it pass,
+    then cleanup. Existing un-tested code (the skill scripts under `skills/`) is
+    grandfathered until it migrates into `src/`, at which point it earns its tests TDD-style
 - **Error Handling**: Use typed errors and proper propagation
 - **Comments**:
   - Only add comments to explain _why_ code is doing something unusual or non-obvious
