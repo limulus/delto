@@ -1,7 +1,6 @@
 ---
 id: ∆bSx
-date: 2026-05-25
-title: '`delto` CLI and skill shape'
+completed: 2026-05-25 11:23:13 -07:00
 ---
 
 ## Backlog item

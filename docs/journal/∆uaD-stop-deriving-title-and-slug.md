@@ -1,7 +1,6 @@
 ---
 id: ∆uaD
-date: 2026-05-25
-title: 'Stop deriving journal title and slug'
+completed: 2026-05-25 16:05:19 -07:00
 ---
 
 ## Backlog item

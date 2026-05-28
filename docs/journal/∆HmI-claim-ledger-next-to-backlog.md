@@ -1,7 +1,6 @@
 ---
 id: ∆HmI
-date: 2026-05-25
-title: Place claim ledger alongside the backlog
+completed: 2026-05-25 15:29:50 -07:00
 ---
 
 ## Backlog item

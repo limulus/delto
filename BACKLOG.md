@@ -6,16 +6,16 @@ top-priority initiative.
 
 Each item starts with a 3-char alphanumeric ID prefixed `∆` (e.g. `- ∆OID Notify route —
 …`). These “deltoids” are immutable and travel with the item into its final
-`docs/journal/∆OID-slug.md` entry so cross-references stay stable. When creating new items
-use the `/delto add` skill, falling back to:
+`docs/journal/∆OID-slug.md` entry so cross-references stay stable. To mint a collision-free
+deltoid, use `delto mint` once built (∆6zh); until then:
 
 ```sh
 while id=$(LC_ALL=C tr -dc 'A-Za-z0-9' </dev/urandom | head -c 3); \
   grep -rq "∆$id" BACKLOG.md docs/journal/; do :; done; echo "∆$id"
 ```
 
-Hard prerequisites use a trailing `; needs: ∆OID[, ∆OID]` suffix — logical blockers.
-Same-area collisions use `; touches: ∆OID[, ∆OID]` so parallel work knows to coordinate.
+Hard prerequisites use a trailing `; needs: ∆OID[, ∆OID]` suffix — logical blockers, the
+only dependency mechanism in the `/delto` SKILL.md spec (v1.0).
 
 ## Refactors
 
@@ -23,74 +23,70 @@ Standing initiative — do not remove, even if no items.
 
 ## First npm Publish
 
-Foundational initiative — what `@limulus/delto` needs before it can be published with
-real library exports, full test coverage, and a working consumer story. Shape decisions
-captured in [ADR-001](./docs/decisions/001-delto-cli-and-skill-shape.md).
+Foundational initiative — what `@limulus/delto` needs before it can be published: the
+`delto` CLI subcommands the `/delto` `SKILL.md` documents (mint, surface, claim, release,
+complete), full test coverage, and a working consumer story (skill install via `npx skills
+add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
+[ADR-001](./docs/decisions/001-delto-cli-and-skill-shape.md).
 
 ### Library & CLI
 
-- ∆qBS Scaffold the `delto` CLI per ADR-001 — `src/bin/delto.ts` router with no
-  subcommands wired (`--help` lists nothing yet), `package.json` `bin: { "delto":
-  "./dist/esm/bin/delto.js" }`, and an empty `skills/delto/SKILL.md` skeleton for
-  per-subcommand sections to append into. Tests written TDD-style. Each migration
-  plugs in from here; touches: ∆Tmp
-- ∆6zh Migrate `add-backlog-item` into `delto add` — review the skill, port its
-  logic to `src/lib/` + `src/bin/add.ts` test-first (red/green), register in the
-  router, append the subcommand's section to `skills/delto/SKILL.md`. Legacy
-  `skills/add-backlog-item/` stays live until cutover (∆Rnm); needs: ∆qBS
-- ∆SYk Migrate `plan-backlog-item` into `delto plan` — likewise: review, port to
-  `src/lib/` + `src/bin/plan.ts` test-first, register in the router, append
-  SKILL.md section. Legacy directory stays until ∆Rnm; needs: ∆qBS
-- ∆PZ3 Migrate `refine-backlog` into `delto refine` — likewise: review, port to
-  `src/lib/` + `src/bin/refine.ts` test-first, register in the router, append
-  SKILL.md section. Legacy directory stays until ∆Rnm; needs: ∆qBS
-- ∆yNQ Migrate `complete-backlog-item` into `delto complete` — likewise: review,
-  port to `src/lib/` + `src/bin/complete.ts` test-first, register in the router,
-  append SKILL.md section. Legacy directory stays until ∆Rnm; needs: ∆qBS
-- ∆Stb Migrate `backlog-status` into `delto status` — likewise: review, port to
-  `src/lib/` + `src/bin/status.ts` test-first, register in the router, append
-  SKILL.md section. Legacy directory stays until ∆Rnm; needs: ∆qBS
-- ∆Tmp Bundle the consumer-facing templates with the package — a starter
-  `BACKLOG.md` (this file's header structure, parameterized by project name) and a
-  `docs/journal/README.md` (template + workflow) under `src/lib/templates/`,
-  materialized by a new `delto bootstrap` subcommand (TDD); touches: ∆qBS
+- ∆6zh Build `delto mint` — port `add-backlog-item`'s `mint-id.ts` to `src/lib/` +
+  `src/bin/mint.ts` test-first (red/green), minting collision-free deltoids by scanning
+  `BACKLOG.md` and the journal dir (`--journal-dir`), with `--count <n>`. Register in
+  the router; needs: ∆qBS
+- ∆SYk Build `delto surface` — port `plan-backlog-item`'s `find-eligible-tasks.ts`
+  eligibility logic to `src/lib/` + `src/bin/surface.ts` test-first: traverse the
+  `needs:` graph, exclude claimed and blocked items, emit eligible deltoids. Register
+  in the router; needs: ∆qBS
+- ∆ICw Build `delto claim <deltoid>` and `delto release <deltoid>` — port the claims
+  ledger (`claims-ledger.ts`) to `src/lib/` + `src/bin/claim.ts` + `src/bin/release.ts`
+  test-first; record/withdraw a claim so parallel agents don't collide. Register both
+  in the router; needs: ∆qBS
+- ∆yNQ Build `delto complete <deltoid> <journal-entry-path>` — port
+  `complete-backlog-item`'s logic to `src/lib/` + `src/bin/complete.ts` test-first:
+  release the claim and scaffold a journal entry at the path with `id` + `completed`
+  (`YYYY-MM-DD HH:MM:SS ±HH:MM`) frontmatter per the spec. Register in the router;
+  needs: ∆qBS
 
 ### Skill Packaging
 
-- ∆Rnm Cut over to the consolidated `/delto` skill — retarget `.claude/skills/`
-  symlinks to `skills/delto/`, delete the legacy `skills/<name>/` directories and
-  the embedded `skills/lib/`. Per-subcommand SKILL.md prose was already written by
-  each migration; needs: ∆6zh, ∆SYk, ∆PZ3, ∆yNQ, ∆Stb; touches: ∆IsK
+- ∆Rnm Cut over to the consolidated `/delto` skill — create the `.claude/skills/delto`
+  symlink, delete the legacy `skills/<name>/` directories and the embedded
+  `skills/lib/`, and delete any leftover `src/legacy/` files. The consolidated
+  `SKILL.md` is already written; needs: ∆6zh, ∆SYk, ∆ICw, ∆yNQ
 - ∆IsK Verify `npx skills add` reaches the consolidated `/delto` skill from the Git
-  ref — directory layout, `SKILL.md` frontmatter, and the `command -v / npx -p`
-  fallback for invoking the `delto` bin all work end-to-end on a fresh consumer
-  checkout; needs: ∆Rnm; touches: ∆Rnm
-
-### Testing & QA
-
-- ∆Lcv Back-fill unit tests at 100% coverage for the grandfathered `src/lib/`
-  modules — `backlog-parser.ts`, `eligibility.ts`, `claims-ledger.ts`. Vitest's
-  threshold is already 100/100/100/100, so the tests are the gate. New code in
-  `src/` lands TDD-style per CLAUDE.md, so this item is the one-time catch-up
+  ref — directory layout and `SKILL.md` frontmatter resolve, and `npx @limulus/delto@1
+  <sub>` runs the published bin end-to-end on a fresh consumer checkout; needs: ∆Rnm
 
 ### Packaging & Release
 
-- ∆Rdm Real README + getting-started — replace the placeholders with what delto is,
-  the install path (`npx skills add` for the `/delto` skill, then `npm i
-  @limulus/delto` or rely on the `npx -p` fallback), and the full backlog
-  lifecycle linked to each subcommand's `--help`; needs: ∆IsK
-- ∆Sre Verify `semantic-release` produces the expected `@limulus/delto` tarball —
-  the `delto` `bin` entry, `files`, and the bundled templates per ADR-001's `src/`
-  layout. No `main`/`exports` (bin-only per ∆iDx). Skill discovery is verified
-  separately by ∆IsK (Git-driven, not tarball-driven); needs: ∆qBS, ∆Tmp
-- ∆Bpr Enable GitHub branch protection on `main` — require PR + passing CI before
-  merge so an accidental push (e.g. an agent in YOLO mode) cannot trigger an
-  unreviewed publish
+- ∆Rdm Real README + getting-started — replace the placeholders with what delto is, the
+  install path (`npx skills add` for the `/delto` skill, `npx @limulus/delto@1` for the
+  tool), and the backlog lifecycle linked to each subcommand's `--help`; needs: ∆IsK
+- ∆Sre Verify `semantic-release` produces the expected `@limulus/delto` tarball — the
+  `delto` `bin` entry and `files` per ADR-001's `src/` layout. No `main`/`exports`
+  (bin-only per ∆iDx). Skill discovery is verified separately by ∆IsK (Git-driven, not
+  tarball-driven); needs: ∆qBS
+- ∆Bpr Enable GitHub branch protection on `main` — require PR + passing CI before merge
+  so an accidental push (e.g. an agent in YOLO mode) cannot trigger an unreviewed
+  publish
 
-## Future Enhancements
+## Someday/Maybe
 
-### Distribution
+Work the current `/delto` `SKILL.md` spec (v1.0) does not call for. Parked until a spec
+revision or concrete user need brings it back; logic for the first two survives in the
+legacy skill scripts and Git history.
 
-- ∆Pli Distribute delto as a Claude Code plugin so the consolidated `/delto` skill
-  and the `delto` binary install together from a plugin marketplace, rather than via
-  `npx skills add` + `npm install @limulus/delto` as separate steps
+- ∆PZ3 `delto refine` — a `BACKLOG.md` structural linter (duplicate IDs, unresolved
+  `needs:` references, dependency cycles, oversized items). Exists today as the legacy
+  `refine-backlog`/`lint-backlog.ts`; not in the v1.0 spec
+- ∆Stb `delto status` — a read-only progress report (per-initiative remaining work,
+  eligible tasks, critical path). Exists today as the legacy
+  `backlog-status`/`report-status.ts`; not in the v1.0 spec
+- ∆Tmp `delto bootstrap` + bundled templates — a starter `BACKLOG.md` and
+  `docs/journal/README.md` under `src/lib/templates/`, materialized into a fresh
+  consumer project; not in the v1.0 spec
+- ∆Pli Distribute delto as a Claude Code plugin so the `/delto` skill and the `delto`
+  binary install together from a plugin marketplace, rather than `npx skills add` +
+  `npx @limulus/delto@1` as separate steps

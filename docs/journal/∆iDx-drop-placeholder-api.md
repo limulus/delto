@@ -1,7 +1,6 @@
 ---
 id: ∆iDx
-date: 2026-05-25
-title: Drop placeholder library API surface
+completed: 2026-05-25 15:41:06 -07:00
 ---
 
 ## Backlog item

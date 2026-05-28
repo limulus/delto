@@ -1,6 +1,7 @@
 # ADR-001 — `delto` CLI and skill shape
 
-- **Status:** Accepted (2026-05-25)
+- **Status:** Accepted 2026-05-25; revised 2026-05-27 to match the `/delto` `SKILL.md`
+  spec v1.0 (subcommand set, invocation pattern)
 - **Backlog item:** ∆bSx
 
 ## Context
@@ -29,7 +30,7 @@ two questions are decided together.
 
 ```json
 {
-  "bin": { "delto": "./dist/esm/bin/delto.js" }
+  "bin": { "delto": "./dist/esm/bin/cli.js" }
 }
 ```
 
@@ -37,54 +38,57 @@ The bin name matches the unscoped package name, so `npx @limulus/delto <sub>`
 resolves without a `-p` flag; with the package installed, `delto <sub>` resolves
 directly.
 
-Subcommands cover the backlog lifecycle. The precise set, naming, and flag surface
-are owned by the CLI implementation and will evolve — early candidates include
-`add`, `plan`, `complete`, `refine`, `status`, and a `bootstrap` for first-run
-scaffolding, but nothing in the rest of this ADR depends on that list.
-Per-subcommand `--help` is the **contract**: each subcommand's argv, flags, and
-output format live in its `--help` output. Skill prose links to `--help`; it does
-not duplicate the contract.
+Subcommands are **deterministic primitives**, not whole workflows. The split is
+deliberate: the tool does only the mechanically reliable part — `mint`
+(collision-free deltoids), `surface` (eligible-work discovery over the `needs:`
+graph), `claim`/`release` (the parallel-work ledger), and `complete` (release a
+claim + scaffold a journal entry) — while the agent supplies the judgment (where an
+item belongs, which to pick, the prose). Earlier drafts imagined fat subcommands
+(`add`, `plan`, `refine`, `status`, `bootstrap`); each either folded into a
+primitive (`add` → the agent places an item whose id comes from `mint`) or was
+deferred to Someday/Maybe. The set will evolve; nothing else in this ADR depends on
+it. Per-subcommand `--help` is the **contract** — argv, flags, and output format
+live there; skill prose links to it rather than duplicating it.
 
 ### 2. One skill — `/delto` — covering the full lifecycle
 
 The backlog tooling ships as a single consolidated `/delto` skill rather than one
-skill per subcommand. One coherent narrative — the full backlog lifecycle, with
-first-run scaffolding as a branch — reads better than several thin routers and
-installs in one step.
+skill per subcommand. One coherent narrative reads better than several thin routers
+and installs in one step.
 
-The skill is **prose-only**. `SKILL.md` contains:
+The skill is **prose-only** and carries the load the primitives deliberately don't:
+it states **the delto spec (v1.0)** — the normative definition of the backlog,
+items, deltoids, and journal entries — and orchestrates the primitives into the
+lifecycle (e.g. `plan` = `surface` → `claim` → write the plan). `SKILL.md` contains:
 
-- The backlog lifecycle as one narrative.
+- The spec and the lifecycle as one narrative.
 - Pointers to `--help` for each subcommand's contract.
 - The invocation pattern (below).
 - Sibling `.md` files for prose detail if any subsection grows large enough to
   warrant splitting.
 
-### 3. Invocation pattern with fallback
+### 3. Invocation pattern
 
-`SKILL.md` command lines prefer the installed bin, falling back to `npx`:
+`SKILL.md` command lines invoke the tool through `npx`, pinned to the package's
+major version (read from the skill metadata):
 
 ```sh
-command -v delto >/dev/null && delto <sub> "$@" || npx -p @limulus/delto delto <sub> "$@"
+npx @limulus/delto@1 <sub>
 ```
 
-This handles three install postures uniformly:
-
-- **Package installed** (consumer has `@limulus/delto` as a dep, or it is globally
-  linked): `delto` is on `$PATH`; the `command -v` branch wins.
-- **Skill-only install** (`npx skills add` copied just the skill from Git): `delto`
-  is not on `$PATH`; the `npx -p` branch fetches and runs it.
-- **Source dogfooding in this repo**: a one-time `npm link` puts the local source
-  on `$PATH` as `delto`; the `command -v` branch wins. The `SKILL.md` text is
-  identical to the consumer copy.
+`npx` runs a locally installed copy when one is present and fetches from the
+registry otherwise, so a single form covers both package-installed and skill-only
+(`npx skills add` copied just the skill from Git) consumers — no `command -v`
+branch. The `@major` pin keeps consumers on a compatible release as
+`semantic-release` advances the version.
 
 ### 4. Source-of-truth layout
 
-The router lives at `src/bin/delto.ts`. Subcommand modules sit alongside as
-`src/bin/<subcommand>.ts`, sharing pure logic with `src/lib/`. Bundled templates
-(consumed by the bootstrap subcommand) sit under `src/lib/templates/`. The
-consolidated skill lives at `skills/delto/`, with `.claude/skills/delto` as a
-symlink for local dogfooding.
+The router lives at `src/bin/delto.ts` (an exported `run`), with a thin
+`src/bin/cli.ts` shim as the actual `bin` entry. Subcommand modules sit alongside as
+`src/bin/<subcommand>.ts`, sharing pure logic with `src/lib/`. The consolidated
+skill lives at `skills/delto/`, with `.claude/skills/delto` as a symlink for local
+dogfooding.
 
 ### 5. Distribution channels — Git and tarball, decoupled
 
@@ -93,12 +97,13 @@ symlink for local dogfooding.
 | Channel          | Reads from              | Carries                                                                | Used for                                                       |
 | ---------------- | ----------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------- |
 | `npx skills add` | Git ref                 | `skills/delto/SKILL.md` (the directory only)                           | Installing the skill into the consumer's `.claude/skills/delto/` |
-| npm tarball      | `npm publish` artifact  | `dist/esm/bin/delto.js` and bundled templates per `package.json` `files` | Providing the binary, via `npm install @limulus/delto` or `npx @limulus/delto` |
+| npm tarball      | `npm publish` artifact  | `dist/esm/bin/cli.js` + the `src`/`dist` trees per `package.json` `files` | Providing the binary, via `npm install @limulus/delto` or `npx @limulus/delto@1` |
 
 The two channels are decoupled by design: the skill directory does not need
 anything from the tarball at install time, and the tarball does not need to ship
-`skills/` at all. A consumer who installs only the skill still gets a working
-setup via the `npx -p` fallback.
+`skills/` at all. A consumer who installs only the skill still gets a working setup
+because the skill's command lines call `npx @limulus/delto@1`, which fetches the bin
+on demand.
 
 A future Claude Code plugin distribution (∆Pli) is compatible: a plugin bundles the
 same `skills/delto/` and the same `delto` bin together, so no rework is required to
@@ -125,30 +130,26 @@ adopt that channel later.
 
 ## Consequences
 
-This ADR is the canonical reference for ∆qBS, ∆Rnm, ∆IsK, ∆Tmp, ∆Bcv, and ∆Sre. The
-`BACKLOG.md` rewrites that flow from this decision land in the same commit as the
-ADR itself.
+This ADR is the canonical shape reference for the `First npm Publish` initiative in
+`BACKLOG.md`; the `BACKLOG.md` rewrites that flow from it land alongside it.
 
 ### Hand-offs to downstream backlog items
 
-- **∆qBS — Build the `delto` CLI.** Implements the router at `src/bin/delto.ts` and
-  the subcommand modules, wires the `bin` entry, owns the precise subcommand set
-  and its `--help` contracts, bundles templates under `src/lib/templates/`.
-- **∆Rnm — Consolidate to single `/delto` skill.** Writes `skills/delto/SKILL.md`,
-  removes the legacy per-script skill directories and their embedded `lib/`,
-  retargets the `.claude/skills/` symlink layer.
-- **∆IsK — Verify `npx skills add` install path.** Confirms the consolidated
-  `/delto` skill is discoverable and copyable from the Git ref, with the
-  `command -v` / `npx -p` fallback working end-to-end.
-- **∆Tmp — Bundle templates.** Adds the starter `BACKLOG.md` and
-  `docs/journal/README.md` templates under `src/lib/templates/`, parameterized by
-  project name.
-- **∆Bcv — CLI test coverage.** Exercises each subcommand against fixture
-  `BACKLOG.md` / `docs/journal/` trees to hit 100% coverage on `src/bin/`.
-- **∆Sre — Tarball verification.** Confirms `semantic-release` produces a tarball
-  with `dist/esm/bin/delto.js` and the bundled templates per the `package.json`
-  `files` / `bin` shape described here. The skill directory ships through Git, not
-  the tarball.
-- **∆Pli — Plugin distribution (future).** Compatible. A Claude Code plugin
-  bundles the same `skills/delto/` and the same `delto` bin; no shape change
-  required.
+- **∆qBS — Scaffold the CLI.** The `src/bin/delto.ts` router (exported `run`) plus a
+  `src/bin/cli.ts` shim, the `bin` entry, and the `skills/delto/SKILL.md` skeleton.
+  Subcommands plug in from here.
+- **∆6zh / ∆SYk / ∆ICw / ∆yNQ — The primitives.** `mint`, `surface`,
+  `claim`/`release`, and `complete`, each ported test-first into `src/bin/` +
+  `src/lib/` with its own `--help`.
+- **∆Rnm — Cut over to the single `/delto` skill.** Creates the
+  `.claude/skills/delto` symlink and deletes the legacy per-script skill directories
+  and their embedded `lib/`. The consolidated `SKILL.md` is already written.
+- **∆IsK — Verify the install path.** The skill is discoverable from the Git ref and
+  `npx @limulus/delto@1 <sub>` runs the bin end-to-end on a fresh consumer checkout.
+- **∆Sre — Tarball verification.** `semantic-release` produces a tarball with
+  `dist/esm/bin/cli.js` per the `files` / `bin` shape here. The skill ships through
+  Git, not the tarball.
+- **Someday/Maybe.** `∆PZ3` (`refine` linter), `∆Stb` (`status` report), `∆Tmp`
+  (`bootstrap` + templates under `src/lib/templates/`), and `∆Pli` (Claude Code
+  plugin bundling the same `skills/delto/` + bin) are deferred but compatible with
+  this layout if revived.

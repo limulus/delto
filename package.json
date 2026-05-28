@@ -2,6 +2,9 @@
   "name": "@limulus/delto",
   "version": "1.0.0",
   "description": "Keep a backlog. With your code. Give agents context.",
+  "bin": {
+    "delto": "./dist/esm/bin/cli.js"
+  },
   "files": [
     "dist",
     "src"
