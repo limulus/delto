@@ -123,4 +123,13 @@ describe('parseBacklog', () => {
     expect(items.map((i) => i.id)).toEqual(['aaa', 'bbb'])
     expect(items[1].initiativeHeading?.text).toBe('Init')
   })
+
+  it('parses a BACKLOG.md with CRLF line endings', () => {
+    const items = parse(
+      ['## Init', '', '- ∆aaa first; needs: ∆bbb', '- ∆bbb second', ''].join('\r\n')
+    )
+    expect(items.map((i) => i.id)).toEqual(['aaa', 'bbb'])
+    expect(items[0].needs).toEqual(['bbb'])
+    expect(items[0].initiativeHeading?.text).toBe('Init')
+  })
 })

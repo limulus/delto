@@ -118,4 +118,13 @@ describe('delto complete', () => {
     expect(await complete.run(['abc', 'out.md'], { stdout, cwd: dir })).toBe(0)
     expect(readFileSync(join(dir, 'out.md'), 'utf8')).toContain('id: ∆abc')
   })
+
+  it('transcribes a clean blockquote from a CRLF BACKLOG.md', async () => {
+    writeFileSync(join(dir, 'BACKLOG.md'), BACKLOG.replace(/\n/g, '\r\n'))
+    const stdout = new Capture()
+    expect(await complete.run(['∆abc', 'out.md'], { stdout, cwd: dir })).toBe(0)
+    const written = readFileSync(join(dir, 'out.md'), 'utf8')
+    expect(written).toContain('> - ∆abc do the thing across')
+    expect(written).not.toContain('\r')
+  })
 })

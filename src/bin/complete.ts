@@ -1,10 +1,10 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { dirname, join, resolve } from 'node:path'
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 
 import { type Subcommand } from './delto.ts'
 import { cwd, err, out } from './io.ts'
-import { findRepoRoot, ID, parseBacklog } from '../lib/backlog.ts'
+import { backlogLines, findRepoRoot, ID, parseBacklog } from '../lib/backlog.ts'
 import { release } from '../lib/claims-ledger.ts'
 import { formatCompleted, journalEntry } from '../lib/journal.ts'
 
@@ -95,7 +95,7 @@ export const complete: Subcommand = {
       return 1
     }
 
-    const lines = readFileSync(join(root, 'BACKLOG.md'), 'utf8').split('\n')
+    const lines = backlogLines(root)
     const bullet = lines.slice(item.lineStart - 1, item.lineStart - 1 + item.lineCount)
 
     mkdirSync(dirname(target), { recursive: true })

@@ -37,6 +37,11 @@ export function findRepoRoot(cwd: string = process.cwd()): string | undefined {
   return backlog ? dirname(backlog) : undefined
 }
 
+/** Read BACKLOG.md as lines, tolerant of either LF or CRLF line endings. */
+export function backlogLines(repoRoot: string): string[] {
+  return readFileSync(join(repoRoot, 'BACKLOG.md'), 'utf8').split(/\r?\n/)
+}
+
 /** Extract the `∆xxx` ids from a `; <label>: ∆a, ∆b` dependency suffix. */
 export function suffixIds(body: string, label: string): string[] {
   const m = new RegExp(`;\\s*${label}:\\s*([^;]*)`).exec(body)
@@ -76,7 +81,7 @@ export function parseBacklog(repoRoot: string): BacklogItem[] {
     lineStart = 0
     lineCount = 0
   }
-  const lines = readFileSync(join(repoRoot, 'BACKLOG.md'), 'utf8').split('\n')
+  const lines = backlogLines(repoRoot)
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
     if (line.startsWith('#')) {
