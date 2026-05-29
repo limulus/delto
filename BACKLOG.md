@@ -30,10 +30,6 @@ add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
   eligibility logic to `src/lib/` + `src/bin/surface.ts` test-first: traverse the
   `needs:` graph, exclude claimed and blocked items, emit eligible deltoids. Register
   in the router; needs: ∆qBS
-- ∆ICw Build `delto claim <deltoid>` and `delto release <deltoid>` — port the claims
-  ledger (`claims-ledger.ts`) to `src/lib/` + `src/bin/claim.ts` + `src/bin/release.ts`
-  test-first; record/withdraw a claim so parallel agents don't collide. Register both
-  in the router; needs: ∆qBS
 - ∆yNQ Build `delto complete <deltoid> <journal-entry-path>` — port
   `complete-backlog-item`'s logic to `src/lib/` + `src/bin/complete.ts` test-first:
   release the claim and scaffold a journal entry at the path with `id` + `completed`

@@ -1,7 +1,9 @@
 import { parseArgs } from 'node:util'
 
+import { claim } from './claim.ts'
 import { err, out } from './io.ts'
 import { mint } from './mint.ts'
+import { release } from './release.ts'
 
 export interface OutputStream {
   write(chunk: string): unknown
@@ -21,7 +23,7 @@ export interface RunOptions {
   cwd?: string
 }
 
-const SUBCOMMANDS: Subcommand[] = [mint]
+const SUBCOMMANDS: Subcommand[] = [mint, claim, release]
 
 function helpText(subcommands: Subcommand[]): string {
   const subList =
