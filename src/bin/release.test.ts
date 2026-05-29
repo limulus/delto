@@ -42,4 +42,11 @@ describe('delto release', () => {
     expect(stdout.text).toContain('Released ∆abc')
     expect(claimedIds(dir).has('abc')).toBe(false)
   })
+
+  it('releasing an unclaimed item is a harmless no-op', async () => {
+    const stdout = new Capture()
+    expect(await release.run(['∆abc'], { stdout, cwd: dir })).toBe(0)
+    expect(stdout.text).toContain('Released ∆abc')
+    expect(claimedIds(dir).size).toBe(0)
+  })
 })
