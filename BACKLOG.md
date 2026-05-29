@@ -7,12 +7,7 @@ top-priority initiative.
 Each item starts with a 3-char alphanumeric ID prefixed `∆` (e.g. `- ∆OID Notify route —
 …`). These “deltoids” are immutable and travel with the item into its final
 `docs/journal/∆OID-slug.md` entry so cross-references stay stable. To mint a collision-free
-deltoid, use `delto mint` once built (∆6zh); until then:
-
-```sh
-while id=$(LC_ALL=C tr -dc 'A-Za-z0-9' </dev/urandom | head -c 3); \
-  grep -rq "∆$id" BACKLOG.md docs/journal/; do :; done; echo "∆$id"
-```
+deltoid, run `delto mint --journal-dir docs/journal` (see `delto mint --help`).
 
 Hard prerequisites use a trailing `; needs: ∆OID[, ∆OID]` suffix — logical blockers, the
 only dependency mechanism in the `/delto` SKILL.md spec (v1.0).
@@ -31,10 +26,6 @@ add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
 
 ### Library & CLI
 
-- ∆6zh Build `delto mint` — port `add-backlog-item`'s `mint-id.ts` to `src/lib/` +
-  `src/bin/mint.ts` test-first (red/green), minting collision-free deltoids by scanning
-  `BACKLOG.md` and the journal dir (`--journal-dir`), with `--count <n>`. Register in
-  the router; needs: ∆qBS
 - ∆SYk Build `delto surface` — port `plan-backlog-item`'s `find-eligible-tasks.ts`
   eligibility logic to `src/lib/` + `src/bin/surface.ts` test-first: traverse the
   `needs:` graph, exclude claimed and blocked items, emit eligible deltoids. Register

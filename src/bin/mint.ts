@@ -1,0 +1,87 @@
+import { join, resolve } from 'node:path'
+import { parseArgs } from 'node:util'
+
+import { type Subcommand } from './delto.ts'
+import { cwd, err, out } from './io.ts'
+import { findRepoRoot } from '../lib/backlog.ts'
+import { mint as mintIds, takenIds } from '../lib/mint.ts'
+
+const HELP = `delto mint — mint collision-free deltoid IDs
+
+Usage: delto mint --journal-dir <dir> [--count <n>]
+
+Scans the nearest BACKLOG.md (found by walking up from the current directory) and
+every file in <dir> for the ∆ ids already in use, then prints fresh ones — one ∆xxx
+per line and nothing else, so the output can be consumed directly.
+
+Options:
+  --journal-dir <dir>  Directory of completed journal entries to scan for past ids
+                       (required).
+  --count <n>          How many ids to mint (default: 1).
+  -h, --help           Show this help.
+`
+
+export const mint: Subcommand = {
+  name: 'mint',
+  summary: 'mint collision-free deltoid IDs',
+  async run(argv, opts) {
+    const stdout = out(opts)
+    const stderr = err(opts)
+
+    let journalDir: string | undefined
+    let countRaw: string | undefined
+    let help = false
+    try {
+      const { values } = parseArgs({
+        args: argv,
+        options: {
+          'journal-dir': { type: 'string' },
+          count: { type: 'string' },
+          help: { type: 'boolean', short: 'h' },
+        },
+        strict: true,
+      })
+      journalDir = values['journal-dir']
+      countRaw = values.count
+      help = values.help ?? false
+    } catch (error) {
+      stderr.write(`delto mint: ${(error as Error).message}\n`)
+      return 1
+    }
+
+    if (help) {
+      stdout.write(HELP)
+      return 0
+    }
+
+    if (!journalDir) {
+      stderr.write('delto mint: --journal-dir <dir> is required.\n')
+      return 1
+    }
+
+    let count = 1
+    if (countRaw !== undefined) {
+      const n = Number(countRaw)
+      if (!Number.isInteger(n) || n < 1) {
+        stderr.write(
+          `delto mint: --count must be a positive integer (got: ${JSON.stringify(countRaw)}).\n`
+        )
+        return 1
+      }
+      count = n
+    }
+
+    const dir = cwd(opts)
+    const root = findRepoRoot(dir)
+    if (!root) {
+      stderr.write(
+        'delto mint: no BACKLOG.md found in the current directory or any parent.\n'
+      )
+      return 1
+    }
+
+    const taken = takenIds(join(root, 'BACKLOG.md'), resolve(dir, journalDir))
+    for (const id of mintIds(count, taken)) stdout.write(`∆${id}\n`)
+    return 0
+  },
+}

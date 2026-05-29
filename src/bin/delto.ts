@@ -1,5 +1,8 @@
 import { parseArgs } from 'node:util'
 
+import { err, out } from './io.ts'
+import { mint } from './mint.ts'
+
 export interface OutputStream {
   write(chunk: string): unknown
 }
@@ -14,9 +17,11 @@ export interface RunOptions {
   stdout?: OutputStream
   stderr?: OutputStream
   subcommands?: Subcommand[]
+  /** Directory to resolve the nearest BACKLOG.md from. Defaults to `process.cwd()`. */
+  cwd?: string
 }
 
-const SUBCOMMANDS: Subcommand[] = []
+const SUBCOMMANDS: Subcommand[] = [mint]
 
 function helpText(subcommands: Subcommand[]): string {
   const subList =
@@ -35,8 +40,8 @@ Run \`delto <subcommand> --help\` for per-subcommand usage.
 }
 
 export async function run(argv: string[], opts: RunOptions = {}): Promise<number> {
-  const stdout = opts.stdout ?? process.stdout
-  const stderr = opts.stderr ?? process.stderr
+  const stdout = out(opts)
+  const stderr = err(opts)
   const subcommands = opts.subcommands ?? SUBCOMMANDS
 
   // Router flags live before the subcommand name. Parse only that prefix so
