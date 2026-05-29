@@ -24,14 +24,6 @@ complete), full test coverage, and a working consumer story (skill install via `
 add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
 [ADR-001](./docs/decisions/001-delto-cli-and-skill-shape.md).
 
-### Library & CLI
-
-- ∆yNQ Build `delto complete <deltoid> <journal-entry-path>` — port
-  `complete-backlog-item`'s logic to `src/lib/` + `src/bin/complete.ts` test-first:
-  release the claim and scaffold a journal entry at the path with `id` + `completed`
-  (`YYYY-MM-DD HH:MM:SS ±HH:MM`) frontmatter per the spec. Register in the router;
-  needs: ∆qBS
-
 ### Skill Packaging
 
 - ∆Rnm Cut over to the consolidated `/delto` skill — create the `.claude/skills/delto`
