@@ -26,10 +26,6 @@ add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
 
 ### Library & CLI
 
-- ∆SYk Build `delto surface` — port `plan-backlog-item`'s `find-eligible-tasks.ts`
-  eligibility logic to `src/lib/` + `src/bin/surface.ts` test-first: traverse the
-  `needs:` graph, exclude claimed and blocked items, emit eligible deltoids. Register
-  in the router; needs: ∆qBS
 - ∆yNQ Build `delto complete <deltoid> <journal-entry-path>` — port
   `complete-backlog-item`'s logic to `src/lib/` + `src/bin/complete.ts` test-first:
   release the claim and scaffold a journal entry at the path with `id` + `completed`

@@ -3,7 +3,7 @@ import { tmpdir } from 'node:os'
 import { join } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 
-import { ID, findRepoRoot } from './backlog.ts'
+import { findRepoRoot, ID, parseBacklog, suffixIds } from './backlog.ts'
 
 describe('findRepoRoot', () => {
   let dir: string
@@ -46,5 +46,81 @@ describe('ID', () => {
     expect(re.test('ab')).toBe(false)
     expect(re.test('abcd')).toBe(false)
     expect(re.test('ab-')).toBe(false)
+  })
+})
+
+describe('suffixIds', () => {
+  it('extracts the ids from a labelled dependency suffix', () => {
+    expect(suffixIds('do a thing; needs: ∆aaa, ∆bbb', 'needs')).toEqual(['aaa', 'bbb'])
+    expect(suffixIds('do a thing; touches: ∆ccc', 'touches')).toEqual(['ccc'])
+  })
+
+  it('returns an empty array when the label is absent', () => {
+    expect(suffixIds('no suffix here', 'needs')).toEqual([])
+  })
+})
+
+describe('parseBacklog', () => {
+  let dir: string
+  beforeEach(() => {
+    dir = mkdtempSync(join(tmpdir(), 'delto-parse-'))
+  })
+  afterEach(() => {
+    rmSync(dir, { recursive: true, force: true })
+  })
+  const parse = (body: string): ReturnType<typeof parseBacklog> => {
+    writeFileSync(join(dir, 'BACKLOG.md'), body)
+    return parseBacklog(dir)
+  }
+
+  it('parses items in document order with their needs, touches, and heading context', () => {
+    const items = parse(
+      [
+        '# Delto Backlog',
+        '',
+        'Intro prose, not an item.',
+        '',
+        '## Init One',
+        '',
+        '- ∆aaa first item',
+        '- ∆bbb second; needs: ∆aaa, ∆ccc; touches: ∆ddd',
+        '',
+        '### Epic A',
+        '',
+        '- ∆ccc a wrapped item that runs',
+        '  onto a second line; needs: ∆aaa',
+        '',
+        '## Init Two',
+        '',
+        '- ∆eee under an initiative directly',
+        '',
+      ].join('\n')
+    )
+
+    expect(items.map((i) => i.id)).toEqual(['aaa', 'bbb', 'ccc', 'eee'])
+
+    const bbb = items[1]
+    expect(bbb.needs).toEqual(['aaa', 'ccc'])
+    expect(bbb.touches).toEqual(['ddd'])
+    expect(bbb.initiativeHeading?.text).toBe('Init One')
+    expect(bbb.epicHeading).toBeNull()
+
+    const ccc = items[2]
+    expect(ccc.lineCount).toBe(2)
+    expect(ccc.needs).toEqual(['aaa'])
+    expect(ccc.initiativeHeading?.text).toBe('Init One')
+    expect(ccc.epicHeading?.text).toBe('Epic A')
+
+    const eee = items[3]
+    expect(eee.initiativeHeading?.text).toBe('Init Two')
+    expect(eee.epicHeading).toBeNull()
+  })
+
+  it('tolerates a line that starts with # but is not a heading', () => {
+    const items = parse(
+      ['## Init', '', '- ∆aaa x', '#notaheading', '- ∆bbb y', ''].join('\n')
+    )
+    expect(items.map((i) => i.id)).toEqual(['aaa', 'bbb'])
+    expect(items[1].initiativeHeading?.text).toBe('Init')
   })
 })
