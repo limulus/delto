@@ -1,36 +1,35 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { mint, randomId, takenIds } from './mint.ts'
+import { useTempRepo } from '../mocks/temp-repo.ts'
 
 describe('takenIds', () => {
-  let dir: string
-  beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'delto-mint-'))
-  })
-  afterEach(() => {
-    rmSync(dir, { recursive: true, force: true })
-  })
+  const repo = useTempRepo('delto-mint-')
 
   it('collects every ∆ id from BACKLOG.md and the journal dir', () => {
-    const backlog = join(dir, 'BACKLOG.md')
-    writeFileSync(backlog, '- ∆abc item one; needs: ∆def\n- ∆ghi item two\n')
-    const journal = join(dir, 'journal')
+    repo.writeBacklog('- ∆abc item one; needs: ∆def\n- ∆ghi item two\n')
+    const journal = repo.path('journal')
     mkdirSync(journal)
     writeFileSync(join(journal, '∆xyz-done.md'), '---\nid: ∆xyz\n---\nrefs ∆abc\n')
-    expect([...takenIds(backlog, journal)].sort()).toEqual(['abc', 'def', 'ghi', 'xyz'])
+    expect([...takenIds(repo.path('BACKLOG.md'), journal)].sort()).toEqual([
+      'abc',
+      'def',
+      'ghi',
+      'xyz',
+    ])
   })
 
   it('skips non-file journal entries and tolerates an absent journal dir', () => {
-    const backlog = join(dir, 'BACKLOG.md')
-    writeFileSync(backlog, '- ∆abc x\n')
-    const journal = join(dir, 'journal')
+    repo.writeBacklog('- ∆abc x\n')
+    const journal = repo.path('journal')
     mkdirSync(journal)
     mkdirSync(join(journal, 'subdir'))
-    expect([...takenIds(backlog, journal)]).toEqual(['abc'])
-    expect([...takenIds(backlog, join(dir, 'does-not-exist'))]).toEqual(['abc'])
+    expect([...takenIds(repo.path('BACKLOG.md'), journal)]).toEqual(['abc'])
+    expect([...takenIds(repo.path('BACKLOG.md'), repo.path('does-not-exist'))]).toEqual([
+      'abc',
+    ])
   })
 })
 

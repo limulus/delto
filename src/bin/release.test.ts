@@ -1,52 +1,35 @@
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
-import { join } from 'node:path'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { release } from './release.ts'
 import { claim, claimedIds } from '../lib/claims-ledger.ts'
-
-class Capture {
-  private readonly chunks: string[] = []
-  write(chunk: string): boolean {
-    this.chunks.push(chunk)
-    return true
-  }
-  get text(): string {
-    return this.chunks.join('')
-  }
-}
+import { Capture } from '../mocks/capture.ts'
+import { useTempRepo } from '../mocks/temp-repo.ts'
 
 describe('delto release', () => {
-  let dir: string
-  beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'delto-release-bin-'))
-    writeFileSync(join(dir, 'BACKLOG.md'), '- ∆abc x\n')
-  })
-  afterEach(() => {
-    rmSync(dir, { recursive: true, force: true })
-  })
+  const repo = useTempRepo('delto-release-bin-')
 
   it('prints help on --help', async () => {
     const stdout = new Capture()
-    expect(await release.run(['--help'], { stdout, cwd: dir })).toBe(0)
+    expect(await release.run(['--help'], { stdout, cwd: repo.dir })).toBe(0)
     expect(stdout.text).toContain('delto release')
   })
 
   it('withdraws a prior claim and reports it', async () => {
-    claim(dir, 'abc')
-    expect(claimedIds(dir).has('abc')).toBe(true)
+    repo.writeBacklog('- ∆abc x\n')
+    claim(repo.dir, 'abc')
+    expect(claimedIds(repo.dir).has('abc')).toBe(true)
 
     const stdout = new Capture()
-    expect(await release.run(['∆abc'], { stdout, cwd: dir })).toBe(0)
+    expect(await release.run(['∆abc'], { stdout, cwd: repo.dir })).toBe(0)
     expect(stdout.text).toContain('Released ∆abc')
-    expect(claimedIds(dir).has('abc')).toBe(false)
+    expect(claimedIds(repo.dir).has('abc')).toBe(false)
   })
 
   it('releasing an unclaimed item is a harmless no-op', async () => {
+    repo.writeBacklog('- ∆abc x\n')
     const stdout = new Capture()
-    expect(await release.run(['∆abc'], { stdout, cwd: dir })).toBe(0)
+    expect(await release.run(['∆abc'], { stdout, cwd: repo.dir })).toBe(0)
     expect(stdout.text).toContain('Released ∆abc')
-    expect(claimedIds(dir).size).toBe(0)
+    expect(claimedIds(repo.dir).size).toBe(0)
   })
 })

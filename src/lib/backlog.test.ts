@@ -1,41 +1,35 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
-import { tmpdir } from 'node:os'
+import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { findRepoRoot, ID, parseBacklog, suffixIds } from './backlog.ts'
+import { useTempRepo } from '../mocks/temp-repo.ts'
 
 describe('findRepoRoot', () => {
-  let dir: string
-  beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'delto-backlog-'))
-  })
-  afterEach(() => {
-    rmSync(dir, { recursive: true, force: true })
-  })
+  const repo = useTempRepo('delto-backlog-')
 
   it('returns the directory that holds BACKLOG.md', () => {
-    writeFileSync(join(dir, 'BACKLOG.md'), '# Backlog\n')
-    expect(findRepoRoot(dir)).toBe(dir)
+    repo.writeBacklog('# Backlog\n')
+    expect(findRepoRoot(repo.dir)).toBe(repo.dir)
   })
 
   it('walks up to an ancestor BACKLOG.md', () => {
-    writeFileSync(join(dir, 'BACKLOG.md'), '# Backlog\n')
-    const nested = join(dir, 'packages', 'foo')
+    repo.writeBacklog('# Backlog\n')
+    const nested = repo.path('packages', 'foo')
     mkdirSync(nested, { recursive: true })
-    expect(findRepoRoot(nested)).toBe(dir)
+    expect(findRepoRoot(nested)).toBe(repo.dir)
   })
 
   it('returns the nearest BACKLOG.md when several exist (monorepo: nearest wins)', () => {
-    writeFileSync(join(dir, 'BACKLOG.md'), '# root\n')
-    const pkg = join(dir, 'packages', 'foo')
+    repo.writeBacklog('# root\n')
+    const pkg = repo.path('packages', 'foo')
     mkdirSync(pkg, { recursive: true })
     writeFileSync(join(pkg, 'BACKLOG.md'), '# foo\n')
     expect(findRepoRoot(pkg)).toBe(pkg)
   })
 
   it('returns undefined when no BACKLOG.md exists in any parent', () => {
-    expect(findRepoRoot(dir)).toBeUndefined()
+    expect(findRepoRoot(repo.dir)).toBeUndefined()
   })
 })
 
@@ -61,16 +55,10 @@ describe('suffixIds', () => {
 })
 
 describe('parseBacklog', () => {
-  let dir: string
-  beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), 'delto-parse-'))
-  })
-  afterEach(() => {
-    rmSync(dir, { recursive: true, force: true })
-  })
+  const repo = useTempRepo('delto-parse-')
   const parse = (body: string): ReturnType<typeof parseBacklog> => {
-    writeFileSync(join(dir, 'BACKLOG.md'), body)
-    return parseBacklog(dir)
+    repo.writeBacklog(body)
+    return parseBacklog(repo.dir)
   }
 
   it('parses items in document order with their needs, touches, and heading context', () => {

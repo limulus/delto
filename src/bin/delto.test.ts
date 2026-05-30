@@ -3,21 +3,11 @@ import { fileURLToPath } from 'node:url'
 import { describe, expect, it } from 'vitest'
 
 import { run, type Subcommand } from './delto.ts'
+import { Capture } from '../mocks/capture.ts'
 
 const cliPath = fileURLToPath(new URL('./cli.ts', import.meta.url))
 const spawnDelto = (args: string[]) =>
   spawnSync(process.execPath, [cliPath, ...args], { encoding: 'utf8' })
-
-class Capture {
-  private readonly chunks: string[] = []
-  write(chunk: string): boolean {
-    this.chunks.push(chunk)
-    return true
-  }
-  get text(): string {
-    return this.chunks.join('')
-  }
-}
 
 function fakeSub(overrides: Partial<Subcommand> = {}): Subcommand {
   return {
