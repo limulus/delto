@@ -36,6 +36,12 @@ export function mint(
   next: () => string = randomId
 ): string[] {
   const used = new Set(taken)
+  const capacity = ALPHABET.length ** 3 - used.size
+  if (count > capacity) {
+    throw new RangeError(
+      `cannot mint ${count} unique deltoids — only ${Math.max(0, capacity)} of the ${ALPHABET.length ** 3} id space remain`
+    )
+  }
   const out: string[] = []
   while (out.length < count) {
     const id = next()

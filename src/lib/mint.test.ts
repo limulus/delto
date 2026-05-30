@@ -60,4 +60,8 @@ describe('mint', () => {
     const ids = mint(2, new Set(['abc']), () => seq[i++])
     expect(ids).toEqual(['xyz', 'def'])
   })
+
+  it('throws rather than spinning forever when more ids are requested than exist', () => {
+    expect(() => mint(62 ** 3 + 1, new Set())).toThrow(RangeError)
+  })
 })

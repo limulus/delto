@@ -30,7 +30,7 @@ describe('delto mint', () => {
   })
 
   it('errors when --count is not a positive integer', async () => {
-    for (const bad of ['0', '-2', 'abc', '1.5']) {
+    for (const bad of ['0', '-2', 'abc', '1.5', '0x10', '1e3', ' 3']) {
       const stderr = new Capture()
       const code = await mint.run(['--journal-dir', repo.path('j'), '--count', bad], {
         stderr,
@@ -39,6 +39,17 @@ describe('delto mint', () => {
       expect(code).toBe(1)
       expect(stderr.text).toContain('--count')
     }
+  })
+
+  it('errors when more ids are requested than the id space allows', async () => {
+    repo.writeBacklog('- ∆abc x\n')
+    const stderr = new Capture()
+    const code = await mint.run(['--journal-dir', makeJournal(), '--count', '999999'], {
+      stderr,
+      cwd: repo.dir,
+    })
+    expect(code).toBe(1)
+    expect(stderr.text).toContain('id space')
   })
 
   it('errors when no BACKLOG.md is found', async () => {

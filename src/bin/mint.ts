@@ -15,8 +15,8 @@ every file in <dir> for the ∆ ids already in use, then prints fresh ones — o
 per line and nothing else, so the output can be consumed directly.
 
 Options:
-  --journal-dir <dir>  Directory of completed journal entries to scan for past ids
-                       (required).
+  --journal-dir <dir>  Directory of completed journal entries to scan for past ids,
+                       relative to the current directory (required).
   --count <n>          How many ids to mint (default: 1).
   -h, --help           Show this help.
 `
@@ -61,14 +61,13 @@ export const mint: Subcommand = {
 
     let count = 1
     if (countRaw !== undefined) {
-      const n = Number(countRaw)
-      if (!Number.isInteger(n) || n < 1) {
+      if (!/^[0-9]+$/.test(countRaw) || Number(countRaw) < 1) {
         stderr.write(
           `delto mint: --count must be a positive integer (got: ${JSON.stringify(countRaw)}).\n`
         )
         return 1
       }
-      count = n
+      count = Number(countRaw)
     }
 
     const dir = cwd(opts)
@@ -81,7 +80,14 @@ export const mint: Subcommand = {
     }
 
     const taken = takenIds(join(root, 'BACKLOG.md'), resolve(dir, journalDir))
-    for (const id of mintIds(count, taken)) stdout.write(`∆${id}\n`)
+    let ids: string[]
+    try {
+      ids = mintIds(count, taken)
+    } catch (error) {
+      stderr.write(`delto mint: ${(error as Error).message}\n`)
+      return 1
+    }
+    for (const id of ids) stdout.write(`∆${id}\n`)
     return 0
   },
 }
