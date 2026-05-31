@@ -82,10 +82,10 @@ Include the major version from the skill metadata.
 
 ### Subcommands
 
-#### `help` or `--help`
+#### `--help`
 
-List all subcommands and basic usage. Use `help <subcommand>` to get detailed help on a
-specific subcommand.
+`delto --help` lists all subcommands and basic usage; `delto <subcommand> --help` gives
+detailed help on a specific subcommand.
 
 #### `mint`
 
@@ -113,8 +113,8 @@ Use when abandoning a backlog item to release your claim on the work.
 
 Use when completing work to release the claim and scaffold a journal entry Markdown file at
 the given path. Unless the user has specified a different format, file names should be like
-`∆7hy-frobnicator-post-endpoint.md`. It transcribes the item's bullet from `BACKLOG.md` into
-the entry and never edits `BACKLOG.md` itself, so run it while the bullet is still present.
+`∆7hy-frobnicator-post-endpoint.md`. It transcribes the item's text from `BACKLOG.md` into
+the entry and never edits `BACKLOG.md` itself, so run it while the item is still present.
 
 ## User request
 
@@ -133,6 +133,6 @@ journal entry it creates. You should follow whatever workflow the user wants, or
 prompt tells you to do, when completing work, like potentially making a commit.
 
 Order matters. Run `complete` **while the item is still in `BACKLOG.md`** — the tool reads the
-item's bullet from the backlog and transcribes it into the journal entry, so it must still be
-there. Only once the entry is written should you remove the item's bullet from `BACKLOG.md`.
-Doing it the other way around leaves `complete` with nothing to transcribe.
+item from the backlog and transcribes it into the journal entry, so it must still be there.
+Only once the entry is written should you remove the item from `BACKLOG.md`. Doing it the
+other way around leaves `complete` with nothing to transcribe.
