@@ -16,10 +16,6 @@ only dependency mechanism in the `/delto` SKILL.md spec (v1.0).
 
 Standing initiative — do not remove, even if no items.
 
-- ∆HQN Document the complete-before-prune ordering in the `/delto` SKILL.md `## Committing`
-  workflow — `delto complete` must run while the item is still in BACKLOG.md (it transcribes
-  the bullet), then remove the bullet. Surfaced by the ∆yNQ journal review.
-
 ## First npm Publish
 
 Foundational initiative — what `@limulus/delto` needs before it can be published: the

@@ -113,7 +113,8 @@ Use when abandoning a backlog item to release your claim on the work.
 
 Use when completing work to release the claim and scaffold a journal entry Markdown file at
 the given path. Unless the user has specified a different format, file names should be like
-`∆7hy-frobnicator-post-endpoint.md`.
+`∆7hy-frobnicator-post-endpoint.md`. It transcribes the item's bullet from `BACKLOG.md` into
+the entry and never edits `BACKLOG.md` itself, so run it while the bullet is still present.
 
 ## User request
 
@@ -130,3 +131,8 @@ the `surface` tool to find an eligible item. Then `claim` that item and begin pl
 The user is accepting the work that has been done. Run the `complete` tool and fill in the
 journal entry it creates. You should follow whatever workflow the user wants, or your system
 prompt tells you to do, when completing work, like potentially making a commit.
+
+Order matters. Run `complete` **while the item is still in `BACKLOG.md`** — the tool reads the
+item's bullet from the backlog and transcribes it into the journal entry, so it must still be
+there. Only once the entry is written should you remove the item's bullet from `BACKLOG.md`.
+Doing it the other way around leaves `complete` with nothing to transcribe.
