@@ -30,11 +30,18 @@ add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
   `delto` `bin` entry and `files` per ADR-001's `src/` layout. No `main`/`exports`
   (bin-only per ∆iDx). Skill discovery is verified separately by ∆IsK (Git-driven, not
   tarball-driven); needs: ∆qBS
+- ∆fb2 Publish to the public npm registry, not GitHub Packages — drop the
+  `publishConfig.registry` (`npm.pkg.github.com`) override and update the `cd.yaml` publish
+  job's registry + auth token so `npx @limulus/delto@1` resolves from public npm. Surfaced by
+  the ∆Rdm review.
+- ∆29K Add a license before the first publish — the package is `UNLICENSED` and the repo is
+  private; choose and add a LICENSE and make the repo public (likely alongside ∆Sre). Surfaced
+  by the ∆Rdm review.
 - ∆LwK Post-publish consumer smoke — once the first release lands, confirm `npx
-  @limulus/delto@1 <sub>` resolves the `@1` tag from GitHub Packages and runs on a fresh
+  @limulus/delto@1 <sub>` resolves the `@1` tag from the public npm registry and runs on a fresh
   checkout, and `npx skills add <git-ref>` installs `skills/delto` from the pushed ref. ∆IsK
   verified both locally (tarball install + local skill add); this covers the
-  live-registry/pushed-ref half; needs: ∆Sre
+  live-registry/pushed-ref half; needs: ∆Sre, ∆fb2
 - ∆Bpr Enable GitHub branch protection on `main` — require PR + passing CI before merge
   so an accidental push (e.g. an agent in YOLO mode) cannot trigger an unreviewed
   publish
@@ -68,3 +75,7 @@ history (the legacy skill scripts that held it were removed by ∆Rnm).
 - ∆NOp Spike: reconsider parallel-work collision detection (the removed `touches:` edge) —
   what signal actually predicts a merge collision, and whether it earns the backlog
   bookkeeping. The original symmetric same-file graph was undocumented and needs rethinking
+- ∆Z3W Spike: reconcile backlog-item recognition with the spec — the spec says items MAY be
+  Markdown list items, but `parseBacklog` matches only `^- ∆xxx `, so every subcommand requires
+  bullets today. Decide whether to relax the parser, leave item extraction to the LLM, or
+  tighten the spec to require bullets. Surfaced by the ∆Rdm/SKILL.md review.
