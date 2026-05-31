@@ -1,5 +1,5 @@
-import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs'
-import { dirname, join } from 'node:path'
+import { appendFileSync, existsSync, readFileSync } from 'node:fs'
+import { join } from 'node:path'
 
 /**
  * The append-only claim ledger for a repo — a `.gitignore`d JSONL file beside BACKLOG.md
@@ -35,7 +35,6 @@ export function claimedIds(repoRoot: string): Set<string> {
 
 function appendLedger(repoRoot: string, record: Record<string, unknown>): void {
   const file = claimsFile(repoRoot)
-  mkdirSync(dirname(file), { recursive: true })
   appendFileSync(file, JSON.stringify(record) + '\n')
 }
 

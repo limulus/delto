@@ -2,7 +2,14 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-import { findRepoRoot, ID, parseBacklog, suffixIds } from './backlog.ts'
+import {
+  findRepoRoot,
+  ID,
+  parseBacklog,
+  parseDeltoid,
+  resolveRepoRoot,
+  suffixIds,
+} from './backlog.ts'
 import { useTempRepo } from '../mocks/temp-repo.ts'
 
 describe('findRepoRoot', () => {
@@ -30,6 +37,38 @@ describe('findRepoRoot', () => {
 
   it('returns undefined when no BACKLOG.md exists in any parent', () => {
     expect(findRepoRoot(repo.dir)).toBeUndefined()
+  })
+})
+
+describe('resolveRepoRoot', () => {
+  const repo = useTempRepo('delto-resolve-')
+
+  it('returns the repo root when opts.cwd is inside a repo with a BACKLOG.md', () => {
+    repo.writeBacklog('# Backlog\n')
+    const nested = repo.path('packages', 'foo')
+    mkdirSync(nested, { recursive: true })
+    expect(resolveRepoRoot({ cwd: nested })).toBe(repo.dir)
+  })
+
+  it('returns null when opts.cwd has no BACKLOG.md ancestor', () => {
+    expect(resolveRepoRoot({ cwd: repo.dir })).toBeNull()
+  })
+})
+
+describe('parseDeltoid', () => {
+  it('returns the 3-char body for a valid id', () => {
+    expect(parseDeltoid('a9Z')).toBe('a9Z')
+  })
+
+  it('strips a leading ∆ sigil and returns the body', () => {
+    expect(parseDeltoid('∆abc')).toBe('abc')
+  })
+
+  it('returns null for invalid input — wrong length, non-alphanumeric, or empty', () => {
+    expect(parseDeltoid('ab')).toBeNull()
+    expect(parseDeltoid('abcd')).toBeNull()
+    expect(parseDeltoid('ab-')).toBeNull()
+    expect(parseDeltoid('')).toBeNull()
   })
 })
 

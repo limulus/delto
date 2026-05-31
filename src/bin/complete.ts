@@ -3,7 +3,7 @@ import { dirname, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 
 import { type Subcommand } from './delto.ts'
-import { backlogLines, findRepoRoot, ID, parseBacklog } from '../lib/backlog.ts'
+import { backlogLines, findRepoRoot, parseBacklog, parseDeltoid } from '../lib/backlog.ts'
 import { release } from '../lib/claims-ledger.ts'
 import { cwd, err, out } from '../lib/io.ts'
 import { formatCompleted, journalEntry } from '../lib/journal.ts'
@@ -63,15 +63,16 @@ export const complete: Subcommand = {
       return 1
     }
 
-    const id = rawId.replace(/^∆/, '')
-    if (!new RegExp(`^${ID}$`).test(id)) {
+    const id = parseDeltoid(rawId)
+    if (id === null) {
       stderr.write(
         `delto complete: '${rawId}' is not a valid deltoid (∆ followed by 3 alphanumerics).\n`
       )
       return 1
     }
 
-    const root = findRepoRoot(cwd(opts))
+    const dir = cwd(opts)
+    const root = findRepoRoot(dir)
     if (!root) {
       stderr.write(
         'delto complete: no BACKLOG.md found in the current directory or any parent.\n'
@@ -87,7 +88,7 @@ export const complete: Subcommand = {
       return 1
     }
 
-    const target = resolve(cwd(opts), journalPath)
+    const target = resolve(dir, journalPath)
     if (existsSync(target)) {
       stderr.write(
         `delto complete: ${journalPath} already exists — refusing to overwrite.\n`
@@ -104,7 +105,7 @@ export const complete: Subcommand = {
 
     stdout.write(`Completed ∆${id}:\n`)
     stdout.write(`  • wrote ${journalPath}\n`)
-    stdout.write(`  • released the claim on ∆${id}\n`)
+    stdout.write(`  • cleared any claim on ∆${id}\n`)
     stdout.write(
       `Next: fill in the journal's Planning/Refinement/Retrospective, remove ∆${id} from BACKLOG.md, and commit.\n`
     )

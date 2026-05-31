@@ -53,8 +53,8 @@ export async function run(argv: string[], opts: RouterOptions = {}): Promise<num
       strict: true,
     })
     help = parsed.values.help ?? false
-  } catch (err) {
-    stderr.write(`delto: ${(err as Error).message}\n`)
+  } catch (error) {
+    stderr.write(`delto: ${(error as Error).message}\n`)
     stderr.write('Run `delto --help` for usage.\n')
     return 1
   }

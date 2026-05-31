@@ -1,10 +1,10 @@
 import { parseArgs } from 'node:util'
 
 import { type Subcommand } from './delto.ts'
-import { findRepoRoot, parseBacklog } from '../lib/backlog.ts'
+import { parseBacklog, resolveRepoRoot } from '../lib/backlog.ts'
 import { claimedIds } from '../lib/claims-ledger.ts'
 import { computeEligibility, type ItemEligibility } from '../lib/eligibility.ts'
-import { cwd, err, out } from '../lib/io.ts'
+import { err, out } from '../lib/io.ts'
 
 const HELP = `delto surface — find backlog items that are free to work on now
 
@@ -55,7 +55,7 @@ export const surface: Subcommand = {
       return 0
     }
 
-    const root = findRepoRoot(cwd(opts))
+    const root = resolveRepoRoot(opts)
     if (!root) {
       stderr.write(
         'delto surface: no BACKLOG.md found in the current directory or any parent.\n'

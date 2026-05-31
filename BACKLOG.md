@@ -16,10 +16,6 @@ only dependency mechanism in the `/delto` SKILL.md spec (v1.0).
 
 Standing initiative — do not remove, even if no items.
 
-- ∆hoW DRY the subcommands and clear the remaining feat/cli-primitives review nits: extract
-  `parseDeltoid()` + `resolveRepoRoot()` lib helpers, resolve cwd once in `complete` (and
-  soften "released the claim" → "cleared any claim"), rename the shadowing `catch (err)` in
-  `delto.ts`, and drop the dead `mkdirSync` in `claims-ledger.ts`.
 - ∆HQN Document the complete-before-prune ordering in the `/delto` SKILL.md `## Committing`
   workflow — `delto complete` must run while the item is still in BACKLOG.md (it transcribes
   the bullet), then remove the bullet. Surfaced by the ∆yNQ journal review.

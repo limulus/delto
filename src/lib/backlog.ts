@@ -2,8 +2,17 @@ import { findUpSync } from 'find-up-simple'
 import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 
+import { cwd, type RunOptions } from './io.ts'
+
 /** The 3-char alphanumeric body of a deltoid (`∆xxx`), per the BACKLOG.md header. */
 export const ID = '[A-Za-z0-9]{3}'
+
+/** Strip an optional leading ∆ and return the 3-char deltoid body, or null when `raw`
+ *  is not a valid deltoid (∆ followed by 3 alphanumerics). */
+export function parseDeltoid(raw: string): string | null {
+  const id = raw.replace(/^∆/, '')
+  return new RegExp(`^${ID}$`).test(id) ? id : null
+}
 
 /** A heading's text and the 1-based line it sits on in BACKLOG.md. */
 export interface HeadingRef {
@@ -34,6 +43,12 @@ export interface BacklogItem {
 export function findRepoRoot(cwd: string = process.cwd()): string | undefined {
   const backlog = findUpSync('BACKLOG.md', { cwd })
   return backlog ? dirname(backlog) : undefined
+}
+
+/** The repo root for the given run options — walks up from the resolved cwd for the
+ *  nearest BACKLOG.md. Null when none is found. */
+export function resolveRepoRoot(opts: RunOptions): string | null {
+  return findRepoRoot(cwd(opts)) ?? null
 }
 
 /** Read BACKLOG.md as lines, tolerant of either LF or CRLF line endings. */
