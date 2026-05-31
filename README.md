@@ -1,11 +1,11 @@
 # @limulus/delto
 
 Delto keeps a human-readable backlog — a `BACKLOG.md` — alongside your code, plus a journal of
-completed work (by default under `docs/journal/`, configurable). Every item carries an immutable
+completed work (by default under `docs/journal/`). Every item carries an immutable
 three-character ID — a "deltoid" like `∆u2o` — that travels with it from the backlog into its
-journal entry, so references stay stable. Delto comes in two parts: the **`/delto` skill**, which
-teaches a coding agent how to keep the backlog, and the **`delto` CLI**, the deterministic pieces
-the skill leans on — minting collision-free IDs, finding eligible work, claiming, and completing.
+journal entry. Delto comes in two parts: the **`/delto` skill**, which teaches a coding agent how
+to keep the backlog, and the **`delto` CLI**, the deterministic pieces the skill leans on —
+minting collision-free IDs, finding eligible work, claiming, and completing.
 
 ## Getting started
 
@@ -14,20 +14,6 @@ the skill leans on — minting collision-free IDs, finding eligible work, claimi
 ```sh
 npx skills add limulus/delto
 ```
-
-`npx skills add` asks which coding agent to install for. Skills aren't specific to any one
-agent — `/delto` is prose plus the spec, and works wherever your agent loads skills from.
-
-### The tool
-
-The skill calls the `delto` CLI on demand:
-
-```sh
-npx @limulus/delto@1 <subcommand>
-```
-
-You'll rarely run this yourself — the skill drives it. Pinning the major version keeps the skill
-and the tool in lockstep.
 
 ## Working with delto
 
@@ -51,4 +37,4 @@ requirement.
 
 ## Requirements
 
-Node.js 20 or newer. The published CLI is compiled ESM and needs no build step to run.
+Node.js 20 or newer.
