@@ -2,7 +2,7 @@ import { join, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 
 import { type Subcommand } from './delto.ts'
-import { findRepoRoot } from '../lib/backlog.ts'
+import { requireRepoRoot } from './preconditions.ts'
 import { cwd, err, out } from '../lib/io.ts'
 import { mint as mintIds, takenIds } from '../lib/mint.ts'
 
@@ -71,13 +71,8 @@ export const mint: Subcommand = {
     }
 
     const dir = cwd(opts)
-    const root = findRepoRoot(dir)
-    if (!root) {
-      stderr.write(
-        'delto mint: no BACKLOG.md found in the current directory or any parent.\n'
-      )
-      return 1
-    }
+    const root = requireRepoRoot(dir, stderr, 'mint')
+    if (root === null) return 1
 
     const taken = await takenIds(join(root, 'BACKLOG.md'), resolve(dir, journalDir))
     let ids: string[]

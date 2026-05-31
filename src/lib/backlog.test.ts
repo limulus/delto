@@ -2,14 +2,7 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
 
-import {
-  findRepoRoot,
-  ID,
-  parseBacklog,
-  parseDeltoid,
-  resolveRepoRoot,
-  suffixIds,
-} from './backlog.ts'
+import { findRepoRoot, ID, parseBacklog, parseDeltoid, suffixIds } from './backlog.ts'
 import { useTempRepo } from '../mocks/temp-repo.ts'
 
 describe('findRepoRoot', () => {
@@ -37,21 +30,6 @@ describe('findRepoRoot', () => {
 
   it('returns undefined when no BACKLOG.md exists in any parent', () => {
     expect(findRepoRoot(repo.dir)).toBeUndefined()
-  })
-})
-
-describe('resolveRepoRoot', () => {
-  const repo = useTempRepo('delto-resolve-')
-
-  it('returns the repo root when opts.cwd is inside a repo with a BACKLOG.md', () => {
-    repo.writeBacklog('# Backlog\n')
-    const nested = repo.path('packages', 'foo')
-    mkdirSync(nested, { recursive: true })
-    expect(resolveRepoRoot({ cwd: nested })).toBe(repo.dir)
-  })
-
-  it('returns null when opts.cwd has no BACKLOG.md ancestor', () => {
-    expect(resolveRepoRoot({ cwd: repo.dir })).toBeNull()
   })
 })
 

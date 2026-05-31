@@ -3,7 +3,8 @@ import { dirname, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 
 import { type Subcommand } from './delto.ts'
-import { backlogLines, findRepoRoot, parseBacklog, parseDeltoid } from '../lib/backlog.ts'
+import { requireDeltoid, requireRepoRoot } from './preconditions.ts'
+import { backlogLines, parseBacklog } from '../lib/backlog.ts'
 import { release } from '../lib/claims-ledger.ts'
 import { cwd, err, out } from '../lib/io.ts'
 import { formatCompleted, journalEntry } from '../lib/journal.ts'
@@ -63,22 +64,12 @@ export const complete: Subcommand = {
       return 1
     }
 
-    const id = parseDeltoid(rawId)
-    if (id === null) {
-      stderr.write(
-        `delto complete: '${rawId}' is not a valid deltoid (∆ followed by 3 alphanumerics).\n`
-      )
-      return 1
-    }
+    const id = requireDeltoid(rawId, stderr, 'complete')
+    if (id === null) return 1
 
     const dir = cwd(opts)
-    const root = findRepoRoot(dir)
-    if (!root) {
-      stderr.write(
-        'delto complete: no BACKLOG.md found in the current directory or any parent.\n'
-      )
-      return 1
-    }
+    const root = requireRepoRoot(dir, stderr, 'complete')
+    if (root === null) return 1
 
     const item = parseBacklog(root).find((x) => x.id === id)
     if (!item) {

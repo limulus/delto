@@ -2,9 +2,9 @@ import { relative } from 'node:path'
 import { parseArgs } from 'node:util'
 
 import { type Subcommand } from './delto.ts'
-import { parseDeltoid, resolveRepoRoot } from '../lib/backlog.ts'
+import { requireDeltoid, requireRepoRoot } from './preconditions.ts'
 import { claimsFile } from '../lib/claims-ledger.ts'
-import { err, out } from '../lib/io.ts'
+import { cwd, err, out } from '../lib/io.ts'
 
 export interface LedgerCommandSpec {
   name: string
@@ -60,21 +60,12 @@ export function ledgerCommand(spec: LedgerCommandSpec): Subcommand {
       }
 
       const raw = positionals[0]
-      const id = parseDeltoid(raw)
-      if (id === null) {
-        stderr.write(
-          `delto ${spec.name}: '${raw}' is not a valid deltoid (∆ followed by 3 alphanumerics).\n`
-        )
-        return 1
-      }
+      const id = requireDeltoid(raw, stderr, spec.name)
+      if (id === null) return 1
 
-      const root = resolveRepoRoot(opts)
-      if (!root) {
-        stderr.write(
-          `delto ${spec.name}: no BACKLOG.md found in the current directory or any parent.\n`
-        )
-        return 1
-      }
+      const dir = cwd(opts)
+      const root = requireRepoRoot(dir, stderr, spec.name)
+      if (root === null) return 1
 
       spec.apply(root, id)
       stdout.write(spec.done(id, relative(root, claimsFile(root))) + '\n')
