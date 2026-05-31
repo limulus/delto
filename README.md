@@ -9,8 +9,6 @@ minting collision-free IDs, finding eligible work, claiming, and completing.
 
 ## Getting started
 
-### Install the skill
-
 ```sh
 npx skills add limulus/delto
 ```
@@ -34,6 +32,12 @@ A delto `BACKLOG.md` is plain Markdown. The spec's only hard rules: each item ca
 and a trailing `; needs: ∆aaa` marks a hard dependency. The rest is up to you — the skill's
 examples group items under initiative and epic headings, but that's a convention, not a
 requirement.
+
+## The `∆` sigil
+
+Using a non-ASCII character to prefix an ID may seem like a pain to type. However, on macOS,
+it can be typed with option-J. For other systems and voice to text, the skill informs the
+agent that either “delto” or “delta” followed by three characters is a deltoid.
 
 ## Requirements
 
