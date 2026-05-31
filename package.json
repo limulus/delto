@@ -39,6 +39,8 @@
   },
   "homepage": "https://github.com/limulus/@limulus/delto#readme",
   "dependencies": {
+    "date-fns": "^4.4.0",
+    "date-fns-tz": "^3.2.0",
     "find-up-simple": "1.0.1",
     "tslib": "^2.8.1"
   },

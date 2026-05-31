@@ -14,7 +14,6 @@ export interface HeadingRef {
 export interface BacklogItem {
   id: string
   needs: string[]
-  touches: string[]
   /** 1-based line number of the `- ∆xxx …` line. */
   lineStart: number
   /** Source lines the item spans, counting wrapped continuation lines. */
@@ -69,7 +68,6 @@ export function parseBacklog(repoRoot: string): BacklogItem[] {
       items.push({
         id,
         needs: suffixIds(body, 'needs'),
-        touches: suffixIds(body, 'touches'),
         lineStart,
         lineCount,
         initiativeHeading,

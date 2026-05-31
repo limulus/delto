@@ -16,6 +16,18 @@ only dependency mechanism in the `/delto` SKILL.md spec (v1.0).
 
 Standing initiative — do not remove, even if no items.
 
+- ∆y0B Keep `src/bin/` to the CLI entry and subcommands only — move non-command helpers
+  (`io.ts` + its test) into `src/lib/`, relocate the `OutputStream`/`RunOptions` DI types
+  out of `bin/delto.ts` so lib never imports bin, and split the router-only `subcommands`
+  field into a `RouterOptions` type. Surfaced by the feat/cli-primitives self-review.
+- ∆hoW DRY the subcommands and clear the remaining feat/cli-primitives review nits: extract
+  `parseDeltoid()` + `resolveRepoRoot()` lib helpers, resolve cwd once in `complete` (and
+  soften "released the claim" → "cleared any claim"), rename the shadowing `catch (err)` in
+  `delto.ts`, and drop the dead `mkdirSync` in `claims-ledger.ts`.
+- ∆HQN Document the complete-before-prune ordering in the `/delto` SKILL.md `## Committing`
+  workflow — `delto complete` must run while the item is still in BACKLOG.md (it transcribes
+  the bullet), then remove the bullet. Surfaced by the ∆yNQ journal review.
+
 ## First npm Publish
 
 Foundational initiative — what `@limulus/delto` needs before it can be published: the
@@ -65,3 +77,14 @@ legacy skill scripts and Git history.
 - ∆Pli Distribute delto as a Claude Code plugin so the `/delto` skill and the `delto`
   binary install together from a plugin marketplace, rather than `npx skills add` +
   `npx @limulus/delto@1` as separate steps
+- ∆oJF GUI to visualize the backlog and journal — render the `needs:` graph, what's
+  eligible, and completed-item history in a browser instead of plain text. Not in the
+  v1.0 spec
+- ∆rTJ Spike: repo-wide unique deltoids across multiple `BACKLOG.md`s in a monorepo.
+  Decide whether deltoids are unique repo-wide (discover every `BACKLOG.md` + its journal
+  dir — default `docs/journal/` relative to each, overridable via YAML frontmatter) or
+  only per-backlog. Today `mint` scans the nearest backlog but resolves `--journal-dir`
+  against the cwd, so it can miss in-flight ids and collide
+- ∆NOp Spike: reconsider parallel-work collision detection (the removed `touches:` edge) —
+  what signal actually predicts a merge collision, and whether it earns the backlog
+  bookkeeping. The original symmetric same-file graph was undocumented and needs rethinking

@@ -7,7 +7,6 @@ function item(id: string, extra: Partial<BacklogItem> = {}): BacklogItem {
   return {
     id,
     needs: [],
-    touches: [],
     lineStart: 0,
     lineCount: 1,
     initiativeHeading: null,
@@ -21,13 +20,13 @@ const items: BacklogItem[] = [
   item('bbb', { needs: ['aaa'] }),
   item('fff', { needs: ['aaa'] }),
   item('ccc', { needs: ['zzz'] }),
-  item('ddd', { touches: ['eee', 'ggg'] }),
+  item('ddd'),
   item('eee'),
   item('ggg'),
 ]
 
 describe('computeEligibility', () => {
-  it('marks an item eligible only when unclaimed, unblocked, and unconflicting', () => {
+  it('marks an item eligible only when unclaimed and unblocked', () => {
     const { byId, order, dependents } = computeEligibility(items, new Set(['eee']))
 
     expect(order.map((e) => e.id)).toEqual([
@@ -50,9 +49,7 @@ describe('computeEligibility', () => {
     expect(byId.get('ccc')?.eligible).toBe(true)
     expect(byId.get('ccc')?.openNeeds).toEqual([])
 
-    // ddd touches eee, which is claimed → conflict.
-    expect(byId.get('ddd')?.eligible).toBe(false)
-    expect(byId.get('ddd')?.conflicts).toEqual(['eee'])
+    expect(byId.get('ddd')?.eligible).toBe(true)
 
     expect(byId.get('eee')?.eligible).toBe(false)
     expect(byId.get('eee')?.claimed).toBe(true)
@@ -60,12 +57,10 @@ describe('computeEligibility', () => {
     expect(byId.get('ggg')?.eligible).toBe(true)
   })
 
-  it('treats touches as a symmetric collision graph', () => {
-    // Only ddd declares the touch edges, yet claiming ddd conflicts its peers.
-    const { byId } = computeEligibility(items, new Set(['ddd']))
-    expect(byId.get('eee')?.conflicts).toEqual(['ddd'])
-    expect(byId.get('eee')?.eligible).toBe(false)
-    expect(byId.get('ggg')?.conflicts).toEqual(['ddd'])
-    expect(byId.get('ggg')?.eligible).toBe(false)
+  it('dedupes a repeated id in a needs: suffix so dependents are not double-counted', () => {
+    const dup = [item('aaa'), item('bbb', { needs: ['aaa', 'aaa'] })]
+    const { byId, dependents } = computeEligibility(dup, new Set())
+    expect(dependents.get('aaa')).toEqual(['bbb'])
+    expect(byId.get('bbb')?.openNeeds).toEqual(['aaa'])
   })
 })

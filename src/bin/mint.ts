@@ -79,7 +79,7 @@ export const mint: Subcommand = {
       return 1
     }
 
-    const taken = takenIds(join(root, 'BACKLOG.md'), resolve(dir, journalDir))
+    const taken = await takenIds(join(root, 'BACKLOG.md'), resolve(dir, journalDir))
     let ids: string[]
     try {
       ids = mintIds(count, taken)

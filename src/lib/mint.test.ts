@@ -8,12 +8,12 @@ import { useTempRepo } from '../mocks/temp-repo.ts'
 describe('takenIds', () => {
   const repo = useTempRepo('delto-mint-')
 
-  it('collects every ∆ id from BACKLOG.md and the journal dir', () => {
+  it('collects every ∆ id from BACKLOG.md and the journal dir', async () => {
     repo.writeBacklog('- ∆abc item one; needs: ∆def\n- ∆ghi item two\n')
     const journal = repo.path('journal')
     mkdirSync(journal)
     writeFileSync(join(journal, '∆xyz-done.md'), '---\nid: ∆xyz\n---\nrefs ∆abc\n')
-    expect([...takenIds(repo.path('BACKLOG.md'), journal)].sort()).toEqual([
+    expect([...(await takenIds(repo.path('BACKLOG.md'), journal))].sort()).toEqual([
       'abc',
       'def',
       'ghi',
@@ -21,15 +21,15 @@ describe('takenIds', () => {
     ])
   })
 
-  it('skips non-file journal entries and tolerates an absent journal dir', () => {
+  it('skips non-file journal entries and tolerates an absent journal dir', async () => {
     repo.writeBacklog('- ∆abc x\n')
     const journal = repo.path('journal')
     mkdirSync(journal)
     mkdirSync(join(journal, 'subdir'))
-    expect([...takenIds(repo.path('BACKLOG.md'), journal)]).toEqual(['abc'])
-    expect([...takenIds(repo.path('BACKLOG.md'), repo.path('does-not-exist'))]).toEqual([
-      'abc',
-    ])
+    expect([...(await takenIds(repo.path('BACKLOG.md'), journal))]).toEqual(['abc'])
+    expect([
+      ...(await takenIds(repo.path('BACKLOG.md'), repo.path('does-not-exist'))),
+    ]).toEqual(['abc'])
   })
 })
 
@@ -49,9 +49,10 @@ describe('mint', () => {
     for (const id of ids) expect(id).toMatch(/^[A-Za-z0-9]{3}$/)
   })
 
-  it('never mints an id that is already taken', () => {
-    const taken = new Set(['abc', 'def'])
-    for (const id of mint(20, taken)) expect(taken.has(id)).toBe(false)
+  it('skips an id that is already taken, retrying until it draws a fresh one', () => {
+    const seq = ['abc', 'def', 'ghi'] // the first two are taken; ghi is fresh
+    let i = 0
+    expect(mint(1, new Set(['abc', 'def']), () => seq[i++])).toEqual(['ghi'])
   })
 
   it('retries past a collision — with a taken id or one just minted', () => {

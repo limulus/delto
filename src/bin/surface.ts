@@ -10,9 +10,9 @@ const HELP = `delto surface — find backlog items that are free to work on now
 
 Usage: delto surface [--json]
 
-Reads the nearest BACKLOG.md plus the local claim ledger, walks the needs:/touches:
-graph, and lists the items that are eligible — not claimed, not blocked by an open
-prerequisite, and not sharing files with in-flight work — in priority (document) order.
+Reads the nearest BACKLOG.md plus the local claim ledger, walks the needs: graph, and
+lists the items that are eligible — not claimed and not blocked by an open prerequisite —
+in priority (document) order.
 
 Options:
   --json      Emit the full verdict (eligible, excluded with reasons, claimed) as JSON.
@@ -25,11 +25,6 @@ function reasonFor(e: ItemEligibility): string {
   if (e.claimed) reasons.push('in-flight (claimed)')
   if (e.openNeeds.length > 0)
     reasons.push(`needs ${e.openNeeds.map((n) => '∆' + n).join(', ')}`)
-  if (e.conflicts.length > 0) {
-    reasons.push(
-      `shares files with in-flight ${e.conflicts.map((c) => '∆' + c).join(', ')}`
-    )
-  }
   return reasons.join('; ')
 }
 
@@ -93,12 +88,14 @@ export const surface: Subcommand = {
 
     const lines: string[] = [
       `ELIGIBLE — ${eligible.length} of ${items.length} backlog item(s) free to work on, in priority order.`,
-      '`→N` = N other items name this one in their `needs:` — doing it unblocks them.',
-      '',
     ]
     if (eligible.length === 0) {
-      lines.push('  (none — every backlog item is claimed, blocked, or conflicting)')
+      lines.push('', '  (none — every backlog item is claimed or blocked)')
     } else {
+      lines.push(
+        '`→N` = N other items name this one in their `needs:` — doing it unblocks them.',
+        ''
+      )
       for (const id of eligible) {
         const n = (dependents.get(id) ?? []).length
         lines.push(`  ∆${id}${n > 0 ? ` →${n}` : ''}`)
@@ -107,7 +104,7 @@ export const surface: Subcommand = {
     if (excluded.length > 0) {
       lines.push(
         '',
-        `(${excluded.length} other item(s) are claimed, needs-blocked, or touches-conflicting — run with --json for which and why.)`
+        `(${excluded.length} other item(s) are claimed or needs-blocked — run with --json for which and why.)`
       )
     }
     stdout.write(lines.join('\n') + '\n')

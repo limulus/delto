@@ -4,23 +4,24 @@ import { formatCompleted, journalEntry } from './journal.ts'
 
 describe('formatCompleted', () => {
   it('formats a west-of-UTC offset', () => {
-    expect(formatCompleted(new Date(2026, 0, 5, 3, 7, 9), -420)).toBe(
+    // Phoenix is UTC-7 year-round (no DST), so 10:07:09Z is 03:07:09 local.
+    expect(formatCompleted(new Date('2026-01-05T10:07:09Z'), 'America/Phoenix')).toBe(
       '2026-01-05 03:07:09 -07:00'
     )
   })
 
   it('formats east-of-UTC and UTC offsets', () => {
-    expect(formatCompleted(new Date(2026, 4, 29, 14, 30, 5), 330)).toBe(
+    expect(formatCompleted(new Date('2026-05-29T09:00:05Z'), 'Asia/Kolkata')).toBe(
       '2026-05-29 14:30:05 +05:30'
     )
-    expect(formatCompleted(new Date(2026, 4, 29, 14, 30, 5), 0)).toBe(
+    expect(formatCompleted(new Date('2026-05-29T14:30:05Z'), 'UTC')).toBe(
       '2026-05-29 14:30:05 +00:00'
     )
   })
 
-  it('defaults the offset to the date’s local timezone', () => {
-    expect(formatCompleted(new Date(2026, 4, 29, 14, 30, 5))).toMatch(
-      /^2026-05-29 14:30:05 [+-]\d\d:\d\d$/
+  it('defaults the zone to the system timezone', () => {
+    expect(formatCompleted(new Date('2026-05-29T14:30:05Z'))).toMatch(
+      /^\d{4}-\d\d-\d\d \d\d:\d\d:\d\d [+-]\d\d:\d\d$/
     )
   })
 })

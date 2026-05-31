@@ -3,14 +3,12 @@ import { type BacklogItem } from './backlog.ts'
 /** The eligibility verdict for one BACKLOG.md item. */
 export interface ItemEligibility {
   id: string
-  /** True when the item is free to work on — not claimed, blocked, or conflicting. */
+  /** True when the item is free to work on — not claimed and not blocked. */
   eligible: boolean
   /** The item itself is claimed in the ledger (someone is already on it). */
   claimed: boolean
   /** `needs:` prerequisites still open as BACKLOG items (empty when unblocked). */
   openNeeds: string[]
-  /** `touches:` peers that are currently claimed (same-file collision risk). */
-  conflicts: string[]
 }
 
 export interface EligibilityResult {
@@ -30,27 +28,13 @@ export function computeEligibility(
 ): EligibilityResult {
   const backlogIds = new Set(items.map((i) => i.id))
 
-  // `touches:` is a same-file collision graph; treat it as symmetric for robustness —
-  // a one-sided edge still blocks both ends.
-  const touchPeers = new Map<string, Set<string>>()
-  const link = (a: string, b: string): void => {
-    const s = touchPeers.get(a) ?? new Set<string>()
-    s.add(b)
-    touchPeers.set(a, s)
-  }
-  for (const it of items) {
-    for (const p of it.touches) {
-      link(it.id, p)
-      link(p, it.id)
-    }
-  }
-
-  // Inverse of the `needs:` graph — which items each task would unblock. BACKLOG.md
-  // states each item's own needs, but not how many wait on it, and that inversion is
-  // what makes one eligible item higher-leverage than another.
+  // Inverse of the `needs:` graph — which items each task would unblock. BACKLOG.md states
+  // each item's own needs, but not how many wait on it, and that inversion is what makes
+  // one eligible item higher-leverage than another. Dedupe each item's needs so a malformed
+  // `needs: ∆a, ∆a` suffix cannot count the same dependent twice.
   const dependents = new Map<string, string[]>()
   for (const it of items) {
-    for (const n of it.needs) {
+    for (const n of new Set(it.needs)) {
       const arr = dependents.get(n) ?? []
       arr.push(it.id)
       dependents.set(n, arr)
@@ -60,14 +44,12 @@ export function computeEligibility(
   const order: ItemEligibility[] = []
   const byId = new Map<string, ItemEligibility>()
   for (const it of items) {
-    const openNeeds = it.needs.filter((n) => backlogIds.has(n))
-    const conflicts = [...(touchPeers.get(it.id) ?? [])].filter((p) => claimed.has(p))
+    const openNeeds = [...new Set(it.needs)].filter((n) => backlogIds.has(n))
     const verdict: ItemEligibility = {
       id: it.id,
       claimed: claimed.has(it.id),
       openNeeds,
-      conflicts,
-      eligible: !claimed.has(it.id) && openNeeds.length === 0 && conflicts.length === 0,
+      eligible: !claimed.has(it.id) && openNeeds.length === 0,
     }
     order.push(verdict)
     byId.set(it.id, verdict)

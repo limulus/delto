@@ -14,7 +14,6 @@ const RICH = [
   '- ∆bbb depends on aaa; needs: ∆aaa',
   '- ∆fff also depends on aaa; needs: ∆aaa',
   '- ∆ccc needs a completed thing; needs: ∆zzz',
-  '- ∆ddd shares files; touches: ∆eee',
   '- ∆eee in progress',
   '- ∆ggg standalone',
   '',
@@ -69,8 +68,19 @@ describe('delto surface', () => {
     const reasonOf = (id: string): string =>
       report.excluded.find((e: { id: string }) => e.id === id).reason
     expect(reasonOf('bbb')).toContain('needs ∆aaa')
-    expect(reasonOf('ddd')).toContain('∆eee')
     expect(reasonOf('eee')).toContain('claimed')
+  })
+
+  it('joins multiple reasons when an item is both claimed and needs-blocked', async () => {
+    repo.writeBacklog(
+      ['## Work', '', '- ∆aaa base', '- ∆bbb dependent; needs: ∆aaa', ''].join('\n')
+    )
+    claim(repo.dir, 'bbb')
+    const stdout = new Capture()
+    expect(await surface.run(['--json'], { stdout, cwd: repo.dir })).toBe(0)
+    const report = JSON.parse(stdout.text)
+    const bbb = report.excluded.find((e: { id: string }) => e.id === 'bbb')
+    expect(bbb.reason).toBe('in-flight (claimed); needs ∆aaa')
   })
 
   it('says so when nothing is eligible', async () => {
@@ -79,6 +89,8 @@ describe('delto surface', () => {
     const stdout = new Capture()
     expect(await surface.run([], { stdout, cwd: repo.dir })).toBe(0)
     expect(stdout.text).toContain('(none')
+    // the `→N` legend explains notation that only appears beside eligible items
+    expect(stdout.text).not.toContain('unblocks them')
   })
 
   it('omits the excluded note when every item is eligible', async () => {

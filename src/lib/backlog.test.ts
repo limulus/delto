@@ -46,7 +46,8 @@ describe('ID', () => {
 describe('suffixIds', () => {
   it('extracts the ids from a labelled dependency suffix', () => {
     expect(suffixIds('do a thing; needs: ∆aaa, ∆bbb', 'needs')).toEqual(['aaa', 'bbb'])
-    expect(suffixIds('do a thing; touches: ∆ccc', 'touches')).toEqual(['ccc'])
+    // only the labelled segment is scanned — it stops at the next `;`
+    expect(suffixIds('x; needs: ∆aaa; later: ∆bbb', 'needs')).toEqual(['aaa'])
   })
 
   it('returns an empty array when the label is absent', () => {
@@ -61,7 +62,7 @@ describe('parseBacklog', () => {
     return parseBacklog(repo.dir)
   }
 
-  it('parses items in document order with their needs, touches, and heading context', () => {
+  it('parses items in document order with their needs and heading context', () => {
     const items = parse(
       [
         '# Delto Backlog',
@@ -71,7 +72,7 @@ describe('parseBacklog', () => {
         '## Init One',
         '',
         '- ∆aaa first item',
-        '- ∆bbb second; needs: ∆aaa, ∆ccc; touches: ∆ddd',
+        '- ∆bbb second; needs: ∆aaa, ∆ccc',
         '',
         '### Epic A',
         '',
@@ -89,7 +90,6 @@ describe('parseBacklog', () => {
 
     const bbb = items[1]
     expect(bbb.needs).toEqual(['aaa', 'ccc'])
-    expect(bbb.touches).toEqual(['ddd'])
     expect(bbb.initiativeHeading?.text).toBe('Init One')
     expect(bbb.epicHeading).toBeNull()
 

@@ -1,5 +1,6 @@
 import { randomInt } from 'node:crypto'
-import { existsSync, readdirSync, readFileSync } from 'node:fs'
+import { existsSync } from 'node:fs'
+import { readdir, readFile } from 'node:fs/promises'
 import { join } from 'node:path'
 
 import { ID } from './backlog.ts'
@@ -7,17 +8,24 @@ import { ID } from './backlog.ts'
 /** The 62-char alphabet of a deltoid's 3-char body. */
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 
-/** Every deltoid body that already appears in `backlogPath` or any file in `journalDir`. */
-export function takenIds(backlogPath: string, journalDir: string): Set<string> {
-  const taken = new Set<string>()
-  const scan = (text: string): void => {
-    for (const m of text.matchAll(new RegExp(`∆(${ID})`, 'g'))) taken.add(m[1])
-  }
-  scan(readFileSync(backlogPath, 'utf8'))
+/**
+ * Every deltoid body that already appears in `backlogPath` or any file in `journalDir`. A
+ * long-lived repo's journal can hold hundreds to thousands of entries, so the files are
+ * read concurrently rather than one at a time.
+ */
+export async function takenIds(
+  backlogPath: string,
+  journalDir: string
+): Promise<Set<string>> {
+  const files = [backlogPath]
   if (existsSync(journalDir)) {
-    for (const ent of readdirSync(journalDir, { withFileTypes: true })) {
-      if (ent.isFile()) scan(readFileSync(join(journalDir, ent.name), 'utf8'))
+    for (const ent of await readdir(journalDir, { withFileTypes: true })) {
+      if (ent.isFile()) files.push(join(journalDir, ent.name))
     }
+  }
+  const taken = new Set<string>()
+  for (const text of await Promise.all(files.map((f) => readFile(f, 'utf8')))) {
+    for (const m of text.matchAll(new RegExp(`∆(${ID})`, 'g'))) taken.add(m[1])
   }
   return taken
 }

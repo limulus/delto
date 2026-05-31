@@ -1,18 +1,15 @@
+import { formatInTimeZone } from 'date-fns-tz'
+
 /**
- * Format a Date as the spec's `YYYY-MM-DD HH:MM:SS ±HH:MM` completion timestamp, using the
- * system-local wall clock. `offsetMinutes` is minutes east of UTC; it defaults from the
- * date but is injectable so both sign branches are testable without touching the system tz.
+ * Format a Date as the spec's `YYYY-MM-DD HH:MM:SS ±HH:MM` completion timestamp. `timeZone`
+ * is an IANA zone name, defaulting to the system zone; it is injectable so both offset signs
+ * are testable deterministically, independent of the test runner's timezone.
  */
 export function formatCompleted(
   date: Date,
-  offsetMinutes: number = -date.getTimezoneOffset()
+  timeZone: string = Intl.DateTimeFormat().resolvedOptions().timeZone
 ): string {
-  const pad = (n: number): string => String(n).padStart(2, '0')
-  const ymd = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
-  const hms = `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
-  const sign = offsetMinutes < 0 ? '-' : '+'
-  const abs = Math.abs(offsetMinutes)
-  return `${ymd} ${hms} ${sign}${pad(Math.floor(abs / 60))}:${pad(abs % 60)}`
+  return formatInTimeZone(date, timeZone, 'yyyy-MM-dd HH:mm:ss xxx')
 }
 
 /**
