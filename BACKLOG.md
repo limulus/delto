@@ -24,14 +24,12 @@ complete), full test coverage, and a working consumer story (skill install via `
 add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
 [ADR-001](./docs/decisions/001-delto-cli-and-skill-shape.md).
 
-### Skill Packaging
-
-- ∆IsK Verify `npx skills add` reaches the consolidated `/delto` skill from the Git
-  ref — directory layout and `SKILL.md` frontmatter resolve, and `npx @limulus/delto@1
-  <sub>` runs the published bin end-to-end on a fresh consumer checkout; needs: ∆Rnm
-
 ### Packaging & Release
 
+- ∆kl2 Make the published package publish-clean — the build compiles `src/**` including
+  `*.test.ts` and `src/mocks/`, and `files: ["dist","src"]` ships them, so the tarball carries
+  test code; exclude tests/mocks from the build output and the tarball. Also fix the malformed
+  `repository.url`, `bugs.url`, and `homepage` (each duplicates `@limulus/`). Surfaced by ∆IsK.
 - ∆Rdm Real README + getting-started — replace the placeholders with what delto is, the
   install path (`npx skills add` for the `/delto` skill, `npx @limulus/delto@1` for the
   tool), and the backlog lifecycle linked to each subcommand's `--help`; needs: ∆IsK
@@ -39,6 +37,11 @@ add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
   `delto` `bin` entry and `files` per ADR-001's `src/` layout. No `main`/`exports`
   (bin-only per ∆iDx). Skill discovery is verified separately by ∆IsK (Git-driven, not
   tarball-driven); needs: ∆qBS
+- ∆LwK Post-publish consumer smoke — once the first release lands, confirm `npx
+  @limulus/delto@1 <sub>` resolves the `@1` tag from GitHub Packages and runs on a fresh
+  checkout, and `npx skills add <git-ref>` installs `skills/delto` from the pushed ref. ∆IsK
+  verified both locally (tarball install + local skill add); this covers the
+  live-registry/pushed-ref half; needs: ∆Sre
 - ∆Bpr Enable GitHub branch protection on `main` — require PR + passing CI before merge
   so an accidental push (e.g. an agent in YOLO mode) cannot trigger an unreviewed
   publish
