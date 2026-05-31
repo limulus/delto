@@ -2,14 +2,10 @@ import { parseArgs } from 'node:util'
 
 import { claim } from './claim.ts'
 import { complete } from './complete.ts'
-import { err, out } from './io.ts'
 import { mint } from './mint.ts'
 import { release } from './release.ts'
 import { surface } from './surface.ts'
-
-export interface OutputStream {
-  write(chunk: string): unknown
-}
+import { err, out, type RunOptions } from '../lib/io.ts'
 
 export interface Subcommand {
   name: string
@@ -17,12 +13,8 @@ export interface Subcommand {
   run(argv: string[], opts: RunOptions): Promise<number>
 }
 
-export interface RunOptions {
-  stdout?: OutputStream
-  stderr?: OutputStream
+export interface RouterOptions extends RunOptions {
   subcommands?: Subcommand[]
-  /** Directory to resolve the nearest BACKLOG.md from. Defaults to `process.cwd()`. */
-  cwd?: string
 }
 
 const SUBCOMMANDS: Subcommand[] = [mint, surface, claim, release, complete]
@@ -43,7 +35,7 @@ Run \`delto <subcommand> --help\` for per-subcommand usage.
 `
 }
 
-export async function run(argv: string[], opts: RunOptions = {}): Promise<number> {
+export async function run(argv: string[], opts: RouterOptions = {}): Promise<number> {
   const stdout = out(opts)
   const stderr = err(opts)
   const subcommands = opts.subcommands ?? SUBCOMMANDS

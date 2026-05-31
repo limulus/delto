@@ -16,10 +16,6 @@ only dependency mechanism in the `/delto` SKILL.md spec (v1.0).
 
 Standing initiative — do not remove, even if no items.
 
-- ∆y0B Keep `src/bin/` to the CLI entry and subcommands only — move non-command helpers
-  (`io.ts` + its test) into `src/lib/`, relocate the `OutputStream`/`RunOptions` DI types
-  out of `bin/delto.ts` so lib never imports bin, and split the router-only `subcommands`
-  field into a `RouterOptions` type. Surfaced by the feat/cli-primitives self-review.
 - ∆hoW DRY the subcommands and clear the remaining feat/cli-primitives review nits: extract
   `parseDeltoid()` + `resolveRepoRoot()` lib helpers, resolve cwd once in `complete` (and
   soften "released the claim" → "cleared any claim"), rename the shadowing `catch (err)` in

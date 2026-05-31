@@ -3,9 +3,9 @@ import { dirname, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 
 import { type Subcommand } from './delto.ts'
-import { cwd, err, out } from './io.ts'
 import { backlogLines, findRepoRoot, ID, parseBacklog } from '../lib/backlog.ts'
 import { release } from '../lib/claims-ledger.ts'
+import { cwd, err, out } from '../lib/io.ts'
 import { formatCompleted, journalEntry } from '../lib/journal.ts'
 
 const HELP = `delto complete <deltoid> <journal-entry-path> — finish a backlog item

@@ -2,8 +2,8 @@ import { join, resolve } from 'node:path'
 import { parseArgs } from 'node:util'
 
 import { type Subcommand } from './delto.ts'
-import { cwd, err, out } from './io.ts'
 import { findRepoRoot } from '../lib/backlog.ts'
+import { cwd, err, out } from '../lib/io.ts'
 import { mint as mintIds, takenIds } from '../lib/mint.ts'
 
 const HELP = `delto mint — mint collision-free deltoid IDs

@@ -1,10 +1,10 @@
 import { parseArgs } from 'node:util'
 
 import { type Subcommand } from './delto.ts'
-import { cwd, err, out } from './io.ts'
 import { findRepoRoot, parseBacklog } from '../lib/backlog.ts'
 import { claimedIds } from '../lib/claims-ledger.ts'
 import { computeEligibility, type ItemEligibility } from '../lib/eligibility.ts'
+import { cwd, err, out } from '../lib/io.ts'
 
 const HELP = `delto surface — find backlog items that are free to work on now
 

@@ -1,4 +1,4 @@
-import { type OutputStream } from '../bin/delto.ts'
+import { type OutputStream } from '../lib/io.ts'
 
 /** An in-memory {@link OutputStream} double that records everything written to it. */
 export class Capture implements OutputStream {
