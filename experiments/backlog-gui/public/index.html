@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>delto GUI · base server</title>
+    <style>
+      :root { color-scheme: light dark; }
+      body {
+        font: 15px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+        max-width: 46rem; margin: 4rem auto; padding: 0 1.5rem;
+      }
+      h1 { font-size: 1.4rem; letter-spacing: -0.02em; }
+      .sigil { color: #c0392b; }
+      .grid { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0; }
+      .stat {
+        border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+        border-radius: 0.5rem; padding: 0.75rem 1rem; min-width: 6rem;
+      }
+      .stat b { display: block; font-size: 1.8rem; }
+      .stat span { opacity: 0.7; font-size: 0.8rem; }
+      a { color: inherit; }
+      ul { padding-left: 1.2rem; }
+      code { background: color-mix(in srgb, currentColor 12%, transparent); padding: 0 0.25em; border-radius: 3px; }
+    </style>
+  </head>
+  <body>
+    <h1><span class="sigil">∆</span> delto GUI — base server</h1>
+    <p>
+      This is the shared, read-only API the mockups are built on. It reflects the
+      <em>real</em> <code>BACKLOG.md</code> and <code>docs/journal/</code> via delto's own
+      parser. Check out a <code>mockups/*</code> branch to see a front-end built on it.
+    </p>
+    <div class="grid" id="stats">loading live data…</div>
+    <h2>API</h2>
+    <ul>
+      <li><a href="/api/snapshot">/api/snapshot</a> — backlog + journal + stats + intents</li>
+      <li><a href="/api/backlog">/api/backlog</a> — enriched items, eligibility, dependents</li>
+      <li><a href="/api/journal">/api/journal</a> — completed entries + velocity stats</li>
+      <li><code>/api/journal/:file</code> — one entry, rendered to HTML</li>
+      <li><a href="/api/intents">/api/intents</a> — the intent queue (GET) / record intent (POST)</li>
+    </ul>
+    <script type="module">
+      const r = await fetch('/api/snapshot').then((x) => x.json())
+      const eligible = r.backlog.items.filter((i) => i.eligible).length
+      const claimed = r.backlog.items.filter((i) => i.claimed).length
+      const cells = [
+        ['items', r.backlog.items.length],
+        ['eligible', eligible],
+        ['claimed', claimed],
+        ['initiatives', r.backlog.initiatives.length],
+        ['completed', r.stats.total],
+        ['intents', r.intents.length],
+      ]
+      document.getElementById('stats').innerHTML = cells
+        .map(([k, v]) => `<div class="stat"><b>${v}</b><span>${k}</span></div>`)
+        .join('')
+    </script>
+  </body>
+</html>
