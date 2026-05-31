@@ -9,13 +9,7 @@
     "dist",
     "src",
     "!**/*.test.ts",
-    "!**/*.test.js",
-    "!**/*.test.d.ts",
-    "!**/*.test.js.map",
-    "!**/*.test.d.ts.map",
-    "!src/mocks",
-    "!dist/esm/mocks",
-    "!dist/types/mocks"
+    "!src/mocks"
   ],
   "type": "module",
   "scripts": {
@@ -46,6 +40,9 @@
     "url": "https://github.com/limulus/delto/issues"
   },
   "homepage": "https://github.com/limulus/delto#readme",
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "date-fns": "^4.4.0",
     "date-fns-tz": "^3.2.0",
