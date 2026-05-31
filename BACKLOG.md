@@ -26,9 +26,6 @@ add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
 
 ### Packaging & Release
 
-- ∆Rdm Real README + getting-started — replace the placeholders with what delto is, the
-  install path (`npx skills add` for the `/delto` skill, `npx @limulus/delto@1` for the
-  tool), and the backlog lifecycle linked to each subcommand's `--help`; needs: ∆IsK
 - ∆Sre Verify `semantic-release` produces the expected `@limulus/delto` tarball — the
   `delto` `bin` entry and `files` per ADR-001's `src/` layout. No `main`/`exports`
   (bin-only per ∆iDx). Skill discovery is verified separately by ∆IsK (Git-driven, not
