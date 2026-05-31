@@ -26,10 +26,6 @@ add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
 
 ### Packaging & Release
 
-- ∆kl2 Make the published package publish-clean — the build compiles `src/**` including
-  `*.test.ts` and `src/mocks/`, and `files: ["dist","src"]` ships them, so the tarball carries
-  test code; exclude tests/mocks from the build output and the tarball. Also fix the malformed
-  `repository.url`, `bugs.url`, and `homepage` (each duplicates `@limulus/`). Surfaced by ∆IsK.
 - ∆Rdm Real README + getting-started — replace the placeholders with what delto is, the
   install path (`npx skills add` for the `/delto` skill, `npx @limulus/delto@1` for the
   tool), and the backlog lifecycle linked to each subcommand's `--help`; needs: ∆IsK

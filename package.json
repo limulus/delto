@@ -7,14 +7,22 @@
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "!**/*.test.ts",
+    "!**/*.test.js",
+    "!**/*.test.d.ts",
+    "!**/*.test.js.map",
+    "!**/*.test.d.ts.map",
+    "!src/mocks",
+    "!dist/esm/mocks",
+    "!dist/types/mocks"
   ],
   "type": "module",
   "scripts": {
     "prebuild": "npm run clean",
     "build": "concurrently -c auto 'npm:build:*'",
-    "build:dts": "tsc --incremental false --declaration --declarationMap --emitDeclarationOnly --outDir dist/types",
-    "build:esm": "tsc --incremental false --outDir dist/esm",
+    "build:dts": "tsc -p tsconfig.build.json --incremental false --declaration --declarationMap --emitDeclarationOnly --outDir dist/types",
+    "build:esm": "tsc -p tsconfig.build.json --incremental false --outDir dist/esm",
     "clean": "del-cli *.tsbuildinfo coverage dist",
     "lint": "eslint *.ts src",
     "lint:fix": "npm run lint -- --fix",
@@ -26,7 +34,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/limulus/@limulus/delto.git"
+    "url": "git+https://github.com/limulus/delto.git"
   },
   "author": {
     "name": "Eric McCarthy",
@@ -35,9 +43,9 @@
   },
   "license": "UNLICENSED",
   "bugs": {
-    "url": "https://github.com/limulus/@limulus/delto/issues"
+    "url": "https://github.com/limulus/delto/issues"
   },
-  "homepage": "https://github.com/limulus/@limulus/delto#readme",
+  "homepage": "https://github.com/limulus/delto#readme",
   "dependencies": {
     "date-fns": "^4.4.0",
     "date-fns-tz": "^3.2.0",
