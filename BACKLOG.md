@@ -26,10 +26,6 @@ add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
 
 ### Skill Packaging
 
-- ∆Rnm Cut over to the consolidated `/delto` skill — create the `.claude/skills/delto`
-  symlink, delete the legacy `skills/<name>/` directories and the embedded
-  `skills/lib/`, and delete any leftover `src/legacy/` files. The consolidated
-  `SKILL.md` is already written; needs: ∆6zh, ∆SYk, ∆ICw, ∆yNQ
 - ∆IsK Verify `npx skills add` reaches the consolidated `/delto` skill from the Git
   ref — directory layout and `SKILL.md` frontmatter resolve, and `npx @limulus/delto@1
   <sub>` runs the published bin end-to-end on a fresh consumer checkout; needs: ∆Rnm
@@ -50,15 +46,15 @@ add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
 ## Someday/Maybe
 
 Work the current `/delto` `SKILL.md` spec (v1.0) does not call for. Parked until a spec
-revision or concrete user need brings it back; logic for the first two survives in the
-legacy skill scripts and Git history.
+revision or concrete user need brings it back; logic for the first two survives in Git
+history (the legacy skill scripts that held it were removed by ∆Rnm).
 
 - ∆PZ3 `delto refine` — a `BACKLOG.md` structural linter (duplicate IDs, unresolved
-  `needs:` references, dependency cycles, oversized items). Exists today as the legacy
-  `refine-backlog`/`lint-backlog.ts`; not in the v1.0 spec
+  `needs:` references, dependency cycles, oversized items). Last shipped as the legacy
+  `refine-backlog`/`lint-backlog.ts`, now in Git history; not in the v1.0 spec
 - ∆Stb `delto status` — a read-only progress report (per-initiative remaining work,
-  eligible tasks, critical path). Exists today as the legacy
-  `backlog-status`/`report-status.ts`; not in the v1.0 spec
+  eligible tasks, critical path). Last shipped as the legacy
+  `backlog-status`/`report-status.ts`, now in Git history; not in the v1.0 spec
 - ∆Tmp `delto bootstrap` + bundled templates — a starter `BACKLOG.md` and
   `docs/journal/README.md` under `src/lib/templates/`, materialized into a fresh
   consumer project; not in the v1.0 spec
