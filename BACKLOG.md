@@ -46,6 +46,13 @@ add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
   so an accidental push (e.g. an agent in YOLO mode) cannot trigger an unreviewed
   publish
 
+### Skill Guidance
+
+- ∆Ace Add `/delto` skill guidance for writing good backlog items — terse phrasing, writing
+  for a reader with no prior context, including the "why" not just the what, and using a
+  subagent to evaluate a new item's `needs:` against the rest of the backlog. Restores and
+  improves the add-item guidance dropped in the ∆Rnm cutover.
+
 ## Someday/Maybe
 
 Work the current `/delto` `SKILL.md` spec (v1.0) does not call for. Parked until a spec
