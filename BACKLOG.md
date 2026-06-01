@@ -24,34 +24,35 @@ complete), full test coverage, and a working consumer story (skill install via `
 add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
 [ADR-001](./docs/decisions/001-delto-cli-and-skill-shape.md).
 
+### Skill Guidance
+
+- ∆Ace Add a `references/` guide to the `/delto` skill on writing good backlog items —
+  progressive disclosure, kept out of `SKILL.md` and loaded on demand: terse phrasing,
+  written for a reader with no prior context, the "why" not just the what, and using a
+  subagent to evaluate a new item's `needs:` against the rest of the backlog. Restores and
+  improves the add-item guidance dropped in the ∆Rnm cutover.
+
 ### Packaging & Release
 
 - ∆Sre Verify `semantic-release` produces the expected `@limulus/delto` tarball — the
   `delto` `bin` entry and `files` per ADR-001's `src/` layout. No `main`/`exports`
   (bin-only per ∆iDx). Skill discovery is verified separately by ∆IsK (Git-driven, not
-  tarball-driven); needs: ∆qBS
+  tarball-driven)
 - ∆fb2 Publish to the public npm registry, not GitHub Packages — drop the
   `publishConfig.registry` (`npm.pkg.github.com`) override and update the `cd.yaml` publish
   job's registry + auth token so `npx @limulus/delto@1` resolves from public npm. Surfaced by
   the ∆Rdm review.
-- ∆29K Add a license before the first publish — the package is `UNLICENSED` and the repo is
-  private; choose and add a LICENSE and make the repo public (likely alongside ∆Sre). Surfaced
-  by the ∆Rdm review.
+- ∆29K Go public before the first publish — the single owner of making the project public:
+  choose and add a LICENSE (currently `UNLICENSED`) and flip the GitHub repo from private to
+  public. Surfaced by the ∆Rdm review.
+- ∆Bpr Enable GitHub branch protection on `main` — require PR + passing CI before merge
+  so an accidental push (e.g. an agent in YOLO mode) cannot trigger an unreviewed
+  publish
 - ∆LwK Post-publish consumer smoke — once the first release lands, confirm `npx
   @limulus/delto@1 <sub>` resolves the `@1` tag from the public npm registry and runs on a fresh
   checkout, and `npx skills add <git-ref>` installs `skills/delto` from the pushed ref. ∆IsK
   verified both locally (tarball install + local skill add); this covers the
   live-registry/pushed-ref half; needs: ∆Sre, ∆fb2
-- ∆Bpr Enable GitHub branch protection on `main` — require PR + passing CI before merge
-  so an accidental push (e.g. an agent in YOLO mode) cannot trigger an unreviewed
-  publish
-
-### Skill Guidance
-
-- ∆Ace Add `/delto` skill guidance for writing good backlog items — terse phrasing, writing
-  for a reader with no prior context, including the "why" not just the what, and using a
-  subagent to evaluate a new item's `needs:` against the rest of the backlog. Restores and
-  improves the add-item guidance dropped in the ∆Rnm cutover.
 
 ## Someday/Maybe
 
@@ -59,9 +60,15 @@ Work the current `/delto` `SKILL.md` spec (v1.0) does not call for. Parked until
 revision or concrete user need brings it back; logic for the first two survives in Git
 history (the legacy skill scripts that held it were removed by ∆Rnm).
 
-- ∆PZ3 `delto refine` — a `BACKLOG.md` structural linter (duplicate IDs, unresolved
-  `needs:` references, dependency cycles, oversized items). Last shipped as the legacy
+- ∆PZ3 `delto lint` — a `BACKLOG.md` structural linter (duplicate IDs, unresolved
+  `needs:` references, dependency cycles, oversized items): deterministic pass/fail checks,
+  distinct from the LLM-driven `refine` activity the skill owns. Last shipped as the legacy
   `refine-backlog`/`lint-backlog.ts`, now in Git history; not in the v1.0 spec
+- ∆dlO Spike: deep backlog-quality review — a dynamic multi-agent workflow that analyzes
+  each item against the repo (git, code, journal), not just the backlog text, to catch what
+  `delto lint` (∆PZ3) can't: stale premises, already-done work, satisfied/implicit `needs:`,
+  semantic duplicates, missing "why", spec/code drift. The LLM-judgment counterpart to
+  ∆PZ3's deterministic checks; proposes fixes for human approval. Not in the v1.0 spec
 - ∆Stb `delto status` — a read-only progress report (per-initiative remaining work,
   eligible tasks, critical path). Last shipped as the legacy
   `backlog-status`/`report-status.ts`, now in Git history; not in the v1.0 spec
