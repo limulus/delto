@@ -97,7 +97,7 @@ function render() {
 
   boardEl.innerHTML = ''
   for (const lane of LANES) {
-    boardEl.appendChild(renderLane(lane, byLane[lane], initiatives))
+    boardEl.appendChild(renderLane(lane, byLane[lane.id], initiatives))
   }
   // threads after layout settles
   requestAnimationFrame(() => requestAnimationFrame(drawThreads))
