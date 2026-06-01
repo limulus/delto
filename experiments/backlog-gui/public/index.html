@@ -3,58 +3,109 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>delto GUI · base server</title>
-    <style>
-      :root { color-scheme: light dark; }
-      body {
-        font: 15px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
-        max-width: 46rem; margin: 4rem auto; padding: 0 1.5rem;
-      }
-      h1 { font-size: 1.4rem; letter-spacing: -0.02em; }
-      .sigil { color: #c0392b; }
-      .grid { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0; }
-      .stat {
-        border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
-        border-radius: 0.5rem; padding: 0.75rem 1rem; min-width: 6rem;
-      }
-      .stat b { display: block; font-size: 1.8rem; }
-      .stat span { opacity: 0.7; font-size: 0.8rem; }
-      a { color: inherit; }
-      ul { padding-left: 1.2rem; }
-      code { background: color-mix(in srgb, currentColor 12%, transparent); padding: 0 0.25em; border-radius: 3px; }
-    </style>
+    <title>Deltaway — one immutable deltoid, one continuous story</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231a2330'/%3E%3Cpath d='M16 7 L25 25 L7 25 Z' fill='none' stroke='%23e0a85e' stroke-width='2.4' stroke-linejoin='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body>
-    <h1><span class="sigil">∆</span> delto GUI — base server</h1>
-    <p>
-      This is the shared, read-only API the mockups are built on. It reflects the
-      <em>real</em> <code>BACKLOG.md</code> and <code>docs/journal/</code> via delto's own
-      parser. Check out a <code>mockups/*</code> branch to see a front-end built on it.
-    </p>
-    <div class="grid" id="stats">loading live data…</div>
-    <h2>API</h2>
-    <ul>
-      <li><a href="/api/snapshot">/api/snapshot</a> — backlog + journal + stats + intents</li>
-      <li><a href="/api/backlog">/api/backlog</a> — enriched items, eligibility, dependents</li>
-      <li><a href="/api/journal">/api/journal</a> — completed entries + velocity stats</li>
-      <li><code>/api/journal/:file</code> — one entry, rendered to HTML</li>
-      <li><a href="/api/intents">/api/intents</a> — the intent queue (GET) / record intent (POST)</li>
-    </ul>
-    <script type="module">
-      const r = await fetch('/api/snapshot').then((x) => x.json())
-      const eligible = r.backlog.items.filter((i) => i.eligible).length
-      const claimed = r.backlog.items.filter((i) => i.claimed).length
-      const cells = [
-        ['items', r.backlog.items.length],
-        ['eligible', eligible],
-        ['claimed', claimed],
-        ['initiatives', r.backlog.initiatives.length],
-        ['completed', r.stats.total],
-        ['intents', r.intents.length],
-      ]
-      document.getElementById('stats').innerHTML = cells
-        .map(([k, v]) => `<div class="stat"><b>${v}</b><span>${k}</span></div>`)
-        .join('')
-    </script>
+  <body data-loading="true">
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="26" height="26">
+            <path d="M16 6 L26 26 L6 26 Z" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="brand-word">Deltaway</span>
+        <span class="brand-tag">one deltoid · one story</span>
+      </div>
+
+      <div class="topbar-mid">
+        <div class="scrubber" id="scrubber" hidden>
+          <button class="scrub-reset" id="scrubReset" title="Show entire history" aria-label="Show entire history">live</button>
+          <input type="range" id="timeSlider" min="0" max="100" value="100" aria-label="Scrub the journal history" />
+          <span class="scrub-readout mono" id="scrubReadout">all history</span>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="ghost-btn" id="needsToggle" aria-pressed="false" title="Overlay the needs / eligibility graph">
+          <span class="dot-graph" aria-hidden="true"></span>
+          Needs graph
+        </button>
+        <button class="ghost-btn tray-btn" id="trayToggle" aria-expanded="false" title="Open the agent inbox">
+          <span class="tray-icon" aria-hidden="true"></span>
+          Agent inbox
+          <span class="tray-count mono" id="trayCount" hidden>0</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="never-rule" id="neverRule" title="The GUI never edits BACKLOG.md — it only queues intent for the agent">
+      <span class="never-icon" aria-hidden="true"></span>
+      <span>This board never edits <code>BACKLOG.md</code>. Every move <b>queues an intent</b> for the agent to enact.</span>
+    </div>
+
+    <main class="board-wrap" id="boardWrap">
+      <svg class="threads" id="threads" aria-hidden="true"></svg>
+
+      <section class="board" id="board" aria-label="Lifecycle flow board">
+        <!-- lanes injected by app.js -->
+        <div class="board-skeleton" id="skeleton">
+          <div class="sk-lane"></div><div class="sk-lane"></div>
+          <div class="sk-lane"></div><div class="sk-lane"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Detail / flip drawer -->
+    <aside class="drawer" id="drawer" aria-hidden="true" aria-label="Deltoid detail">
+      <div class="drawer-scrim" id="drawerScrim"></div>
+      <div class="drawer-panel" id="drawerPanel" role="dialog" aria-modal="true">
+        <!-- injected -->
+      </div>
+    </aside>
+
+    <!-- Pending intents tray -->
+    <aside class="tray" id="tray" aria-hidden="true" aria-label="Pending intents — agent inbox">
+      <div class="tray-scrim" id="trayScrim"></div>
+      <div class="tray-panel">
+        <header class="tray-head">
+          <div>
+            <h2>Agent inbox</h2>
+            <p class="tray-sub">Intents you've queued. The agent drains this queue and makes the real <code>BACKLOG.md</code> edits — this view never does.</p>
+          </div>
+          <button class="x-btn" id="trayClose" aria-label="Close inbox">&times;</button>
+        </header>
+        <div class="tray-body" id="trayBody"><!-- injected --></div>
+        <footer class="tray-foot">
+          <span class="mono" id="trayFootStat">—</span>
+          <button class="link-btn" id="trayRefresh">re-read queue</button>
+        </footer>
+      </div>
+    </aside>
+
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+
+    <!-- intent composer popover (for plan / unblock-review notes) -->
+    <div class="composer" id="composer" hidden>
+      <div class="composer-scrim" id="composerScrim"></div>
+      <form class="composer-card" id="composerForm">
+        <div class="composer-head">
+          <span class="composer-kind mono" id="composerKind">plan</span>
+          <span class="composer-deltoid mono" id="composerDeltoid">∆—</span>
+        </div>
+        <label class="composer-label" for="composerNote" id="composerLabel">Tell the agent what to do</label>
+        <textarea id="composerNote" rows="3" placeholder="e.g. start refining this before we claim it"></textarea>
+        <div class="composer-actions">
+          <button type="button" class="link-btn" id="composerCancel">cancel</button>
+          <button type="submit" class="solid-btn" id="composerSubmit">Queue intent</button>
+        </div>
+      </form>
+    </div>
+
+    <script src="./app.js" type="module"></script>
   </body>
 </html>
