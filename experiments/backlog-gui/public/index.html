@@ -3,58 +3,167 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>delto GUI · base server</title>
-    <style>
-      :root { color-scheme: light dark; }
-      body {
-        font: 15px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
-        max-width: 46rem; margin: 4rem auto; padding: 0 1.5rem;
-      }
-      h1 { font-size: 1.4rem; letter-spacing: -0.02em; }
-      .sigil { color: #c0392b; }
-      .grid { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0; }
-      .stat {
-        border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
-        border-radius: 0.5rem; padding: 0.75rem 1rem; min-width: 6rem;
-      }
-      .stat b { display: block; font-size: 1.8rem; }
-      .stat span { opacity: 0.7; font-size: 0.8rem; }
-      a { color: inherit; }
-      ul { padding-left: 1.2rem; }
-      code { background: color-mix(in srgb, currentColor 12%, transparent); padding: 0 0.25em; border-radius: 3px; }
-    </style>
+    <title>Critical Path · delto triage cockpit</title>
+    <meta
+      name="description"
+      content="The delto BACKLOG.md triage cockpit — eligibility, leverage, and the needs: dependency graph rendered in priority order."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 2 L14 14 L2 14 Z' fill='%2354e6c8'/%3E%3C/svg%3E"
+    />
   </head>
-  <body>
-    <h1><span class="sigil">∆</span> delto GUI — base server</h1>
-    <p>
-      This is the shared, read-only API the mockups are built on. It reflects the
-      <em>real</em> <code>BACKLOG.md</code> and <code>docs/journal/</code> via delto's own
-      parser. Check out a <code>mockups/*</code> branch to see a front-end built on it.
-    </p>
-    <div class="grid" id="stats">loading live data…</div>
-    <h2>API</h2>
-    <ul>
-      <li><a href="/api/snapshot">/api/snapshot</a> — backlog + journal + stats + intents</li>
-      <li><a href="/api/backlog">/api/backlog</a> — enriched items, eligibility, dependents</li>
-      <li><a href="/api/journal">/api/journal</a> — completed entries + velocity stats</li>
-      <li><code>/api/journal/:file</code> — one entry, rendered to HTML</li>
-      <li><a href="/api/intents">/api/intents</a> — the intent queue (GET) / record intent (POST)</li>
-    </ul>
-    <script type="module">
-      const r = await fetch('/api/snapshot').then((x) => x.json())
-      const eligible = r.backlog.items.filter((i) => i.eligible).length
-      const claimed = r.backlog.items.filter((i) => i.claimed).length
-      const cells = [
-        ['items', r.backlog.items.length],
-        ['eligible', eligible],
-        ['claimed', claimed],
-        ['initiatives', r.backlog.initiatives.length],
-        ['completed', r.stats.total],
-        ['intents', r.intents.length],
-      ]
-      document.getElementById('stats').innerHTML = cells
-        .map(([k, v]) => `<div class="stat"><b>${v}</b><span>${k}</span></div>`)
-        .join('')
-    </script>
+  <body data-state="loading">
+    <!-- ───────────────────────── Top instrument bar ───────────────────────── -->
+    <header class="deck-bar">
+      <div class="deck-bar__brand">
+        <span class="sigil sigil--brand" aria-hidden="true"></span>
+        <div class="deck-bar__title">
+          <strong>Critical Path</strong>
+          <span class="deck-bar__sub">delto triage cockpit</span>
+        </div>
+      </div>
+
+      <div class="deck-bar__readout" id="deckReadout" aria-live="polite">
+        <span class="readout-chip readout-chip--ok">
+          <i class="dot dot--ok"></i><b id="rEligible">—</b> eligible
+        </span>
+        <span class="readout-chip readout-chip--blocked">
+          <i class="dot dot--blocked"></i><b id="rBlocked">—</b> blocked
+        </span>
+        <span class="readout-chip readout-chip--claimed">
+          <i class="dot dot--claimed"></i><b id="rClaimed">—</b> claimed
+        </span>
+        <span class="readout-sep" aria-hidden="true"></span>
+        <span class="readout-chip readout-chip--ghost">
+          <b id="rDone">—</b> shipped
+        </span>
+      </div>
+
+      <div class="deck-bar__actions">
+        <button class="btn btn--ghost" id="btnAdd" type="button">
+          <span class="btn-glyph">+</span> Add item
+        </button>
+        <button class="btn btn--ghost" id="btnRefresh" type="button" title="Re-fetch the live graph">
+          <span class="btn-glyph" id="refreshGlyph">⟳</span> Sync
+        </button>
+        <span class="deck-bar__rule" id="ruleBadge" title="The one hard rule">
+          GUI never edits <code>BACKLOG.md</code>
+        </span>
+      </div>
+    </header>
+
+    <!-- ───────────────────────── Three-column deck ───────────────────────── -->
+    <main class="deck" id="deck">
+      <!-- LEFT — telemetry rail -->
+      <aside class="rail rail--left" aria-label="Triage telemetry">
+        <section class="panel panel--tally">
+          <h2 class="panel__title">State of the board</h2>
+          <div class="tally" id="tally"></div>
+          <p class="panel__foot" id="tallyFoot">Computed live from the <code>needs:</code> graph.</p>
+        </section>
+
+        <section class="panel panel--leverage">
+          <h2 class="panel__title">
+            Leverage leaderboard
+            <span class="panel__hint">unblocks the most</span>
+          </h2>
+          <ol class="leverage" id="leverage"></ol>
+          <p class="panel__foot" id="leverageFoot"></p>
+        </section>
+
+        <section class="panel panel--velocity">
+          <h2 class="panel__title">Recent velocity</h2>
+          <div class="spark" id="spark"></div>
+          <p class="panel__foot" id="velocityFoot"></p>
+        </section>
+      </aside>
+
+      <!-- CENTER — the backlog stack -->
+      <section class="stack-col" aria-label="Backlog priority stack">
+        <div class="stack-head">
+          <div class="stack-head__lhs">
+            <h2 class="stack-head__title">Priority stack</h2>
+            <span class="stack-head__note">Initiative → Epic order, straight from <code>BACKLOG.md</code></span>
+          </div>
+          <div class="focus-banner" id="focusBanner" hidden>
+            <span class="focus-banner__txt"></span>
+            <button class="btn btn--tiny" id="focusClear" type="button">Clear focus · Esc</button>
+          </div>
+        </div>
+
+        <!-- The connector overlay is drawn here, above the cards, during focus. -->
+        <svg class="wires" id="wires" aria-hidden="true"></svg>
+        <div class="stack" id="stack"></div>
+      </section>
+
+      <!-- RIGHT — intent queue / agent inbox -->
+      <aside class="rail rail--right" aria-label="Intent queue">
+        <section class="panel panel--queue">
+          <h2 class="panel__title">
+            Agent inbox
+            <span class="panel__hint" id="queueCount">0 queued</span>
+          </h2>
+          <p class="queue__lede">
+            Triage decisions are <em>requests</em>, appended to <code>/api/intents</code>. The
+            agent drains them and owns the edits.
+          </p>
+          <div class="queue" id="queue"></div>
+        </section>
+      </aside>
+    </main>
+
+    <!-- ───────────────────────── Intent composer slide-over ───────────────────────── -->
+    <div class="scrim" id="scrim" hidden></div>
+    <aside class="composer" id="composer" hidden aria-modal="true" role="dialog" aria-labelledby="composerTitle">
+      <form id="composerForm">
+        <header class="composer__head">
+          <span class="composer__kind" id="composerKind"></span>
+          <h2 class="composer__title" id="composerTitle"></h2>
+          <button class="composer__x" id="composerClose" type="button" aria-label="Cancel">✕</button>
+        </header>
+
+        <div class="composer__target" id="composerTarget"></div>
+
+        <label class="composer__field" id="targetEpicField" hidden>
+          <span class="composer__label">Under</span>
+          <select class="composer__select" id="targetEpic"></select>
+        </label>
+
+        <label class="composer__field">
+          <span class="composer__label" id="noteLabel">In your words — the ask for the agent</span>
+          <textarea
+            class="composer__note"
+            id="composerNote"
+            rows="5"
+            placeholder="What should the agent do, and why?"
+          ></textarea>
+        </label>
+
+        <div class="composer__handoff">
+          <span class="sigil sigil--sm" aria-hidden="true"></span>
+          This is queued for the agent. <strong>It does not touch <code>BACKLOG.md</code>.</strong>
+        </div>
+
+        <footer class="composer__foot">
+          <button class="btn btn--ghost" type="button" id="composerCancel">Cancel</button>
+          <button class="btn btn--solid" type="submit" id="composerSubmit">Queue for agent →</button>
+        </footer>
+      </form>
+    </aside>
+
+    <!-- toast launchpad -->
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+
+    <!-- boot / error veil -->
+    <div class="veil" id="veil">
+      <div class="veil__inner">
+        <span class="sigil sigil--xl sigil--spin" aria-hidden="true"></span>
+        <p class="veil__msg" id="veilMsg">Reading the live backlog…</p>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js"></script>
   </body>
 </html>
