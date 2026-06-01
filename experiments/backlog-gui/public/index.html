@@ -1,60 +1,151 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>delto GUI · base server</title>
-    <style>
-      :root { color-scheme: light dark; }
-      body {
-        font: 15px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
-        max-width: 46rem; margin: 4rem auto; padding: 0 1.5rem;
-      }
-      h1 { font-size: 1.4rem; letter-spacing: -0.02em; }
-      .sigil { color: #c0392b; }
-      .grid { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0; }
-      .stat {
-        border: 1px solid color-mix(in srgb, currentColor 25%, transparent);
-        border-radius: 0.5rem; padding: 0.75rem 1rem; min-width: 6rem;
-      }
-      .stat b { display: block; font-size: 1.8rem; }
-      .stat span { opacity: 0.7; font-size: 0.8rem; }
-      a { color: inherit; }
-      ul { padding-left: 1.2rem; }
-      code { background: color-mix(in srgb, currentColor 12%, transparent); padding: 0 0.25em; border-radius: 3px; }
-    </style>
-  </head>
-  <body>
-    <h1><span class="sigil">∆</span> delto GUI — base server</h1>
-    <p>
-      This is the shared, read-only API the mockups are built on. It reflects the
-      <em>real</em> <code>BACKLOG.md</code> and <code>docs/journal/</code> via delto's own
-      parser. Check out a <code>mockups/*</code> branch to see a front-end built on it.
-    </p>
-    <div class="grid" id="stats">loading live data…</div>
-    <h2>API</h2>
-    <ul>
-      <li><a href="/api/snapshot">/api/snapshot</a> — backlog + journal + stats + intents</li>
-      <li><a href="/api/backlog">/api/backlog</a> — enriched items, eligibility, dependents</li>
-      <li><a href="/api/journal">/api/journal</a> — completed entries + velocity stats</li>
-      <li><code>/api/journal/:file</code> — one entry, rendered to HTML</li>
-      <li><a href="/api/intents">/api/intents</a> — the intent queue (GET) / record intent (POST)</li>
-    </ul>
-    <script type="module">
-      const r = await fetch('/api/snapshot').then((x) => x.json())
-      const eligible = r.backlog.items.filter((i) => i.eligible).length
-      const claimed = r.backlog.items.filter((i) => i.claimed).length
-      const cells = [
-        ['items', r.backlog.items.length],
-        ['eligible', eligible],
-        ['claimed', claimed],
-        ['initiatives', r.backlog.initiatives.length],
-        ['completed', r.stats.total],
-        ['intents', r.intents.length],
-      ]
-      document.getElementById('stats').innerHTML = cells
-        .map(([k, v]) => `<div class="stat"><b>${v}</b><span>${k}</span></div>`)
-        .join('')
-    </script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Driftwood — delto journal</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- grain + paper atmosphere -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="masthead">
+    <div class="mast-left">
+      <span class="sigil-mark" aria-hidden="true">∆</span>
+      <div class="mast-title">
+        <h1>Driftwood</h1>
+        <p class="mast-tag">Read the river of finished work, and pan its retrospectives for gold.</p>
+      </div>
+    </div>
+
+    <div class="mast-search">
+      <svg class="search-glyph" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>
+      <input id="search" type="search" autocomplete="off" spellcheck="false"
+             placeholder="Search the journal — try “difit”, “over-engineer”, “caller decide”…" aria-label="Full-text search across journal entries" />
+      <kbd class="search-kbd">/</kbd>
+      <button id="search-clear" class="search-clear" hidden aria-label="Clear search">esc</button>
+    </div>
+
+    <div class="mast-right">
+      <button id="select-mode" class="ghost-btn" type="button" aria-pressed="false" title="Toggle multi-select to compose a cross-retrospective">
+        <span class="dot"></span> Select
+      </button>
+      <button id="open-tray" class="inbox-btn" type="button" aria-haspopup="dialog">
+        Agent inbox <span id="inbox-count" class="inbox-count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="stage">
+    <!-- ───────────────────────── THE RIVER ───────────────────────── -->
+    <section class="river" aria-label="Velocity river — completion timeline">
+      <div class="velocity-ribbon" id="ribbon">
+        <div class="ribbon-skeleton">Charting the current…</div>
+      </div>
+
+      <div class="river-scroll" id="river-scroll">
+        <div class="river-loading" id="river-loading">
+          <span class="sigil-spin">∆</span>
+          <p>Reading the journal…</p>
+        </div>
+        <svg class="river-stream" id="river-stream" aria-hidden="true" preserveAspectRatio="none"></svg>
+        <ol class="river-nodes" id="river-nodes" role="listbox" aria-label="Journal entries by completion time"></ol>
+      </div>
+
+      <div class="composer-bar" id="composer-bar" hidden>
+        <span class="composer-count"><b id="composer-n">0</b> selected</span>
+        <button id="compose-retro" class="cast-btn" type="button" disabled>Draft a retrospective across these →</button>
+        <button id="composer-cancel" class="link-btn" type="button">cancel</button>
+      </div>
+    </section>
+
+    <!-- ───────────────────────── THE READER ───────────────────────── -->
+    <section class="reader" id="reader" aria-label="Entry reader" tabindex="-1">
+      <div class="reader-empty" id="reader-empty">
+        <span class="empty-glyph" aria-hidden="true">∆</span>
+        <h2>A logbook of finished work</h2>
+        <p>Seventeen completions, each carrying its own Planning, Refinement, and Retrospective.
+           Pick a node on the river to start reading — or pan a retrospective for a lesson worth keeping.</p>
+        <ul class="empty-hints">
+          <li><span class="hk">click</span> a river node to open an entry</li>
+          <li><span class="hk">select</span> prose in a Retrospective to harvest it</li>
+          <li><span class="hk">/</span> to search every entry’s full text</li>
+        </ul>
+      </div>
+
+      <article class="entry" id="entry" hidden>
+        <div class="section-rail" id="section-rail" aria-label="Entry sections"></div>
+        <div class="entry-body" id="entry-body">
+          <header class="entry-mast" id="entry-mast"></header>
+          <div class="entry-html" id="entry-html"></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ───────────────────── THE HARVEST MARGIN ───────────────────── -->
+    <aside class="margin" id="margin" aria-label="Harvest margin">
+      <div class="margin-head">
+        <h2>Harvest</h2>
+        <p class="margin-sub">Pan the retrospective for gold. Cast the nuggets to the agent.</p>
+      </div>
+
+      <div class="margin-empty" id="margin-empty">
+        <div class="pan-glyph" aria-hidden="true">
+          <svg viewBox="0 0 48 48"><path d="M6 18a18 9 0 0 0 36 0" /><path d="M6 18a18 -7 0 0 1 36 0" /><line x1="24" y1="9" x2="24" y2="3"/></svg>
+        </div>
+        <p>Select any sentence in a <b>Retrospective</b> to lift it out as a card here.</p>
+      </div>
+
+      <div class="provenance" id="provenance" hidden></div>
+      <ol class="margin-cards" id="margin-cards"></ol>
+    </aside>
+  </main>
+
+  <!-- floating selection toolbar -->
+  <div class="harvest-pop" id="harvest-pop" role="toolbar" aria-label="Harvest actions" hidden>
+    <button data-act="followup" type="button"><span class="hp-i">∆</span> Spawn follow-up</button>
+    <button data-act="lesson"   type="button"><span class="hp-i">✦</span> Mark as lesson</button>
+    <button data-act="quote"    type="button"><span class="hp-i">”</span> Quote into draft</button>
+  </div>
+
+  <!-- ───────────────────────── INTENT TRAY ───────────────────────── -->
+  <div class="tray-scrim" id="tray-scrim" hidden></div>
+  <section class="tray" id="tray" aria-label="Agent inbox — queued intents" aria-hidden="true">
+    <header class="tray-head">
+      <div>
+        <h2>Agent inbox</h2>
+        <p class="tray-note">The GUI never edits <code>BACKLOG.md</code>. Each card is a request <em>queued for the agent</em> to act on — the same hand-off difit uses for review comments.</p>
+      </div>
+      <button id="close-tray" class="link-btn" type="button" aria-label="Close inbox">close</button>
+    </header>
+    <ol class="tray-list" id="tray-list"></ol>
+    <div class="tray-empty" id="tray-empty">
+      <p>No intents queued yet. Anything you harvest will surface here as a pending request for the agent.</p>
+    </div>
+  </section>
+
+  <!-- toast stack -->
+  <div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <!-- draft modal (sheet) for follow-up / lesson / cross-retro -->
+  <div class="sheet-scrim" id="sheet-scrim" hidden></div>
+  <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" hidden>
+    <header class="sheet-head">
+      <span class="sheet-kind" id="sheet-kind"></span>
+      <h2 id="sheet-title"></h2>
+    </header>
+    <div class="sheet-body" id="sheet-body"></div>
+    <footer class="sheet-foot">
+      <span class="sheet-honest">This queues an intent — it will not touch <code>BACKLOG.md</code>.</span>
+      <div class="sheet-actions">
+        <button id="sheet-cancel" class="link-btn" type="button">cancel</button>
+        <button id="sheet-confirm" class="cast-btn" type="button">Cast to agent →</button>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="./app.js"></script>
+</body>
 </html>
