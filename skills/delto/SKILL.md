@@ -116,15 +116,19 @@ the given path. Unless the user has specified a different format, file names sho
 `∆7hy-frobnicator-post-endpoint.md`. It transcribes the item's text from `BACKLOG.md` into
 the entry and never edits `BACKLOG.md` itself, so run it while the item is still present.
 
-## User request
+## User requests
 
 The user may directly activate this skill with `/delto <action>`. If they don’t specify an
 action you should ask for clarification and suggest possible actions.
+
+The user may also indirectly activate these actions. Use your judgment to determine if a
+user request is related to delto and which action it corresponds to.
 
 ### `plan`
 
 The user is looking to plan an item from the backlog. If they do not specify an item, use
 the `surface` tool to find an eligible item. Then `claim` that item and begin planning it.
+You should consider using planning tools or skills available to you.
 
 ### `complete`
 
