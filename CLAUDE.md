@@ -1,6 +1,7 @@
 # @limulus/delto Helper Guide
 
-This project is for an agent skill called delto. It helps you work with BACKLOG.md files.
+This project is for a distributable agent skill called delto. It helps you work with
+BACKLOG.md files.
 
 ## Dogfooding
 
