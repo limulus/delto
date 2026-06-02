@@ -1,5 +1,8 @@
 # @limulus/delto Helper Guide
 
+This project is for an agent skill called delto. It helps you work with BACKLOG.md files.
+Use the delto skill (@skills/delto/SKILL.md) to build delto.
+
 ## Commands
 
 - Build: `npm run build`
@@ -52,6 +55,14 @@ Read the relevant ADR before working on an area it covers.
   - `src/bin/` - CLI entry points
   - `src/mocks/` - Test mocks
 
+## Software Development Methodology
+
+- Use red/green/refactor test driven development
+- 100% test coverage is required
+- Avoid `vi.mock()`
+- Use MSW for HTTP/GraphQL API mocks
+- Prefer assertions over defensive type checks to avoid test bloat
+
 ## Commit Message Guidelines
 
 Versions of this software are automatically determined by `semantic-release`. Follow
@@ -87,4 +98,3 @@ Only certain commit messages will trigger changes to the semantic version of the
 - The `feat` prefix bumps the minor version
 - The `fix` prefix bumps the patch version
 - All other commit messages have no effect on the version
-
