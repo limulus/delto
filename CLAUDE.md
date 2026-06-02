@@ -1,7 +1,12 @@
 # @limulus/delto Helper Guide
 
 This project is for an agent skill called delto. It helps you work with BACKLOG.md files.
-Use the delto skill (@skills/delto/SKILL.md) to build delto.
+
+## Dogfooding
+
+You are in the unique position to use the delto skill (@skills/delto/SKILL.md) to build
+delto. Note that the skill will say to run `npx @limululs/delto <subcommand>`, but in order
+to dogfood properly you must run: `node ./src/bin/cli.ts <subcommand>`.
 
 ## Commands
 
