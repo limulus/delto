@@ -124,6 +124,12 @@ action you should ask for clarification and suggest possible actions.
 The user may also indirectly activate these actions. Use your judgment to determine if a
 user request is related to delto and which action it corresponds to.
 
+### `add`
+
+The user is looking to add a new item to the backlog. They may provide text for the item or
+just a general description of the work. You should use the `mint` tool to create a new
+deltoid. Read [how to write backlog items](references/authoring-backlog-items.md).
+
 ### `plan`
 
 The user is looking to plan an item from the backlog. If they do not specify an item, use

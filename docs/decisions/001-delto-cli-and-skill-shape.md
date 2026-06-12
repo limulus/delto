@@ -1,7 +1,8 @@
 # ADR-001 — `delto` CLI and skill shape
 
 - **Status:** Accepted 2026-05-25; revised 2026-05-27 to match the `/delto` `SKILL.md`
-  spec v1.0 (subcommand set, invocation pattern)
+  spec v1.0 (subcommand set, invocation pattern); revised 2026-06-11 (∆Ace) to place
+  prose-detail guides under `references/` rather than sibling `.md` files
 - **Backlog item:** ∆bSx
 
 ## Context
@@ -64,8 +65,9 @@ lifecycle (e.g. `plan` = `surface` → `claim` → write the plan). `SKILL.md` c
 - The spec and the lifecycle as one narrative.
 - Pointers to `--help` for each subcommand's contract.
 - The invocation pattern (below).
-- Sibling `.md` files for prose detail if any subsection grows large enough to
-  warrant splitting.
+- Guides under `references/` for prose detail when a subsection grows large enough to
+  warrant splitting — loaded on demand (progressive disclosure) rather than carried in
+  every `SKILL.md` read.
 
 ### 3. Invocation pattern
 

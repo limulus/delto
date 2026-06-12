@@ -17,13 +17,14 @@ npx skills add limulus/delto
 
 Drive delto through the skill, usually as `/delto <action>`:
 
+- **`/delto add`** — capture new work. Describe it conversationally and the skill mints a fresh
+  deltoid, writes a well-formed item, and places it in the backlog.
 - **`/delto plan`** — start on a piece of work. Name an item, or let the skill `surface` an
   eligible one (nothing blocked or already claimed), claim it for you, and plan it.
 - **`/delto complete`** — accept finished work. The skill writes the item's journal entry, then
   removes it from `BACKLOG.md`, fitting whatever commit workflow you use.
 
-Adding work is just as conversational: ask for a new item and the skill mints a fresh deltoid and
-places it. Each step maps to a deterministic CLI subcommand (`mint`, `surface`, `claim`,
+Each step maps to a deterministic CLI subcommand (`mint`, `surface`, `claim`,
 `release`, `complete`) — run any with `--help`, or read the skill, for the specifics.
 
 ## The backlog

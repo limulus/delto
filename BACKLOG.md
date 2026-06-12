@@ -24,14 +24,6 @@ complete), full test coverage, and a working consumer story (skill install via `
 add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
 [ADR-001](./docs/decisions/001-delto-cli-and-skill-shape.md).
 
-### Skill Guidance
-
-- ∆Ace Add a `references/` guide to the `/delto` skill on writing good backlog items —
-  progressive disclosure, kept out of `SKILL.md` and loaded on demand: terse phrasing,
-  written for a reader with no prior context, the "why" not just the what, and using a
-  subagent to evaluate a new item's `needs:` against the rest of the backlog. Restores and
-  improves the add-item guidance dropped in the ∆Rnm cutover.
-
 ### Packaging & Release
 
 - ∆Sre Verify `semantic-release` produces the expected `@limulus/delto` tarball — the
