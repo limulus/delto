@@ -26,10 +26,6 @@ add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
 
 ### Packaging & Release
 
-- ∆Sre Verify `semantic-release` produces the expected `@limulus/delto` tarball — the
-  `delto` `bin` entry and `files` per ADR-001's `src/` layout. No `main`/`exports`
-  (bin-only per ∆iDx). Skill discovery is verified separately by ∆IsK (Git-driven, not
-  tarball-driven)
 - ∆fb2 Publish to the public npm registry, not GitHub Packages — drop the
   `publishConfig.registry` (`npm.pkg.github.com`) override and update the `cd.yaml` publish
   job's registry + auth token so `npx @limulus/delto@1` resolves from public npm. Surfaced by
