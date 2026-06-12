@@ -42,14 +42,6 @@ add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
   verified both locally (tarball install + local skill add); this covers the
   live-registry/pushed-ref half; needs: ∆Sre, ∆fb2
 
-### Skill Quality
-
-- ∆Xtj Evidence that `skills/delto/references/authoring-backlog-items.md` improves
-  agent-written backlog items — blind A/B eval (synthesized menschen prompts, Opus and
-  Sonnet cohorts with/without the reference, Fable 5 judges; report in
-  `docs/experiments/authoring-reference-eval.md`), then fold the findings back into the
-  reference — bdf1c03 landed the doc on argument alone, this measures it
-
 ## Someday/Maybe
 
 Work the current `/delto` `SKILL.md` spec (v1.0) does not call for. Parked until a spec
