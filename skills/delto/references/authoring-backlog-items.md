@@ -23,7 +23,8 @@ prose to stand alone:
 
 - **Terse.** Respect the backlog's own line limit if it declares one; 2–3 lines is a good
   default. State the *what*, not a design — implementation detail belongs in the plan that
-  happens at claim time, not the backlog.
+  happens at claim time, not the backlog. The richer the context you hold, the harder you
+  must compress: the why is one clause, not everything you know.
 - **Self-contained.** No pronouns pointing at today's conversation, no "as discussed", no
   relative dates. Name files, endpoints, and decisions explicitly. The reader has the repo
   and the backlog — nothing else.
