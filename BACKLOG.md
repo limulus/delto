@@ -18,10 +18,10 @@ Standing initiative — do not remove, even if no items.
 
 ## First npm Publish
 
-Foundational initiative — what `@limulus/delto` needs before it can be published: the
+Foundational initiative — what `@limulus/delto` needs before it can be published. The
 `delto` CLI subcommands the `/delto` `SKILL.md` documents (mint, surface, claim, release,
-complete), full test coverage, and a working consumer story (skill install via `npx skills
-add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
+complete) are built, fully tested, and locally verified end to end (∆IsK, ∆Sre); what
+remains is the registry, licensing, and repo work below. Shape decisions captured in
 [ADR-001](./docs/decisions/001-delto-cli-and-skill-shape.md).
 
 ### Packaging & Release
@@ -34,13 +34,14 @@ add` + tool via `npx @limulus/delto@1`). Shape decisions captured in
   choose and add a LICENSE (currently `UNLICENSED`) and flip the GitHub repo from private to
   public. Surfaced by the ∆Rdm review.
 - ∆Bpr Enable GitHub branch protection on `main` — require PR + passing CI before merge
-  so an accidental push (e.g. an agent in YOLO mode) cannot trigger an unreviewed
-  publish
+  so an accidental push (e.g. an agent in YOLO mode) cannot trigger an unreviewed publish.
+  GitHub rejects branch protection on free private repos, so going public is a hard
+  prerequisite; needs: ∆29K
 - ∆LwK Post-publish consumer smoke — once the first release lands, confirm `npx
-  @limulus/delto@1 <sub>` resolves the `@1` tag from the public npm registry and runs on a fresh
-  checkout, and `npx skills add <git-ref>` installs `skills/delto` from the pushed ref. ∆IsK
-  verified both locally (tarball install + local skill add); this covers the
-  live-registry/pushed-ref half; needs: ∆Sre, ∆fb2
+  @limulus/delto@1 <sub>` resolves the `@1` tag from public npm on a fresh checkout, and
+  `npx skills add <git-ref>` installs `skills/delto` from the pushed ref. ∆IsK and ∆Sre
+  verified the local halves (skill add + tarball install); this covers the
+  live-registry/pushed-ref half; needs: ∆fb2, ∆29K
 
 ## Someday/Maybe
 
