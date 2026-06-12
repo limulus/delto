@@ -24,6 +24,8 @@ jobs:
         with:
           name: coverage (node v${{ matrix.node }})
           path: coverage/
+      # After the coverage upload: the pack's prepack → clean deletes coverage/
+      - run: npm run test:pack
 
   publish:
     needs: verify

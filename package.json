@@ -23,6 +23,7 @@
     "prepack": "npm run build",
     "prepare": "is-ci || husky",
     "test": "vitest run --coverage",
+    "test:pack": "vitest run -c vitest.pack.config.ts",
     "tscc": "tsc --noEmit",
     "verify": "concurrently -c cyan,magenta,blue npm:lint npm:test npm:tscc"
   },

@@ -15,6 +15,8 @@ export default defineConfig({
       },
     },
     environment: 'node',
-    exclude: ['**/node_modules/**', '**/dist/**'],
+    // packaging.test.ts runs a real `npm pack` (full build) — too slow for the
+    // default suite; it runs via `npm run test:pack` (see vitest.pack.config.ts)
+    exclude: ['**/node_modules/**', '**/dist/**', 'src/packaging.test.ts'],
   },
 })
