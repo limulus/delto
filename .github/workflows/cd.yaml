@@ -16,8 +16,6 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: 'npm'
       - run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GPR_READ_TOKEN }}
       - run: npm run verify
       - uses: actions/upload-artifact@v4
         if: ${{ always() }}
@@ -31,6 +29,10 @@ jobs:
     needs: verify
     runs-on: ubuntu-latest
     name: publish package if needed
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -38,9 +40,7 @@ jobs:
           node-version: 22
           cache: 'npm'
       - run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GPR_READ_TOKEN }}
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
