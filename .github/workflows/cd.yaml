@@ -3,24 +3,23 @@ name: Continuous Delivery
 on: push
 
 jobs:
+  # Job name is the branch-protection required-check context, so keep it stable
+  # (no Node version baked in) — a runner bump (∆uFs) shouldn't orphan the check.
   verify:
+    name: verify
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [ '22' ]
-    name: verify using node v${{ matrix.node }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node }}
+          node-version: 22
           cache: 'npm'
       - run: npm ci
       - run: npm run verify
       - uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
-          name: coverage (node v${{ matrix.node }})
+          name: coverage
           path: coverage/
       # After the coverage upload: the pack's prepack → clean deletes coverage/
       - run: npm run test:pack
