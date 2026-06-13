@@ -36,7 +36,7 @@
     "email": "eric@limulus.net",
     "url": "https://limulus.net/"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/limulus/delto/issues"
   },
@@ -51,7 +51,7 @@
     "tslib": "^2.8.1"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "access": "public"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
