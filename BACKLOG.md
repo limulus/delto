@@ -29,23 +29,18 @@ remains is the registry, licensing, and repo work below. Shape decisions capture
 
 ### Packaging & Release
 
-- ∆fb2 Publish to the public npm registry, not GitHub Packages — drop the
-  `publishConfig.registry` (`npm.pkg.github.com`) override and update the `cd.yaml` publish
-  job's registry + auth token so `npx @limulus/delto@1` resolves from public npm. Surfaced by
-  the ∆Rdm review.
 - ∆Bpr Enable GitHub branch protection on `main` — require PR + passing CI before merge
   so an accidental push (e.g. an agent in YOLO mode) cannot trigger an unreviewed publish.
   GitHub rejects branch protection on free private repos; the repo is now public (∆29K), so
   this is unblocked.
-- ∆LwK Post-publish consumer smoke — once the first release lands, confirm `npx
-@limulus/delto@1 <sub>` resolves the `@1` tag from public npm on a fresh checkout, and
-  `npx skills add <git-ref>` installs `skills/delto` from the pushed ref. ∆IsK and ∆Sre
-  verified the local halves (skill add + tarball install); this covers the
-  live-registry/pushed-ref half; needs: ∆fb2
+- ∆LwK Post-publish consumer smoke — confirm `npx skills add <git-ref>` installs
+  `skills/delto` from the pushed ref. The live-registry half (`npx @limulus/delto@1` resolving
+  the `@1` tag from public npm) is confirmed in ∆fb2's journal, and ∆IsK/∆Sre covered the
+  local skill-add and tarball halves; the pushed-ref half is what's left.
 - ∆uFs Switch publishing to OIDC trusted publishing — retire the `NPM_TOKEN` secret and its
   rotation chore for tokenless publishes with provenance. More than a config toggle: it needs a
   `semantic-release` major bump (OIDC support landed in a newer `@semantic-release/npm`) plus a
-  trusted publisher registered on npmjs.com; needs: ∆fb2
+  trusted publisher registered on npmjs.com.
 
 ## Someday/Maybe
 
