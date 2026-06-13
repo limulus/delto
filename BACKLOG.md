@@ -1,5 +1,8 @@
 # Delto Backlog
 
+This backlog is managed with the **delto** skill — before adding or changing items, consult
+it (and the authoring reference it points to) so the conventions below stay enforced.
+
 Organized as Initiative (`##`) → Epic (`###`) → Item (`-`); initiatives are roughly
 priority-ordered, items 5 lines max. Refactors stays pinned at the top as a standing
 top-priority initiative.
@@ -30,18 +33,19 @@ remains is the registry, licensing, and repo work below. Shape decisions capture
   `publishConfig.registry` (`npm.pkg.github.com`) override and update the `cd.yaml` publish
   job's registry + auth token so `npx @limulus/delto@1` resolves from public npm. Surfaced by
   the ∆Rdm review.
-- ∆29K Go public before the first publish — the single owner of making the project public:
-  choose and add a LICENSE (currently `UNLICENSED`) and flip the GitHub repo from private to
-  public. Surfaced by the ∆Rdm review.
 - ∆Bpr Enable GitHub branch protection on `main` — require PR + passing CI before merge
   so an accidental push (e.g. an agent in YOLO mode) cannot trigger an unreviewed publish.
-  GitHub rejects branch protection on free private repos, so going public is a hard
-  prerequisite; needs: ∆29K
+  GitHub rejects branch protection on free private repos; the repo is now public (∆29K), so
+  this is unblocked.
 - ∆LwK Post-publish consumer smoke — once the first release lands, confirm `npx
-  @limulus/delto@1 <sub>` resolves the `@1` tag from public npm on a fresh checkout, and
+@limulus/delto@1 <sub>` resolves the `@1` tag from public npm on a fresh checkout, and
   `npx skills add <git-ref>` installs `skills/delto` from the pushed ref. ∆IsK and ∆Sre
   verified the local halves (skill add + tarball install); this covers the
-  live-registry/pushed-ref half; needs: ∆fb2, ∆29K
+  live-registry/pushed-ref half; needs: ∆fb2
+- ∆uFs Switch publishing to OIDC trusted publishing — retire the `NPM_TOKEN` secret and its
+  rotation chore for tokenless publishes with provenance. More than a config toggle: it needs a
+  `semantic-release` major bump (OIDC support landed in a newer `@semantic-release/npm`) plus a
+  trusted publisher registered on npmjs.com; needs: ∆fb2
 
 ## Someday/Maybe
 
@@ -63,7 +67,9 @@ history (the legacy skill scripts that held it were removed by ∆Rnm).
   `backlog-status`/`report-status.ts`, now in Git history; not in the v1.0 spec
 - ∆Tmp `delto bootstrap` + bundled templates — a starter `BACKLOG.md` and
   `docs/journal/README.md` under `src/lib/templates/`, materialized into a fresh
-  consumer project; not in the v1.0 spec
+  consumer project. The starter `BACKLOG.md` header should name the delto skill as its
+  authoring authority (as this backlog's does) so consumers inherit the self-reference;
+  not in the v1.0 spec
 - ∆Pli Distribute delto as a Claude Code plugin so the `/delto` skill and the `delto`
   binary install together from a plugin marketplace, rather than `npx skills add` +
   `npx @limulus/delto@1` as separate steps

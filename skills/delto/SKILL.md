@@ -1,9 +1,9 @@
 ---
 name: delto
 description: >-
-  Delto BACKLOG.md lifecycle skills. Use for adding, choosing, claiming, planning, refining,
-  linking, and completing items; prioritizing work; retrospectives; or when user references
-  a “deltoid” (backlog item ID): i.e. `∆u2o`, `∆5Fn`, etc.
+  Delto BACKLOG.md lifecycle skills. Use when modifying the backlog; prioritizing work;
+  retrospectives; or when user references a “deltoid” (backlog item ID): i.e. `∆u2o`,
+  `∆5Fn`, etc.
 metadata:
   author: limulus
   version: '1.0.0'
