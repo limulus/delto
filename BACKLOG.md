@@ -29,10 +29,6 @@ remains is the registry, licensing, and repo work below. Shape decisions capture
 
 ### Packaging & Release
 
-- ∆Bpr Enable GitHub branch protection on `main` — require PR + passing CI before merge
-  so an accidental push (e.g. an agent in YOLO mode) cannot trigger an unreviewed publish.
-  GitHub rejects branch protection on free private repos; the repo is now public (∆29K), so
-  this is unblocked.
 - ∆LwK Post-publish consumer smoke — confirm `npx skills add <git-ref>` installs
   `skills/delto` from the pushed ref. The live-registry half (`npx @limulus/delto@1` resolving
   the `@1` tag from public npm) is confirmed in ∆fb2's journal, and ∆IsK/∆Sre covered the
