@@ -59,13 +59,13 @@
     "@limulus/eslint-config": "^6.0.0",
     "@types/node": "^22.15.29",
     "@vitest/coverage-v8": "^4.1.7",
-    "concurrently": "^9.1.2",
+    "concurrently": "^10.0.3",
     "del-cli": "^6.0.0",
     "eslint": "^9.28.0",
     "husky": "^9.1.7",
     "is-ci": "^4.1.0",
     "mkdirp": "^3.0.1",
-    "semantic-release": "^24.2.5",
+    "semantic-release": "^25.0.5",
     "typescript": "^5.8.3",
     "vitest": "^4.1.7"
   }

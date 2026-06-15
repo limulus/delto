@@ -33,10 +33,6 @@ remains is the registry, licensing, and repo work below. Shape decisions capture
   `skills/delto` from the pushed ref. The live-registry half (`npx @limulus/delto@1` resolving
   the `@1` tag from public npm) is confirmed in ∆fb2's journal, and ∆IsK/∆Sre covered the
   local skill-add and tarball halves; the pushed-ref half is what's left.
-- ∆uFs Switch publishing to OIDC trusted publishing — retire the `NPM_TOKEN` secret and its
-  rotation chore for tokenless publishes with provenance. More than a config toggle: it needs a
-  `semantic-release` major bump (OIDC support landed in a newer `@semantic-release/npm`) plus a
-  trusted publisher registered on npmjs.com.
 
 ## Someday/Maybe
 
