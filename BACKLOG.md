@@ -19,21 +19,6 @@ only dependency mechanism in the `/delto` SKILL.md spec (v1.0).
 
 Standing initiative — do not remove, even if no items.
 
-## First npm Publish
-
-Foundational initiative — what `@limulus/delto` needs before it can be published. The
-`delto` CLI subcommands the `/delto` `SKILL.md` documents (mint, surface, claim, release,
-complete) are built, fully tested, and locally verified end to end (∆IsK, ∆Sre); what
-remains is the registry, licensing, and repo work below. Shape decisions captured in
-[ADR-001](./docs/decisions/001-delto-cli-and-skill-shape.md).
-
-### Packaging & Release
-
-- ∆LwK Post-publish consumer smoke — confirm `npx skills add <git-ref>` installs
-  `skills/delto` from the pushed ref. The live-registry half (`npx @limulus/delto@1` resolving
-  the `@1` tag from public npm) is confirmed in ∆fb2's journal, and ∆IsK/∆Sre covered the
-  local skill-add and tarball halves; the pushed-ref half is what's left.
-
 ## Someday/Maybe
 
 Work the current `/delto` `SKILL.md` spec (v1.0) does not call for. Parked until a spec
