@@ -19,6 +19,17 @@ only dependency mechanism in the `/delto` SKILL.md spec (v1.0).
 
 Standing initiative — do not remove, even if no items.
 
+- ∆WyS Make the `/delto` `add` action reliably read the authoring reference — agents skip
+  `skills/delto/references/authoring-backlog-items.md` because SKILL.md mentions it only as a
+  trailing aside, so items get authored from memory and come out subtly wrong (missing why,
+  poor placement, bogus `needs:`). Strengthen the `add` section so reading it first is a hard
+  prerequisite, not a suggestion.
+- ∆GJ3 Investigate how to keep `/delto add <text>` from making an agent *perform* the request
+  instead of adding a backlog item — observed repeatedly: the agent reads the argument as an
+  imperative and does the work directly, skipping `mint` and the backlog entry. Find a robust
+  fix (SKILL.md framing, action-routing cues, or tooling). Distinct from ∆WyS, which only
+  hardens reading the authoring reference once authoring is underway.
+
 ## Someday/Maybe
 
 Work the current `/delto` `SKILL.md` spec (v1.0) does not call for. Parked until a spec
