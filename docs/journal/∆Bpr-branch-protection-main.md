@@ -3,6 +3,12 @@ id: ∆Bpr
 completed: 2026-06-13 11:55:12 -07:00
 ---
 
+> **Update (2026-06-16) — superseded:** the `main` branch protection / ruleset described
+> below has since been **removed**. This entry is the historical record of when protection
+> was *added*; it is not a statement of current repo state. Do not assume `main` is
+> protected based on this file — verify the live setting (e.g.
+> `gh api repos/<owner>/<repo>/rulesets`) if it matters.
+
 ## Backlog item
 
 > - ∆Bpr Enable GitHub branch protection on `main` — require PR + passing CI before merge
