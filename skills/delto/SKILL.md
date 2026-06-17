@@ -126,9 +126,15 @@ user request is related to delto and which action it corresponds to.
 
 ### `add`
 
-The user is looking to add a new item to the backlog. They may provide text for the item or
-just a general description of the work. You should use the `mint` tool to create a new
-deltoid. Read [how to write backlog items](references/authoring-backlog-items.md).
+The user wants a new item in the backlog — they may give you full text or just a rough
+description of the work.
+
+**Stop and read [how to write backlog items](references/authoring-backlog-items.md) before
+you mint or write anything.** This is a hard prerequisite, not a suggestion. That reference
+*is* the authoring procedure: how to mint the deltoid, what the text must carry (a real
+*why*, not just a *what*), where the item belongs, and when a `needs:` edge is honest.
+Authoring from memory is exactly how items come out subtly wrong — missing the why, poorly
+placed, carrying bogus `needs:`. Read it, then follow it.
 
 ### `plan`
 
