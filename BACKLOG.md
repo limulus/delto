@@ -19,11 +19,22 @@ only dependency mechanism in the `/delto` SKILL.md spec (v1.0).
 
 Standing initiative — do not remove, even if no items.
 
-- ∆GJ3 Investigate how to keep `/delto add <text>` from making an agent *perform* the request
-  instead of adding a backlog item — observed repeatedly: the agent reads the argument as an
-  imperative and does the work directly, skipping `mint` and the backlog entry. Find a robust
-  fix (SKILL.md framing, action-routing cues, or tooling). Distinct from ∆WyS, which only
-  hardens reading the authoring reference once authoring is underway.
+### `/delto add` authoring quality
+
+- ∆GJ3 Measure how often `/delto add <text>` makes an agent *perform* the request instead of
+  filing an item before investing in a fix — then likely downgrade. The ∆Hp7 menschen eval
+  filed 3/3 novel imperative adds (incl. the no-skill baseline); with ∆CTB that's 0 failures
+  in 4. A dedicated repeated-trial run on menschen should confirm the near-zero rate; if it
+  does, retire this. Only if real, fix (SKILL.md framing, action-routing cues, or tooling).
+- ∆2hh Broaden the authoring-reference duplicate check to flag work already *shipped* in the
+  CLI/code, not only work already *filed* in the backlog — `references/authoring-backlog-items.md`
+  warns only about backlog near-duplicates today. In the ∆CTB eval an agent caught an
+  already-implemented `surface --json` flag only on its own initiative (via `--help`); one
+  explicit clause would standardize it. Distinct from ∆dlO's separate review workflow.
+- ∆IUb Scope the authoring reference's "Dispatch a subagent to read the entire BACKLOG.md"
+  mandate to large backlogs or a full context window — it is unconditional today, but in the
+  ∆CTB eval 3 of 5 add runs sensibly read a small backlog inline. Conditioning it would match
+  the guidance to the good behavior agents already exhibit instead of prescribing skipped overhead.
 
 ## Someday/Maybe
 
