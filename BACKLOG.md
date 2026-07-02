@@ -19,13 +19,34 @@ only dependency mechanism in the `/delto` SKILL.md spec (v1.0).
 
 Standing initiative — do not remove, even if no items.
 
-### `/delto add` authoring quality
+## Beyond the v1.0 spec
 
-- ∆GJ3 Measure how often `/delto add <text>` makes an agent *perform* the request instead of
-  filing an item before investing in a fix — then likely downgrade. The ∆Hp7 menschen eval
-  filed 3/3 novel imperative adds (incl. the no-skill baseline); with ∆CTB that's 0 failures
-  in 4. A dedicated repeated-trial run on menschen should confirm the near-zero rate; if it
-  does, retire this. Only if real, fix (SKILL.md framing, action-routing cues, or tooling).
+New capabilities the `/delto` `SKILL.md` spec (v1.0) does not call for, promoted from
+Someday/Maybe 2026-07-01. They grow the skill and CLI surface (per ADR-001, `--help` is
+that contract) without changing the v1.0 format spec; only ∆O6H's watermark convention
+might eventually earn a spec mention.
+
+- ∆O6H `distill` subskill — review journal entries added since a commit-SHA watermark
+  (kept in the journal README, advanced with the instructions-file edits) and fold durable
+  lessons into the project's agent instructions file (`CLAUDE.md`, `AGENTS.md`, …),
+  verifying each claim against current code first, so retrospective lessons reach future
+  sessions instead of staying buried. Proven manually on menschen 2026-07-01
+- ∆PZ3 `delto lint` — a `BACKLOG.md` structural linter (duplicate IDs, unresolved
+  `needs:` references, dependency cycles, oversized items): deterministic pass/fail checks,
+  distinct from the LLM-driven `refine` activity the skill owns. Last shipped as the legacy
+  `refine-backlog`/`lint-backlog.ts`, now in Git history
+- ∆Tmp `delto bootstrap` + bundled templates — a starter `BACKLOG.md` and
+  `docs/journal/README.md` under `src/lib/templates/`, materialized into a fresh
+  consumer project. The starter `BACKLOG.md` header should name the delto skill as its
+  authoring authority (as this backlog's does), and the journal README should seed the
+  distillation-watermark section (∆O6H) so consumers inherit both conventions
+
+## `/delto add` authoring quality
+
+Small tweaks to the skill's `references/authoring-backlog-items.md`, each validated by
+direct observation in the ∆CTB eval. (The measure-first anchor ∆GJ3 was retired
+2026-07-01 — see its journal entry.)
+
 - ∆2hh Broaden the authoring-reference duplicate check to flag work already *shipped* in the
   CLI/code, not only work already *filed* in the backlog — `references/authoring-backlog-items.md`
   warns only about backlog near-duplicates today. In the ∆CTB eval an agent caught an
@@ -39,13 +60,8 @@ Standing initiative — do not remove, even if no items.
 ## Someday/Maybe
 
 Work the current `/delto` `SKILL.md` spec (v1.0) does not call for. Parked until a spec
-revision or concrete user need brings it back; logic for the first two survives in Git
-history (the legacy skill scripts that held it were removed by ∆Rnm).
+revision or concrete user need brings it back.
 
-- ∆PZ3 `delto lint` — a `BACKLOG.md` structural linter (duplicate IDs, unresolved
-  `needs:` references, dependency cycles, oversized items): deterministic pass/fail checks,
-  distinct from the LLM-driven `refine` activity the skill owns. Last shipped as the legacy
-  `refine-backlog`/`lint-backlog.ts`, now in Git history; not in the v1.0 spec
 - ∆dlO Spike: deep backlog-quality review — a dynamic multi-agent workflow that analyzes
   each item against the repo (git, code, journal), not just the backlog text, to catch what
   `delto lint` (∆PZ3) can't: stale premises, already-done work, satisfied/implicit `needs:`,
@@ -54,12 +70,6 @@ history (the legacy skill scripts that held it were removed by ∆Rnm).
 - ∆Stb `delto status` — a read-only progress report (per-initiative remaining work,
   eligible tasks, critical path). Last shipped as the legacy
   `backlog-status`/`report-status.ts`, now in Git history; not in the v1.0 spec
-- ∆Tmp `delto bootstrap` + bundled templates — a starter `BACKLOG.md` and
-  `docs/journal/README.md` under `src/lib/templates/`, materialized into a fresh
-  consumer project. The starter `BACKLOG.md` header should name the delto skill as its
-  authoring authority (as this backlog's does), and the journal README should seed the
-  distillation-watermark section (∆O6H) so consumers inherit both conventions; not in
-  the v1.0 spec
 - ∆Pli Distribute delto as a Claude Code plugin so the `/delto` skill and the `delto`
   binary install together from a plugin marketplace, rather than `npx skills add` +
   `npx @limulus/delto@1` as separate steps
@@ -78,8 +88,3 @@ history (the legacy skill scripts that held it were removed by ∆Rnm).
   Markdown list items, but `parseBacklog` matches only `^- ∆xxx `, so every subcommand requires
   bullets today. Decide whether to relax the parser, leave item extraction to the LLM, or
   tighten the spec to require bullets. Surfaced by the ∆Rdm/SKILL.md review.
-- ∆O6H `distill` subskill — review journal entries added since a commit-SHA watermark
-  (kept in the journal README, advanced with the instructions-file edits) and fold durable
-  lessons into the project's agent instructions file (`CLAUDE.md`, `AGENTS.md`, …),
-  verifying each claim against current code first, so retrospective lessons reach future
-  sessions instead of staying buried. Proven manually on menschen 2026-07-01; not in the v1.0 spec
