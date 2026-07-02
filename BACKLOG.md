@@ -47,6 +47,11 @@ Small tweaks to the skill's `references/authoring-backlog-items.md`, each valida
 direct observation in the ∆CTB eval. (The measure-first anchor ∆GJ3 was retired
 2026-07-01 — see its journal entry.)
 
+- ∆gmz Emit a one-line authoring-guide reminder from `mint` — on stderr so stdout keeps its
+  bare-deltoid contract, pointing at the skill's `references/authoring-backlog-items.md`
+  without hardcoding an install path. Reaches agents SKILL.md's ∆WyS read-gate can't (minting
+  via CLAUDE.md, `--help`, or no-skill setups, per the ∆Hp7 baseline), at the ideal moment:
+  after minting, right before writing. Precedent: `complete`'s "Next:" nudge.
 - ∆2hh Broaden the authoring-reference duplicate check to flag work already *shipped* in the
   CLI/code, not only work already *filed* in the backlog — `references/authoring-backlog-items.md`
   warns only about backlog near-duplicates today. In the ∆CTB eval an agent caught an
