@@ -57,8 +57,9 @@ history (the legacy skill scripts that held it were removed by ∆Rnm).
 - ∆Tmp `delto bootstrap` + bundled templates — a starter `BACKLOG.md` and
   `docs/journal/README.md` under `src/lib/templates/`, materialized into a fresh
   consumer project. The starter `BACKLOG.md` header should name the delto skill as its
-  authoring authority (as this backlog's does) so consumers inherit the self-reference;
-  not in the v1.0 spec
+  authoring authority (as this backlog's does), and the journal README should seed the
+  distillation-watermark section (∆O6H) so consumers inherit both conventions; not in
+  the v1.0 spec
 - ∆Pli Distribute delto as a Claude Code plugin so the `/delto` skill and the `delto`
   binary install together from a plugin marketplace, rather than `npx skills add` +
   `npx @limulus/delto@1` as separate steps
@@ -77,3 +78,8 @@ history (the legacy skill scripts that held it were removed by ∆Rnm).
   Markdown list items, but `parseBacklog` matches only `^- ∆xxx `, so every subcommand requires
   bullets today. Decide whether to relax the parser, leave item extraction to the LLM, or
   tighten the spec to require bullets. Surfaced by the ∆Rdm/SKILL.md review.
+- ∆O6H `distill` subskill — review journal entries added since a commit-SHA watermark
+  (kept in the journal README, advanced with the instructions-file edits) and fold durable
+  lessons into the project's agent instructions file (`CLAUDE.md`, `AGENTS.md`, …),
+  verifying each claim against current code first, so retrospective lessons reach future
+  sessions instead of staying buried. Proven manually on menschen 2026-07-01; not in the v1.0 spec
