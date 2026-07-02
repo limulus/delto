@@ -57,6 +57,27 @@ direct observation in the ∆CTB eval. (The measure-first anchor ∆GJ3 was reti
   ∆CTB eval 3 of 5 add runs sensibly read a small backlog inline. Conditioning it would match
   the guidance to the good behavior agents already exhibit instead of prescribing skipped overhead.
 
+## Lifecycle gaps
+
+Behavior the `/delto` skill or tools assume but nothing documents — surfaced by a
+2026-07-01 gap review of the backlog.
+
+- ∆VP7 Document a `refine` subskill in the `/delto` SKILL.md — the skill's description
+  advertises "prioritizing work; retrospectives" and ∆PZ3 calls refine "the LLM-driven
+  activity the skill owns", yet User requests documents only add/plan/complete, so backlog
+  reworks (like 2026-07-01's) run unguided. Route inline with the procedure in `references/`,
+  following the `add` pattern. Distinct from ∆dlO's multi-agent deep-review spike.
+- ∆Af6 Sanction the retire-without-completing convention — the spec and skill cover only
+  completion, so dropping an item cold is improvised each time (∆GJ3 was journaled via
+  `complete` and hand-marked retired, following ∆Bpr's superseded note). Add skill prose:
+  journal the retirement decision via `complete`, mark the entry retired, then remove the
+  bullet. Consider a spec clause when the spec next revs.
+- ∆diJ Give stale claims a recovery story — `.delto-claims.local.jsonl` is cleared only by
+  `release`/`complete`, so a crashed agent's claim hides its item from `surface`
+  indefinitely, and nothing reports claim age. Smallest fix is a documented recovery path
+  in the skill (inspect via `surface --json`, then `release`); weigh age reporting or
+  expiry in the tools only if prose proves insufficient.
+
 ## Someday/Maybe
 
 Work the current `/delto` `SKILL.md` spec (v1.0) does not call for. Parked until a spec
