@@ -26,11 +26,6 @@ Someday/Maybe 2026-07-01. They grow the skill and CLI surface (per ADR-001, `--h
 that contract) without changing the v1.0 format spec; only ∆O6H's watermark convention
 might eventually earn a spec mention.
 
-- ∆O6H `distill` subskill — review journal entries added since a commit-SHA watermark
-  (kept in the journal README, advanced with the instructions-file edits) and fold durable
-  lessons into the project's agent instructions file (`CLAUDE.md`, `AGENTS.md`, …),
-  verifying each claim against current code first, so retrospective lessons reach future
-  sessions instead of staying buried. Proven manually on menschen 2026-07-01
 - ∆PZ3 `delto lint` — a `BACKLOG.md` structural linter (duplicate IDs, unresolved
   `needs:` references, dependency cycles, oversized items): deterministic pass/fail checks,
   distinct from the LLM-driven `refine` activity the skill owns. Last shipped as the legacy
