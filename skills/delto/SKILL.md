@@ -2,8 +2,8 @@
 name: delto
 description: >-
   Delto BACKLOG.md lifecycle skills. Use when modifying the backlog; prioritizing work;
-  retrospectives; or when user references a “deltoid” (backlog item ID): i.e. `∆u2o`,
-  `∆5Fn`, etc.
+  retrospectives; distilling journal lessons into agent memory; or when user references a
+  “deltoid” (backlog item ID): i.e. `∆u2o`, `∆5Fn`, etc.
 metadata:
   author: limulus
   version: '1.0.0'
@@ -152,3 +152,17 @@ Order matters. Run `complete` **while the item is still in `BACKLOG.md`** — th
 item from the backlog and transcribes it into the journal entry, so it must still be there.
 Only once the entry is written should you remove the item from `BACKLOG.md`. Doing it the
 other way around leaves `complete` with nothing to transcribe.
+
+### `distill`
+
+The user wants the lessons buried in completed-work journal entries folded into the
+project's agent instructions file (`CLAUDE.md`, `AGENTS.md`, …) so future sessions inherit
+them. This is a periodic pass: a datetime watermark in the journal README marks how far
+previous runs got, and only entries completed since need review.
+
+**Stop and read [how to distill journal entries](references/distilling-journal-entries.md)
+before you review or edit anything.** That reference *is* the procedure: where the
+watermark lives, how to list the entries a run must review, what counts as a durable
+lesson, and why every concrete claim gets verified against current code before it is
+written. Distilling from memory is how stale guidance gets laundered into instructions
+files. Read it, then follow it.
