@@ -72,11 +72,11 @@ Behavior the `/delto` skill or tools assume but nothing documents — surfaced b
   `complete` and hand-marked retired, following ∆Bpr's superseded note). Add skill prose:
   journal the retirement decision via `complete`, mark the entry retired, then remove the
   bullet. Consider a spec clause when the spec next revs.
-- ∆diJ Give stale claims a recovery story — `.delto-claims.local.jsonl` is cleared only by
-  `release`/`complete`, so a crashed agent's claim hides its item from `surface`
-  indefinitely, and nothing reports claim age. Smallest fix is a documented recovery path
-  in the skill (inspect via `surface --json`, then `release`); weigh age reporting or
-  expiry in the tools only if prose proves insufficient.
+- ∆diJ Document claim visibility and stale-claim recovery — nothing tells agents that
+  `surface --json` lists claimed items, so they read `.delto-claims.local.jsonl` directly
+  (observed 2026-07-14); and since only `release`/`complete` clear the ledger, a crashed
+  agent's claim hides its item from `surface` indefinitely with no claim age reported.
+  Skill prose first; weigh age reporting/expiry in tools only if prose proves insufficient.
 
 ## Someday/Maybe
 
