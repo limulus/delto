@@ -96,7 +96,9 @@ revision or concrete user need brings it back.
   `npx @limulus/delto@1` as separate steps
 - ∆oJF GUI to visualize the backlog and journal — render the `needs:` graph, what's
   eligible, and completed-item history in a browser instead of plain text. Not in the
-  v1.0 spec
+  v1.0 spec. Prior art to review first: unmerged branches `mockups/base` (a shared
+  `experiments/backlog-gui/` server) and three UI variants atop it —
+  `mockups/{1-backlog-cockpit,2-journal-ledger,3-lifecycle-flow}`, branched 2026-06-01
 - ∆rTJ Spike: repo-wide unique deltoids across multiple `BACKLOG.md`s in a monorepo.
   Decide whether deltoids are unique repo-wide (discover every `BACKLOG.md` + its journal
   dir — default `docs/journal/` relative to each, overridable via YAML frontmatter) or
