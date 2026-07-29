@@ -30,11 +30,6 @@ might eventually earn a spec mention.
   `needs:` references, dependency cycles, oversized items): deterministic pass/fail checks,
   distinct from the LLM-driven `refine` activity the skill owns. Last shipped as the legacy
   `refine-backlog`/`lint-backlog.ts`, now in Git history
-- ∆Tmp `delto bootstrap` + bundled templates (under `src/lib/templates/`) — materialize
-  into a fresh consumer project, refusing to overwrite: a starter `BACKLOG.md` whose header
-  names the delto skill as authoring authority (as this backlog's does), a journal README
-  seeding the ∆O6H distillation-watermark section so consumers inherit both conventions,
-  and a `.gitignore` entry for the `.delto-claims.local.jsonl` claim ledger
 
 ## `/delto add` authoring quality
 
