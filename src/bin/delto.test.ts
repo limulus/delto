@@ -105,9 +105,17 @@ describe('delto router', () => {
     expect(code).toBe(1)
     expect(stderr.text.toLowerCase()).toContain('--bogus')
   })
+
+  it('lists bootstrap first among the real subcommands', async () => {
+    const stdout = new Capture()
+    await run([], { stdout })
+    expect(stdout.text).toContain('bootstrap')
+    expect(stdout.text.indexOf('  bootstrap')).toBeGreaterThanOrEqual(0)
+    expect(stdout.text.indexOf('  bootstrap')).toBeLessThan(stdout.text.indexOf('  mint'))
+  })
 })
 
-describe('delto bootstrap (smoke)', () => {
+describe('delto CLI (smoke)', () => {
   it('runs as a script: --help exits 0 with help on stdout', () => {
     const result = spawnDelto(['--help'])
     expect(result.status).toBe(0)

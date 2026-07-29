@@ -134,4 +134,33 @@ describe('bin installed from the tarball', () => {
     expect(result.stdout).toContain('Usage: delto <subcommand>')
     expect(result.stderr).toBe('')
   })
+
+  it('bootstrap materializes BACKLOG.md, the journal README, and .gitignore', () => {
+    // A dir of its own — consumerDir holds package.json/node_modules and must not
+    // gain a BACKLOG.md, or the --help smoke's cwd would stop looking "fresh".
+    const projectDir = mkdtempSync(join(tmpdir(), 'delto-bootstrap-smoke-'))
+    try {
+      const result = spawnSync(
+        join(consumerDir, 'node_modules', '.bin', 'delto'),
+        ['bootstrap'],
+        {
+          cwd: projectDir,
+          encoding: 'utf8',
+          env,
+        }
+      )
+      expect(result.error).toBeUndefined()
+      expect(result.status).toBe(0)
+      expect(result.stdout).toContain('Bootstrapped delto')
+      expect(readFileSync(join(projectDir, 'BACKLOG.md'), 'utf8')).toContain('delto')
+      expect(
+        readFileSync(join(projectDir, 'docs', 'journal', 'README.md'), 'utf8')
+      ).toContain('Last distilled:')
+      expect(readFileSync(join(projectDir, '.gitignore'), 'utf8')).toContain(
+        '.delto-claims.local.jsonl'
+      )
+    } finally {
+      rmSync(projectDir, { recursive: true, force: true })
+    }
+  })
 })
