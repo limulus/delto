@@ -11,7 +11,11 @@ minting collision-free IDs, finding eligible work, claiming, and completing.
 
 ```sh
 npx skills add limulus/delto
+npx @limulus/delto@1 bootstrap
 ```
+
+`bootstrap` materializes the starter files into a project that has no `BACKLOG.md` yet: the
+backlog itself, the journal README, and a `.gitignore` entry for delto's local claim ledger.
 
 ## Working with delto
 
@@ -24,7 +28,7 @@ Drive delto through the skill, usually as `/delto <action>`:
 - **`/delto complete`** — accept finished work. The skill writes the item's journal entry, then
   removes it from `BACKLOG.md`, fitting whatever commit workflow you use.
 
-Each step maps to a deterministic CLI subcommand (`mint`, `surface`, `claim`,
+Each step maps to a deterministic CLI subcommand (`bootstrap`, `mint`, `surface`, `claim`,
 `release`, `complete`) — run any with `--help`, or read the skill, for the specifics.
 
 ## The backlog
