@@ -87,6 +87,13 @@ Include the major version from the skill metadata.
 `delto --help` lists all subcommands and basic usage; `delto <subcommand> --help` gives
 detailed help on a specific subcommand.
 
+#### `bootstrap`
+
+Use in a project that has no `BACKLOG.md` yet. Materializes the starter files — a
+`BACKLOG.md` whose header self-documents the conventions, a journal README, and a
+`.gitignore` entry for the claim ledger — and refuses to run where a `BACKLOG.md`
+already exists.
+
 #### `mint`
 
 Use when adding new items to the backlog to create a unique new deltoid. You must specify a
@@ -123,6 +130,12 @@ action you should ask for clarification and suggest possible actions.
 
 The user may also indirectly activate these actions. Use your judgment to determine if a
 user request is related to delto and which action it corresponds to.
+
+### `bootstrap`
+
+The user wants to start using delto in a project that has no `BACKLOG.md`. Run the
+`bootstrap` tool to materialize the starter `BACKLOG.md`, journal README, and
+`.gitignore` entry, then offer to `add` the user's first backlog items.
 
 ### `add`
 
