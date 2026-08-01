@@ -116,6 +116,14 @@ the given path. Unless the user has specified a different format, file names sho
 `∆7hy-frobnicator-post-endpoint.md`. It transcribes the item's text from `BACKLOG.md` into
 the entry and never edits `BACKLOG.md` itself, so run it while the item is still present.
 
+#### `lint`
+
+Use to check `BACKLOG.md` structural integrity: duplicate deltoids (including reuse of a
+completed journal entry's id), unresolved `needs:` references, `needs:` dependency cycles,
+and oversized items. You must specify a journal entry directory using `--journal-dir`.
+Read-only — it reports violations and exits non-zero without editing anything; fixing the
+backlog is your job.
+
 ## User requests
 
 The user may directly activate this skill with `/delto <action>`. If they don’t specify an
