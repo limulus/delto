@@ -2,6 +2,7 @@ import { parseArgs } from 'node:util'
 
 import { claim } from './claim.ts'
 import { complete } from './complete.ts'
+import { lint } from './lint.ts'
 import { mint } from './mint.ts'
 import { release } from './release.ts'
 import { surface } from './surface.ts'
@@ -17,7 +18,7 @@ export interface RouterOptions extends RunOptions {
   subcommands?: Subcommand[]
 }
 
-const SUBCOMMANDS: Subcommand[] = [mint, surface, claim, release, complete]
+const SUBCOMMANDS: Subcommand[] = [mint, surface, claim, release, complete, lint]
 
 function helpText(subcommands: Subcommand[]): string {
   const subList =
