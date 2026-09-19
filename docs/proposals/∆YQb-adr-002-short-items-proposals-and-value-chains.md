@@ -1,0 +1,74 @@
+---
+id: ∆YQb
+serves:
+  - ∆z3V
+  - ∆8YP
+  - ∆LNK
+  - maintainable-delto
+written: 2026-09-19
+commit: 2633dad
+---
+
+# ADR-002: short items, proposals, and value chains
+
+## Value
+
+The planners of the items in the "Short readable items" initiative. Several questions cut
+across those items. If each planner answers them locally, the answers will conflict. Future
+maintainers also get the rationale in one place.
+
+## Serves
+
+- `∆z3V`, `∆8YP`, `∆LNK`: each depends on a decision recorded here (proposal shape, where
+  outcomes live, what happens to a proposal at completion).
+- `maintainable-delto`: a recorded rationale keeps later changes from undoing decisions by
+  accident.
+
+## Scope and constraints
+
+Record these as decided on 2026-09-19; do not reopen them without a new reason:
+
+- In Markdown prose a deltoid is written in backticks; not in YAML, filenames, `[[∆foo]]`
+  links, commit subjects, or CLI output. Old journal entries are not rewritten.
+- The item form is "`∆foo`: sentence", followed by the needs suffix with backticked ids.
+  One plain-language sentence, two wrapped lines at most.
+- Every item gets a proposal with four sections: value, serves, binding scope and
+  constraints, optional suggestions. A small item's proposal can be a few lines. The
+  proposal is authoritative over the item sentence.
+- There is no "v2" of the skill or the spec. The skill's metadata version selects the CLI
+  major, which stays 1 because every CLI change here is additive; an adopter cannot stay on
+  an old skill version; and the conventions change in steps that one version jump cannot
+  describe. The adopter change log numbers its entries, and those numbers are the only
+  version the conventions have (`∆uTy`).
+- Project settings live in `BACKLOG.md` frontmatter, including the number of the last
+  adopter-log entry the project has applied (`∆Wak`).
+- The top-level statements are called "outcomes", and one may be maintainer-facing.
+- The parser reads both item forms, so the CLI stays on major version 1.
+- `mint` keeps the full alphabet, look-alike characters included.
+- The duplicate check opens a proposal only where item text suggests significant overlap.
+- The overseer is shown an item's value chain at `plan` and at `add` (`∆iXR`).
+
+Settle these:
+
+- Where outcomes live and how they are identified. Provisional: `docs/outcomes.md`, slugs.
+- What happens to a proposal when its item is completed or retired. Chains that pass
+  through a completed item must still resolve. This ties in with `∆Af6` (retiring items).
+- How a proposal's `serves` link relates to the needs graph. In this directory most
+  `serves` links between items mirror a needs edge in reverse (`∆SwZ` serves `∆cCz`, which
+  needs `∆SwZ`). Decide whether to derive one from the other, cross-check them in `lint`,
+  or keep them independent.
+- Whether `serves` may list several targets, as several files here do.
+- `∆Z3W`: whether items must be Markdown bullets. The parser requires it; the spec says MAY.
+- Whether the spec in `SKILL.md` keeps its "v1.0" label now that the label does not track
+  compatibility. The journal README template, ADR-001, and this backlog's Someday/Maybe
+  section cite it.
+
+Output: `docs/decisions/002-….md`, and the ADR list in `CLAUDE.md` updated.
+
+## Implementation suggestions
+
+- Follow ADR-001's structure.
+- One lifecycle option: `complete` moves the proposal into the journal directory and appends
+  the journal sections, so exactly one file named `∆foo-slug.md` exists at any time and
+  links to it keep resolving.
+- Use `∆NLi`'s findings and this directory's provisional files as evidence.
