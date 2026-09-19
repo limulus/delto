@@ -19,18 +19,6 @@ only dependency mechanism in the `/delto` SKILL.md spec (v1.0).
 
 Standing initiative — do not remove, even if no items.
 
-## Beyond the v1.0 spec
-
-New capabilities the `/delto` `SKILL.md` spec (v1.0) does not call for, promoted from
-Someday/Maybe 2026-07-01. They grow the skill and CLI surface (per ADR-001, `--help` is
-that contract) without changing the v1.0 format spec; only ∆O6H's watermark convention
-might eventually earn a spec mention.
-
-- ∆PZ3 `delto lint` — a `BACKLOG.md` structural linter (duplicate IDs, unresolved
-  `needs:` references, dependency cycles, oversized items): deterministic pass/fail checks,
-  distinct from the LLM-driven `refine` activity the skill owns. Last shipped as the legacy
-  `refine-backlog`/`lint-backlog.ts`, now in Git history
-
 ## `/delto add` authoring quality
 
 Small tweaks to the skill's `references/authoring-backlog-items.md`, each validated by
