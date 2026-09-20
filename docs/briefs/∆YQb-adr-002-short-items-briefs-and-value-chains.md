@@ -56,6 +56,8 @@ Record these as decided on 2026-09-19; do not reopen them without a new reason:
 - The top-level statements are called "outcomes", and one may be maintainer-facing.
 - The parser reads both item forms, so the CLI stays on major version 1.
 - `mint` keeps the full alphabet, look-alike characters included.
+- Ids stay case-sensitive (decided 2026-09-20, when `∆hIw` was retired; see its journal
+  entry). When a spoken id fits more than one item, the agent asks which one is meant.
 - The duplicate check opens a brief only where item text suggests significant overlap.
 - The overseer is shown an item's value chain at `plan` and at `add` (`∆iXR`).
 

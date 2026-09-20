@@ -58,8 +58,6 @@ parser read the backticked one.
 
 - ∆HYp `surface` stops listing an item as eligible while a prerequisite is open, because
   the parser reads only the needs suffix that ends an item
-- ∆hIw A deltoid spoken aloud names exactly one item, because `mint` stops issuing ids that
-  differ from an existing one only in case
 - ∆SwZ Projects can start writing items as "`∆foo`: sentence", because the parser accepts
   that form alongside the bare one
 - ∆cCz Deltoids are easy to spot and hard to misread, because the spec, skill, and starter
