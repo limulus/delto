@@ -9,12 +9,13 @@ serves:
 ## Value
 
 Before approving a plan, the overseer sees in a few lines what the work is for, all the way
-up to one of the project's outcomes. They see the same when an item is filed.
+up to one of the project's top-level benefits. They see the same when an item is filed.
 
 ## Background
 
 Planning is where the overseer decides whether work is worth the effort, and the chain may
-have gone stale since the item was filed: an outcome reworded, the item it serves retired.
+have gone stale since the item was filed: a top-level benefit reworded, or the item it
+serves retired.
 Filing is the cheapest moment to reject a contrived link, because the overseer is already
 present.
 
@@ -26,14 +27,14 @@ present.
 ## Scope and constraints
 
 - A CLI command prints the chain for a deltoid: one line per hop with the id and its value
-  statement, ending with the outcome's text.
+  statement, ending with the text of the top-level benefit.
 - The output is read from the files. The agent wrote the link, so its own summary of the
   link is not independent evidence.
 - The `plan` action puts the command's output at the top of every plan. The `add` action
   shows it when the item is filed.
 - `--help` is the contract (ADR-001). A `--json` form, as `surface` has.
-- Not in this item: a whole-backlog view grouped by outcome, showing which outcomes have no
-  work. That belongs with `∆Stb` (`delto status`).
+- Not in this item: a whole-backlog view grouped by top-level benefit, showing which have
+  no work. That belongs with `∆Stb` (`delto status`).
 
 ## Implementation suggestions
 

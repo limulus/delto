@@ -24,11 +24,11 @@ Standing initiative — do not remove, even if no items.
 
 Rework the item format so the human maintainer can read the backlog at a glance: deltoids
 in backticks, one plain-language sentence per item, and the detail moved to a per-item
-brief that states the item's user value and traces it to a top-level outcome.
+brief that states the item's user value and traces it to a top-level benefit.
 Placed ahead of the older initiatives 2026-09-19 because it rewrites the files they tweak
 (the spec, the authoring reference, the starter templates). It can ship in two steps:
-backticks (`∆SwZ`, `∆cCz`), then short items with briefs, outcomes, and value chains as
-one package.
+backticks (`∆SwZ`, `∆cCz`), then short items with briefs, top-level benefits, and value
+chains as one package.
 
 This is not a "v2" of the skill or the spec (decided 2026-09-19). An adopter who installs
 or updates the skill gets whatever is at Git HEAD, and the conventions change in steps. So
@@ -38,10 +38,10 @@ applied (`∆Wak`).
 
 This initiative dogfoods its own format ahead of the tooling. Each item is one sentence of
 at most two lines, with backticked ids in its needs suffix. Its detail is in
-`docs/briefs/∆OID-slug.md` (shape in `docs/briefs/README.md`); the brief is
-authoritative and must be read before the item is planned. The outcomes that briefs
-trace to are in `docs/outcomes.md`. Items keep the bare item prefix until `∆SwZ` lets the
-parser read the backticked one.
+`docs/briefs/∆OID-slug.md` (shape in `docs/briefs/README.md`); the brief is authoritative
+and must be read before the item is planned. The top-level benefits that briefs trace to
+are in `docs/benefits.md`. Items keep the bare item prefix until `∆SwZ` lets the parser
+read the backticked one.
 
 ### Groundwork
 
@@ -67,9 +67,9 @@ parser read the backticked one.
 - ∆mzU A new project starts with a briefs folder whose README holds the template to copy,
   because `bootstrap` creates it; needs: `∆z3V`, `∆Wak`
 - ∆8YP Every item's value has something to trace to, because each project states its
-  top-level outcomes, drafted by the skill for the user to correct; needs: `∆YQb`, `∆uTy`
-- ∆q4w Work that serves no outcome becomes visible, because every brief names what it
-  serves and `lint` checks that the chain ends at an outcome; needs: `∆z3V`, `∆8YP`, `∆Wak`
+  top-level benefits, drafted by the skill for the user to correct; needs: `∆YQb`, `∆uTy`
+- ∆q4w Work that benefits no one becomes visible, because every brief names what it serves
+  and `lint` checks that chains end at a top-level benefit; needs: `∆z3V`, `∆8YP`, `∆Wak`
 - ∆iXR The overseer can judge an item's value before approving work, because the CLI prints
   its value chain and the `plan` and `add` actions show it; needs: `∆q4w`
 - ∆VyU Agents write items a human can read at a glance, because the authoring reference

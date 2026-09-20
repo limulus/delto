@@ -9,7 +9,7 @@ serves:
 ## Value
 
 The overseer can ask of any item "what is this for?" and follow the answer up to one of the
-project's outcomes. Work that leads to no outcome stands out.
+project's top-level benefits. Work that benefits no one stands out.
 
 ## Background
 
@@ -23,14 +23,14 @@ is what shows whether the work is still worth doing.
 ## Scope and constraints
 
 - Every brief's frontmatter names what its value serves: another item, or a top-level
-  outcome. An item's value may be to another component, but its chain must end at an
-  outcome.
-- An agent can justify a link from any item to any outcome. The chain is only useful if it
-  is structured, checked, and seen by a human. This item makes it structured and checked;
-  `∆iXR` shows it to the human.
+  benefit. An item's value may be to another component, but its chain must end at a
+  top-level benefit.
+- An agent can justify a link from any item to any top-level benefit. The chain is only
+  useful if it is structured, checked, and seen by a human. This item makes it structured
+  and checked; `∆iXR` shows it to the human.
 - `delto lint` verifies that every `serves` target resolves (a live item, a completed item
-  as ADR-002 decides, or an outcome), that every chain ends at an outcome, and that there
-  are no cycles.
+  as ADR-002 decides, or a top-level benefit), that every chain ends at a top-level
+  benefit, and that there are no cycles.
 - The body of the brief gives one sentence per link saying why it holds. A contrived link is
   easier to notice when it has to be justified in a sentence.
 - The writing reference says that a chain of more than about three hops deserves a second

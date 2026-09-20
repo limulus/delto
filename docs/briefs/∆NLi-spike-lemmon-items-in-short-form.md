@@ -49,11 +49,11 @@ implementation that its maintainer cannot read them at a glance. The findings fe
   - Command names (`surface`, `mint`, `plan`) stayed in the sentences, since they are what
     the user sees. File and function names moved to the briefs without loss.
   - Eight of the nine `serves` links between items mirrored a needs edge in reverse. The
-    exception was a benefit that was not a hard prerequisite (`∆mzU` then served `∆vvd`;
+    exception was a convenience, not a hard prerequisite (`∆mzU` then served `∆vvd`;
     that link went when the scaffold command was dropped).
   - Groundwork items with several `serves` targets (`∆YQb`, `∆Wak`) trace to almost every
-    outcome, which tells the overseer little. Consider listing only the nearest
-    beneficiaries, and showing the chain (`∆iXR`), not the flattened set of outcomes.
+    top-level benefit, which tells the overseer little. Consider listing only the nearest
+    beneficiaries, and showing the chain (`∆iXR`), not the flattened set of benefits.
   - The first draft of every Value section described a problem and argued for the work,
     and none said what the beneficiary gains. The maintainer found them hard to read. The
     fix was a plain value statement from the beneficiary's side, with the problem and the

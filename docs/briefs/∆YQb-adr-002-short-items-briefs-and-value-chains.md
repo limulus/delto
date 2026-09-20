@@ -17,14 +17,14 @@ later maintainers can see why the design is the way it is.
 
 ## Background
 
-Several questions cut across the items: where outcomes live, what happens to a brief when
-its item is completed, how a `serves` link relates to the needs graph. If each planner
-answers them locally, the answers will conflict.
+Several questions cut across the items: where the top-level benefits live, what happens to
+a brief when its item is completed, how a `serves` link relates to the needs graph. If each
+planner answers them locally, the answers will conflict.
 
 ## Serves
 
 - `∆z3V`, `∆8YP`, `∆LNK`: each depends on a decision recorded here (the shape of a brief,
-  where outcomes live, what happens to a brief at completion).
+  where the top-level benefits live, what happens to a brief at completion).
 - `maintainable-delto`: a recorded rationale keeps later changes from undoing decisions by
   accident.
 
@@ -52,7 +52,10 @@ them without a new reason:
   version the conventions have (`∆uTy`).
 - Project settings live in `BACKLOG.md` frontmatter, including the number of the last
   adopter-log entry the project has applied (`∆Wak`).
-- The top-level statements are called "outcomes", and one may be maintainer-facing.
+- The top-level statements are called "benefits" (decided 2026-09-20; first called
+  outcomes, a word that means a result that is then done, and that agents already use for
+  the result of one task). A benefit is ongoing and is always a benefit to someone, which
+  matches how Value sections are written. One may be a benefit to maintainers.
 - The parser reads both item forms, so the CLI stays on major version 1.
 - `mint` keeps the full alphabet, look-alike characters included.
 - Ids stay case-sensitive (decided 2026-09-20, when `∆hIw` was retired; see its journal
@@ -66,7 +69,8 @@ them without a new reason:
 
 Settle these:
 
-- Where outcomes live and how they are identified. Provisional: `docs/outcomes.md`, slugs.
+- Where the top-level benefits live and how they are identified. Provisional:
+  `docs/benefits.md`, slugs.
 - What happens to a brief when its item is completed or retired. Chains that pass
   through a completed item must still resolve. This ties in with `∆Af6` (retiring items).
 - How a brief's `serves` link relates to the needs graph. In this directory most

@@ -19,7 +19,7 @@ the CLI both read them from there.
 
 Today the journal directory is a flag that `mint` and `lint` require on every call, and an
 agent learns its value by reading header prose. This initiative adds a briefs directory
-and an outcomes file, which makes three locations. The same block also records the last
+and a benefits file, which makes three locations. The same block also records the last
 adopter-log entry the project has applied (`∆uTy`), which lets an agent tell reliably how
 the project's files are written, where guessing from the files would not.
 
@@ -33,7 +33,7 @@ the project's files are written, where guessing from the files would not.
 ## Scope and constraints
 
 - YAML frontmatter at the top of `BACKLOG.md` holding: the journal directory, the briefs
-  directory, the outcomes location, the item line cap, and the number of the last
+  directory, the benefits location, the item line cap, and the number of the last
   adopter-log entry the project has applied (`∆uTy`). There is no spec version field:
   decided 2026-09-19, the log's entry numbers are the only version the conventions have.
 - `mint` and `lint` stop requiring `--journal-dir` when the frontmatter provides it. Flags
@@ -49,7 +49,7 @@ the project's files are written, where guessing from the files would not.
 
 ## Implementation suggestions
 
-- Key names: `journal`, `briefs`, `outcomes`, `max-lines`, `migrated-through`.
+- Key names: `journal`, `briefs`, `benefits`, `max-lines`, `migrated-through`.
 - Check `src/lib/journal.ts` for an existing frontmatter reader before adding a YAML
   dependency.
 - Decide in planning whether a flag path stays cwd-relative.
