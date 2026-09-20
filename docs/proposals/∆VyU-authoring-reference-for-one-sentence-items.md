@@ -10,9 +10,13 @@ commit: 2633dad
 
 ## Value
 
-The overseer, who reads the backlog. lemmon's backlog shows what happens under the current
-guidance: items go so deep into implementation that its maintainer cannot read them at a
-glance.
+When an agent adds an item, the overseer can read it in one pass and understand what they
+will get and roughly what will change.
+
+## Background
+
+lemmon's backlog shows what happens under the current guidance: items go so deep into
+implementation that its maintainer cannot read them at a glance.
 
 ## Serves
 

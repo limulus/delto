@@ -12,12 +12,17 @@ commit: 2633dad
 
 ## Value
 
-Agents and the CLI. Today the journal directory is a flag that `mint` and `lint` require on
-every call, and an agent learns its value by reading header prose. This initiative adds a
-proposals directory and an outcomes file, which makes three locations. One machine-readable
-block gives a single source for them. The same block records the last adopter-log entry
-the project has applied, which lets an agent tell reliably which conventions a project
-follows, where guessing from the files would not.
+An agent no longer has to be told where the journal is each time it runs a command. The
+project states its folders and limits once, at the top of `BACKLOG.md`, and the agent and
+the CLI both read them from there.
+
+## Background
+
+Today the journal directory is a flag that `mint` and `lint` require on every call, and an
+agent learns its value by reading header prose. This initiative adds a proposals directory
+and an outcomes file, which makes three locations. The same block also records the last
+adopter-log entry the project has applied (`∆uTy`), which lets an agent tell reliably how
+the project's files are written, where guessing from the files would not.
 
 ## Serves
 

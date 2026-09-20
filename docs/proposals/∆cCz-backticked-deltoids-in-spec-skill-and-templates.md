@@ -10,8 +10,13 @@ commit: 2633dad
 
 ## Value
 
-People reading rendered Markdown. Backticks put a deltoid in a monospace font, which tells
-`I`, `l`, and `1` apart, and they make the id stand out in a line of prose.
+Someone reading a backlog or a journal entry can pick out item ids at a glance, and does not
+mistake one id for another.
+
+## Background
+
+Backticks put a deltoid in a monospace font, which tells `I`, `l`, and `1` apart, and they
+make the id stand out in a line of prose.
 
 ## Serves
 

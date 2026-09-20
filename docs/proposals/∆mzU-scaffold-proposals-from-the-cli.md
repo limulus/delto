@@ -11,8 +11,13 @@ commit: 2633dad
 
 ## Value
 
-Agents writing proposals get the structure without having to remember it. `lint` gets
-frontmatter it can rely on. Planners can see how old a proposal's suggestions are.
+An agent writing a proposal is handed the right structure and does not have to remember it.
+Someone planning from a proposal can see how old its advice is.
+
+## Background
+
+The chain check in `lint` (`∆q4w`) also needs frontmatter it can rely on. The precedent is
+`complete`, which scaffolds journal entries.
 
 ## Serves
 

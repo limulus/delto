@@ -10,9 +10,13 @@ commit: 2633dad
 
 ## Value
 
-The planning agent, and through it the overseer. The proposal was written when its author
-held the context; the plan is written against the code as it is now. Planning should use
-the first without being misled by it.
+An agent planning an item starts with what the item's author knew, and the plan it produces
+still fits the code as it is now.
+
+## Background
+
+The proposal was written when its author held the context; the plan is written against the
+code as it is at planning time. Planning should use the first without being misled by it.
 
 ## Serves
 

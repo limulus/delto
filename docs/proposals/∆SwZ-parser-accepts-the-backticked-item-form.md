@@ -10,9 +10,14 @@ commit: 2633dad
 
 ## Value
 
-Projects that want to write items as "`∆foo`: sentence", and `∆cCz`, which switches the
-skill to that form. `parseBacklog` matches only a bare `- ∆foo ` prefix today, so every
-subcommand sees a backticked item as no item at all.
+A project can start writing its items in the new form, "`∆foo`: sentence", and every delto
+command still sees them.
+
+## Background
+
+`parseBacklog` matches only a bare, unbackticked item prefix today, so every subcommand
+treats a backticked item as no item at all. `∆cCz`, which switches the skill to the new
+form, cannot ship until the CLI reads it.
 
 ## Serves
 

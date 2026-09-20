@@ -13,8 +13,12 @@ the proposal is authoritative.
 - **Frontmatter**: `id` (the deltoid); `serves` (a list of deltoids and outcome slugs from
   `docs/outcomes.md`); `written` and `commit` (the date and commit the proposal was written
   against, so a planner can tell how stale it is).
-- **Value**: who benefits and what they get. The beneficiary may be another component or an
-  agent, not the end user.
+- **Value**: one to three plain sentences from the beneficiary's side: who they are and
+  what is different for them afterwards. The beneficiary may be another component or an
+  agent, not the end user. No mechanism and no file names. The first sentence stands on its
+  own, because the value chain display (`∆iXR`) prints it. Test: could the overseer repeat
+  it to someone else after reading it once?
+- **Background**: optional. The problem as it is today, the evidence, and the reasoning.
 - **Serves**: one sentence per `serves` entry saying why the link holds. Every chain of
   `serves` links must end at an outcome.
 - **Scope and constraints**: binding. What the work must cover and what it must not break.

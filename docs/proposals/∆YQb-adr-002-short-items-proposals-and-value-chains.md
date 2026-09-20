@@ -13,9 +13,15 @@ commit: 2633dad
 
 ## Value
 
-The planners of the items in the "Short readable items" initiative. Several questions cut
-across those items. If each planner answers them locally, the answers will conflict. Future
-maintainers also get the rationale in one place.
+Whoever plans an item in this initiative finds the design questions it shares with other
+items already answered in one place. Two items are then not built on different answers, and
+later maintainers can see why the design is the way it is.
+
+## Background
+
+Several questions cut across the items: where outcomes live, what happens to a proposal when
+its item is completed, how a `serves` link relates to the needs graph. If each planner
+answers them locally, the answers will conflict.
 
 ## Serves
 
@@ -32,9 +38,10 @@ Record these as decided on 2026-09-19; do not reopen them without a new reason:
   links, commit subjects, or CLI output. Old journal entries are not rewritten.
 - The item form is "`∆foo`: sentence", followed by the needs suffix with backticked ids.
   One plain-language sentence, two wrapped lines at most.
-- Every item gets a proposal with four sections: value, serves, binding scope and
-  constraints, optional suggestions. A small item's proposal can be a few lines. The
-  proposal is authoritative over the item sentence.
+- Every item gets a proposal with these sections: a plain value statement from the
+  beneficiary's side, optional background, serves, binding scope and constraints, and
+  optional suggestions. A small item's proposal can be a few lines. The proposal is
+  authoritative over the item sentence.
 - There is no "v2" of the skill or the spec. The skill's metadata version selects the CLI
   major, which stays 1 because every CLI change here is additive; an adopter cannot stay on
   an old skill version; and the conventions change in steps that one version jump cannot

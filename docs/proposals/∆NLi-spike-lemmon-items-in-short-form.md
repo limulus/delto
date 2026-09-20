@@ -10,10 +10,16 @@ commit: 2633dad
 
 ## Value
 
-The author of ADR-002 (`∆YQb`), and later `∆VyU`. The short item format was designed by
-discussion. Before other items build on it, this spike tests it on real items that are known
-to be too technical: the backlog of github.com/limulus/lemmon, whose maintainer finds it
-hard to read at a glance.
+delto's maintainer finds out whether one-sentence items work on a real backlog that is
+known to be hard to read. They learn this before more work builds on the format, along with
+what a proposal has to hold for nothing to be lost.
+
+## Background
+
+The format was designed in discussion and has not been tried on items written by someone
+else. The backlog of github.com/limulus/lemmon is the test case: its items go so deep into
+implementation that its maintainer cannot read them at a glance. The findings feed ADR-002
+(`∆YQb`) and the authoring reference (`∆VyU`).
 
 ## Serves
 
@@ -28,8 +34,8 @@ hard to read at a glance.
   many dependencies (lemmon's `∆MlD`).
 - For each, write the one-sentence item and the proposal, and note anything that had no
   place to go.
-- Questions to answer: can one sentence carry both the value and the change; are the four
-  proposal sections enough; is a two-line cap realistic; do binding constraints separate
+- Questions to answer: can one sentence carry both the value and the change; are the
+  proposal's sections enough; is a two-line cap realistic; do binding constraints separate
   cleanly from suggestions; does a defect's proposal come out as filler.
 - The measure is whether lemmon's maintainer finds the result readable. An agent's opinion
   of readability does not count.
@@ -49,5 +55,9 @@ hard to read at a glance.
   - Groundwork items with several `serves` targets (`∆YQb`, `∆Wak`) trace to almost every
     outcome, which tells the overseer little. Consider listing only the nearest
     beneficiaries, and showing the chain (`∆iXR`), not the flattened set of outcomes.
+  - The first draft of every Value section described a problem and argued for the work,
+    and none said what the beneficiary gains. The maintainer found them hard to read. The
+    fix was a plain value statement from the beneficiary's side, with the problem and the
+    reasoning moved to a separate Background section.
 - Have a fresh agent produce the short forms from the long ones as well, as a preview of
   `∆VyU`'s eval.

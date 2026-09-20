@@ -10,8 +10,12 @@ commit: 2633dad
 
 ## Value
 
-Adopters, who get a migration guide that has been used on a real project before they rely
-on it. delto's maintainer also gets a backlog in the new form.
+A project that follows delto's migration guide is following steps that have already worked
+on a real project. delto's maintainer also gets delto's own backlog in the new form.
+
+## Background
+
+delto's own backlog is the first project the guide is used on.
 
 ## Serves
 

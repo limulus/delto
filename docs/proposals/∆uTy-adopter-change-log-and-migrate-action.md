@@ -10,13 +10,17 @@ commit: 2633dad
 
 ## Value
 
-Projects that use delto, and the agents working in them. An adopter holds a copy of the
-skill. When they install or update it they get whatever is at Git HEAD; they cannot pick a
-version. After an update, the skill and the project's files can disagree. An agent that
-opens a project written under older conventions has to recognize that it is older, keep
-working in it correctly, and help it catch up when its owner wants that. With no record of
-what changed, the agent sees a mismatch between the skill and the project, and may rewrite
-files silently or treat valid older files as errors.
+Someone who set up delto a while ago updates the skill, and their backlog keeps working as
+it is. The agent tells them, once, what has changed in how delto backlogs are written, and
+offers to update the project step by step.
+
+## Background
+
+A project holds a copy of the skill. Installing or updating it brings whatever is latest;
+there is no way to pick an older version. After an update, the skill can describe a way of
+writing the backlog that the project's files do not yet follow. With no record of what
+changed, an agent sees only that the two differ, and may rewrite files without asking or
+report valid older files as errors.
 
 ## Serves
 

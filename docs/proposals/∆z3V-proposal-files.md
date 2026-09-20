@@ -11,8 +11,15 @@ commit: 2633dad
 
 ## Value
 
-The overseer gets a backlog short enough to read at a glance. Agents keep the detail they
-need to do the work, in a file written while the author still had the context.
+The overseer gets a backlog short enough to read at a glance. The agent that later picks up
+an item still finds everything it needs to do the work, written down while the author had
+the context.
+
+## Background
+
+Today an item has to carry its own detail, because nothing else does. That is why items grow
+to five dense lines. Giving each item a file for its detail lets the item itself shrink to
+one sentence.
 
 ## Serves
 
@@ -26,8 +33,11 @@ need to do the work, in a file written while the author still had the context.
   file is named `∆foo-slug.md`, like a journal entry; the same slug is reused for the
   journal entry later.
 - Sections:
-  - **Value**: who benefits and what they get. User value does not have to mean end-user
-    value: the beneficiary can be one component of the code that uses another.
+  - **Value**: one to three plain sentences from the beneficiary's side: who they are and
+    what is different for them afterwards. No mechanism and no file names. The first
+    sentence stands on its own, because `∆iXR` prints it. User value does not have to mean
+    end-user value: the beneficiary can be one component of the code that uses another.
+  - **Background**: optional. The problem as it is today, the evidence, the reasoning.
   - **Serves**: what that value serves. The link and its checking arrive with `∆q4w`.
   - **Scope and constraints**: binding. Without this section, a constraint would sit among
     suggestions the implementer may ignore.
@@ -36,6 +46,10 @@ need to do the work, in a file written while the author still had the context.
 - The rule is uniform, so that agents and `lint` need no judgment about exemptions. The risk
   is filler, so the writing reference must say that a small item's proposal can be three
   lines, and show one.
+- An agent writing a proposal drifts toward justifying the work. The first draft of this
+  directory did: every Value section described a problem and argued for the work, and none
+  said what the beneficiary gains (see `∆NLi`). The writing reference gives a test for the
+  Value section: could the overseer repeat it to someone else after reading it once?
 - Where the item sentence and the proposal disagree, the proposal is authoritative.
 - A proposal does not replace the planning phase, which happens just before implementation.
 - Deliverables: spec text in `SKILL.md`; `references/writing-proposals.md`; the `add` action

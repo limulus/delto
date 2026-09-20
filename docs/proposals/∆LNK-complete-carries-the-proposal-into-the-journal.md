@@ -10,10 +10,15 @@ commit: 2633dad
 
 ## Value
 
-Readers of the journal, including `distill`. A journal entry transcribes the item's bullet.
-With one-sentence items the bullet no longer records why the work was done or what bound
-it; the proposal does. Value chains that pass through a completed item also need something
-that still exists to point at.
+Someone reading the journal later finds out why a piece of work was done and what
+constrained it, not only that it was done.
+
+## Background
+
+A journal entry transcribes the item's bullet. With one-sentence items the bullet no longer
+records why the work was done or what bound it; the proposal does. `distill` reads the
+journal too. Value chains that pass through a completed item also need something that still
+exists to point at.
 
 ## Serves
 

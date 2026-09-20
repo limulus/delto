@@ -10,8 +10,13 @@ commit: 2633dad
 
 ## Value
 
-The overseer and every proposal author. A value chain needs somewhere to end. The outcomes
-are the project's own statement of who it serves and what they get.
+The project's owner says, in a few sentences, who the project is for and what they get from
+it. Every piece of work can then be traced to one of those statements.
+
+## Background
+
+A value chain needs somewhere to end. Without stated outcomes, "what is this for?" has no
+final answer, and every chain stops at another piece of work.
 
 ## Serves
 

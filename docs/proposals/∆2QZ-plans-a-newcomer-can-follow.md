@@ -10,8 +10,13 @@ commit: 2633dad
 
 ## Value
 
-The overseer approving a plan. A plan that assumes knowledge of the codebase cannot be
-judged by someone who has not read that code recently, so the approval means little.
+The overseer can read a plan and understand what they are approving without having read the
+code it touches.
+
+## Background
+
+A plan that assumes knowledge of the codebase cannot be judged by someone who has not read
+that code recently, so the approval means little.
 
 ## Serves
 

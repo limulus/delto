@@ -10,9 +10,14 @@ commit: 2633dad
 
 ## Value
 
-The overseer, who may refer to a deltoid by voice. The spec allows loose human references
-("delta for F6" may mean `∆4f6` or `∆4F6`), and that only works while no two ids differ in
-case alone. On 2026-09-19 `mint` issued `∆ctb` while `∆CTB` exists in the journal.
+The overseer can name an item out loud, for example "delta C T B", and it can only mean one
+item.
+
+## Background
+
+The spec allows loose human references ("delta for F6" may mean `∆4f6` or `∆4F6`), and that
+only works while no two ids differ in case alone. On 2026-09-19 `mint` issued `∆ctb` while
+`∆CTB` exists in the journal.
 
 ## Serves
 

@@ -10,8 +10,13 @@ commit: 2633dad
 
 ## Value
 
-The overseer. Any item can be traced to an outcome, which answers "is this still worth
-doing". Work that serves no outcome becomes visible.
+The overseer can ask of any item "what is this for?" and follow the answer up to one of the
+project's outcomes. Work that leads to no outcome stands out.
+
+## Background
+
+The question matters most when circumstances have changed since an item was filed: the chain
+is what shows whether the work is still worth doing.
 
 ## Serves
 

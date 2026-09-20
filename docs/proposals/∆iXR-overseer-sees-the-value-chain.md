@@ -10,10 +10,15 @@ commit: 2633dad
 
 ## Value
 
-The overseer. Planning is where they decide whether work is worth the effort, and the chain
-may have gone stale since the item was filed: an outcome reworded, the item it serves
-retired. Filing is the cheapest moment to reject a contrived link, because the overseer is
-already present.
+Before approving a plan, the overseer sees in a few lines what the work is for, all the way
+up to one of the project's outcomes. They see the same when an item is filed.
+
+## Background
+
+Planning is where the overseer decides whether work is worth the effort, and the chain may
+have gone stale since the item was filed: an outcome reworded, the item it serves retired.
+Filing is the cheapest moment to reject a contrived link, because the overseer is already
+present.
 
 ## Serves
 
