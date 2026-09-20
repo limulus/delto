@@ -2,8 +2,6 @@
 id: ∆VyU
 serves:
   - readable-backlog
-written: 2026-09-19
-commit: 2633dad
 ---
 
 # Authoring reference for one-sentence items

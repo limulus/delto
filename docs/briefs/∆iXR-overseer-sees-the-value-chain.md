@@ -2,8 +2,6 @@
 id: ∆iXR
 serves:
   - informed-approval
-written: 2026-09-19
-commit: 2633dad
 ---
 
 # The overseer sees an item's value chain

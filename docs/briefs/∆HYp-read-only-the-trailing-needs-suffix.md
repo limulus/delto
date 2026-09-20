@@ -2,8 +2,6 @@
 id: ∆HYp
 serves:
   - agent-ready-work
-written: 2026-09-19
-commit: 2633dad
 ---
 
 # Read only the trailing needs suffix

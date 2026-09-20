@@ -2,8 +2,6 @@
 id: ∆cCz
 serves:
   - readable-backlog
-written: 2026-09-19
-commit: 2633dad
 ---
 
 # Backticked deltoids in the spec, skill, and starter templates

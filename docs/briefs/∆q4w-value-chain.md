@@ -2,8 +2,6 @@
 id: ∆q4w
 serves:
   - informed-approval
-written: 2026-09-19
-commit: 2633dad
 ---
 
 # Value chain
@@ -38,8 +36,13 @@ is what shows whether the work is still worth doing.
 - The writing reference says that a chain of more than about three hops deserves a second
   look.
 - How `serves` relates to the needs graph follows ADR-002 (`∆YQb`).
-- Deliverables: spec text, writing-reference guidance, the scaffold field (`∆mzU`), the
-  `lint` check, and an adopter log entry (`∆uTy`).
+- `delto lint` also verifies that every live item has a brief, that the brief's filename
+  matches its id, that its frontmatter parses, and that its required sections are present.
+  No command generates briefs, so this check is what keeps them well-formed, whoever
+  wrote them.
+- Deliverables: spec text, writing-reference guidance, the `lint` checks, and an adopter
+  log entry (`∆uTy`). The `serves` field is already in the brief template (`∆z3V`, `∆mzU`);
+  this item makes it required and checked.
 
 ## Implementation suggestions
 

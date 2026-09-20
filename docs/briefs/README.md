@@ -10,9 +10,8 @@ the brief is authoritative.
 
 ## Shape
 
-- **Frontmatter**: `id` (the deltoid); `serves` (a list of deltoids and outcome slugs from
-  `docs/outcomes.md`); `written` and `commit` (the date and commit the brief was written
-  against, so a planner can tell how stale it is).
+- **Frontmatter**: `id` (the deltoid) and `serves` (a list of deltoids and outcome slugs
+  from `docs/outcomes.md`).
 - **Value**: one to three plain sentences from the beneficiary's side: who they are and
   what is different for them afterwards. The beneficiary may be another component or an
   agent, not the end user. No mechanism and no file names. The first sentence stands on its
@@ -30,3 +29,38 @@ item just before implementing it.
 
 In Markdown prose a deltoid is written in backticks. In frontmatter and filenames it is
 bare.
+
+## Template
+
+Copy this, save it as `∆xxx-slug.md`, and fill it in. Delete the Background and
+Implementation suggestions sections when there is nothing to put in them.
+
+```markdown
+---
+id: ∆xxx
+serves:
+  - an-outcome-slug-or-a-deltoid
+---
+
+# Short title
+
+## Value
+
+Who benefits, and what is different for them afterwards. One to three plain sentences.
+
+## Background
+
+The problem as it is today, the evidence, and the reasoning.
+
+## Serves
+
+- `an-outcome-slug-or-a-deltoid`: why the link holds, in one sentence.
+
+## Scope and constraints
+
+- What the work must cover, and what it must not break. Binding.
+
+## Implementation suggestions
+
+- Optional ideas. The implementer checks them against the current code and may drop them.
+```

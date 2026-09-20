@@ -3,8 +3,6 @@ id: ∆z3V
 serves:
   - readable-backlog
   - agent-ready-work
-written: 2026-09-19
-commit: 2633dad
 ---
 
 # Item briefs
@@ -55,10 +53,18 @@ one sentence.
   Value section: could the overseer repeat it to someone else after reading it once?
 - Where the item sentence and the brief disagree, the brief is authoritative.
 - A brief does not replace the planning phase, which happens just before implementation.
+- No command generates a brief (decided 2026-09-20). A command is for work an agent cannot
+  do reliably by itself, and a brief's skeleton is static text plus an id the agent already
+  has. A generated file would cost three tool calls where one write does the job. The
+  template lives in the project's briefs README (`∆mzU`), which the project may customize;
+  the writing reference defers to it and carries a default for projects that have none.
+  `lint` checks the result (`∆q4w`).
+- A brief's frontmatter holds `id` and `serves` and nothing else. How old a brief is comes
+  from git, which stays accurate when the brief is edited; a stamped date does not.
 - Deliverables: spec text in `SKILL.md`; `references/writing-briefs.md`; the `add` action
   writes the brief together with the item; an adopter log entry (`∆uTy`).
-- Not in this item: the scaffold command (`∆mzU`), the value chain (`∆q4w`), the authoring
-  reference rewrite (`∆VyU`), what happens at completion (`∆LNK`).
+- Not in this item: the `bootstrap` support (`∆mzU`), the value chain (`∆q4w`), the
+  authoring reference rewrite (`∆VyU`), what happens at completion (`∆LNK`).
 
 ## Implementation suggestions
 

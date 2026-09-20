@@ -4,8 +4,7 @@ serves:
   - cheap-adoption
   - ∆mzU
   - ∆LNK
-written: 2026-09-19
-commit: 2633dad
+  - ∆q4w
 ---
 
 # Project settings in `BACKLOG.md` frontmatter
@@ -28,7 +27,8 @@ the project's files are written, where guessing from the files would not.
 
 - `cheap-adoption`: fewer flags to get right, and migration (`∆uTy`) can read how far a
   project has migrated.
-- `∆mzU`, `∆LNK`: both have to locate a project's briefs directory.
+- `∆mzU`, `∆LNK`, `∆q4w`: `bootstrap`, `complete`, and `lint` all have to locate a project's
+  briefs directory.
 
 ## Scope and constraints
 

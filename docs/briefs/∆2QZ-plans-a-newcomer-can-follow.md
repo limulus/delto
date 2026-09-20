@@ -2,8 +2,6 @@
 id: ∆2QZ
 serves:
   - informed-approval
-written: 2026-09-19
-commit: 2633dad
 ---
 
 # Plans a newcomer can follow

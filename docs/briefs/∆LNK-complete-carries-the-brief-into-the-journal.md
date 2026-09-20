@@ -2,8 +2,6 @@
 id: ∆LNK
 serves:
   - lessons-kept
-written: 2026-09-19
-commit: 2633dad
 ---
 
 # `complete` carries the brief into the journal

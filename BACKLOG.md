@@ -64,12 +64,12 @@ parser read the backticked one.
   templates write them in backticks; needs: `∆uTy`, `∆SwZ`
 - ∆z3V The backlog stays short without losing detail, because every item gets a brief
   holding its value, scope, and suggestions; needs: `∆YQb`, `∆uTy`
-- ∆mzU Briefs have a consistent shape and show how old their suggestions are, because
-  the CLI scaffolds them; needs: `∆z3V`, `∆Wak`
+- ∆mzU A new project starts with a briefs folder whose README holds the template to copy,
+  because `bootstrap` creates it; needs: `∆z3V`, `∆Wak`
 - ∆8YP Every item's value has something to trace to, because each project states its
   top-level outcomes, drafted by the skill for the user to correct; needs: `∆YQb`, `∆uTy`
 - ∆q4w Work that serves no outcome becomes visible, because every brief names what it
-  serves and `lint` checks that the chain ends at an outcome; needs: `∆z3V`, `∆8YP`, `∆mzU`
+  serves and `lint` checks that the chain ends at an outcome; needs: `∆z3V`, `∆8YP`, `∆Wak`
 - ∆iXR The overseer can judge an item's value before approving work, because the CLI prints
   its value chain and the `plan` and `add` actions show it; needs: `∆q4w`
 - ∆VyU Agents write items a human can read at a glance, because the authoring reference

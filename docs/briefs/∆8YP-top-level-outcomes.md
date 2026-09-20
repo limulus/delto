@@ -2,8 +2,6 @@
 id: ∆8YP
 serves:
   - ∆q4w
-written: 2026-09-19
-commit: 2633dad
 ---
 
 # Top-level outcomes

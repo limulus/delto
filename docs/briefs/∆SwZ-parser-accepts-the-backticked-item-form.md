@@ -2,8 +2,6 @@
 id: ∆SwZ
 serves:
   - ∆cCz
-written: 2026-09-19
-commit: 2633dad
 ---
 
 # The parser accepts the backticked item form

@@ -2,8 +2,6 @@
 id: ∆vvd
 serves:
   - agent-ready-work
-written: 2026-09-19
-commit: 2633dad
 ---
 
 # `plan` starts from the brief
@@ -29,8 +27,9 @@ code as it is at planning time. Planning should use the first without being misl
 - Scope and constraints are binding on the plan.
 - Implementation suggestions are optional. Planners tend to adopt a suggestion even when it
   is labelled optional, so the action says: check each one against the current code before
-  adopting it, use the brief's `written` and `commit` fields to judge how stale it is,
-  and drop what no longer fits. `distill` applies the same rule to journal claims.
+  adopting it, and drop what no longer fits. To judge how stale a brief is, ask git when it
+  last changed and what has changed in the code since. `distill` applies the same rule to
+  journal claims.
 - A brief never replaces the planning phase. A full plan is still produced just before
   implementation.
 - If planning shows that the brief's value claim or scope is wrong, correct the brief,

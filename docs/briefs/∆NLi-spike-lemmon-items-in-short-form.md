@@ -2,8 +2,6 @@
 id: ∆NLi
 serves:
   - ∆YQb
-written: 2026-09-19
-commit: 2633dad
 ---
 
 # Spike: lemmon's items in the short form
@@ -50,8 +48,9 @@ implementation that its maintainer cannot read them at a glance. The findings fe
     least well, because what they deliver is knowledge or a decision.
   - Command names (`surface`, `mint`, `plan`) stayed in the sentences, since they are what
     the user sees. File and function names moved to the briefs without loss.
-  - Eight of the nine `serves` links between items mirror a needs edge in reverse. The
-    exception, `∆mzU` serving `∆vvd`, is a benefit that is not a hard prerequisite.
+  - Eight of the nine `serves` links between items mirrored a needs edge in reverse. The
+    exception was a benefit that was not a hard prerequisite (`∆mzU` then served `∆vvd`;
+    that link went when the scaffold command was dropped).
   - Groundwork items with several `serves` targets (`∆YQb`, `∆Wak`) trace to almost every
     outcome, which tells the overseer little. Consider listing only the nearest
     beneficiaries, and showing the chain (`∆iXR`), not the flattened set of outcomes.

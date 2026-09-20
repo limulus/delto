@@ -5,8 +5,6 @@ serves:
   - ∆8YP
   - ∆LNK
   - maintainable-delto
-written: 2026-09-19
-commit: 2633dad
 ---
 
 # ADR-002: short items, briefs, and value chains
@@ -32,7 +30,8 @@ answers them locally, the answers will conflict.
 
 ## Scope and constraints
 
-Record these as decided on 2026-09-19; do not reopen them without a new reason:
+Record these as decided (on 2026-09-19 unless a bullet gives another date); do not reopen
+them without a new reason:
 
 - In Markdown prose a deltoid is written in backticks; not in YAML, filenames, `[[∆foo]]`
   links, commit subjects, or CLI output. Old journal entries are not rewritten.
@@ -58,6 +57,10 @@ Record these as decided on 2026-09-19; do not reopen them without a new reason:
 - `mint` keeps the full alphabet, look-alike characters included.
 - Ids stay case-sensitive (decided 2026-09-20, when `∆hIw` was retired; see its journal
   entry). When a spoken id fits more than one item, the agent asks which one is meant.
+- No command generates a brief (decided 2026-09-20). A command is for work an agent cannot
+  do reliably by itself: `complete` releases a claim, copies the item verbatim, and stamps
+  an exact timestamp, while a brief's skeleton is static text. The template lives in the
+  project's briefs README, `lint` checks the result, and a brief's age comes from git.
 - The duplicate check opens a brief only where item text suggests significant overlap.
 - The overseer is shown an item's value chain at `plan` and at `add` (`∆iXR`).
 
