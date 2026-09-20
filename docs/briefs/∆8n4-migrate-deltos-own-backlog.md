@@ -26,7 +26,7 @@ delto's own backlog is the first project the guide is used on.
 - Follow the `migrate` action (`∆uTy`) as an adopter would, not from memory of having built
   it. Record every place where the guide was wrong or unclear, and fix the guide.
 - Expected steps: add the frontmatter; backtick the item prefixes; shorten every live item
-  to one sentence with a proposal; have the maintainer confirm the outcomes in
+  to one sentence with a brief; have the maintainer confirm the outcomes in
   `docs/outcomes.md`; bring this directory's provisional files in line with the final shape.
 - Old journal entries are not rewritten.
 

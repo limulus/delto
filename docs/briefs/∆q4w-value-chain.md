@@ -24,7 +24,7 @@ is what shows whether the work is still worth doing.
 
 ## Scope and constraints
 
-- Every proposal's frontmatter names what its value serves: another item, or a top-level
+- Every brief's frontmatter names what its value serves: another item, or a top-level
   outcome. An item's value may be to another component, but its chain must end at an
   outcome.
 - An agent can justify a link from any item to any outcome. The chain is only useful if it
@@ -33,7 +33,7 @@ is what shows whether the work is still worth doing.
 - `delto lint` verifies that every `serves` target resolves (a live item, a completed item
   as ADR-002 decides, or an outcome), that every chain ends at an outcome, and that there
   are no cycles.
-- The proposal body gives one sentence per link saying why it holds. A contrived link is
+- The body of the brief gives one sentence per link saying why it holds. A contrived link is
   easier to notice when it has to be justified in a sentence.
 - The writing reference says that a chain of more than about three hops deserves a second
   look.

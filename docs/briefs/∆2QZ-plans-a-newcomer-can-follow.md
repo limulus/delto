@@ -32,5 +32,5 @@ that code recently, so the approval means little.
 - The skill defers to the harness's planning tools, so the instruction has to be a sentence
   or two of prose that still takes effect through them. Check by eval that it changes the
   plans produced.
-- Independent of proposals; it can ship now. `docs(skill):` commit. It does not change an
+- Independent of briefs; it can ship now. `docs(skill):` commit. It does not change an
   adopter's files, so it needs no adopter log entry.

@@ -31,9 +31,9 @@ implementation that its maintainer cannot read them at a glance.
   bare length limit gets stretched with semicolons and dashes.
 - At most two wrapped lines, suffix included. `lint` enforces it through its line cap.
 - Plain language: no file names, function names, or decision numbers in the item. They go
-  in the proposal (`∆z3V`), along with everything else.
+  in the brief (`∆z3V`), along with everything else.
 - Duplicate check (decided 2026-09-19): compare the new item with existing item text, and
-  open an existing item's proposal only where that text suggests significant overlap. This
+  open an existing item's brief only where that text suggests significant overlap. This
   keeps `add` cheap as a backlog grows.
 - The starter header template states the new cap in place of "items 5 lines max".
 - Eval by the methodology in `docs/experiments/`, with lemmon-style rough descriptions as
@@ -43,7 +43,7 @@ implementation that its maintainer cannot read them at a glance.
 - `∆gmz`, `∆2hh`, and `∆IUb` change the same file. Keep what they shipped; if they have not
   shipped, they apply to the rewritten file.
 - Adopter log entry (`∆uTy`): the migration shortens items and moves their detail into
-  proposals. It needs judgment; it is not mechanical.
+  briefs. It needs judgment; it is not mechanical.
 
 ## Implementation suggestions
 

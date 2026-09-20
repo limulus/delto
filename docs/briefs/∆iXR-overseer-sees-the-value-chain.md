@@ -40,4 +40,4 @@ present.
 ## Implementation suggestions
 
 - `trace` is a candidate name for the subcommand.
-- Where a proposal lists several `serves` targets, print a tree.
+- Where a brief lists several `serves` targets, print a tree.

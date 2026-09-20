@@ -6,7 +6,7 @@ written: 2026-09-19
 commit: 2633dad
 ---
 
-# `plan` starts from the proposal
+# `plan` starts from the brief
 
 ## Value
 
@@ -15,7 +15,7 @@ still fits the code as it is now.
 
 ## Background
 
-The proposal was written when its author held the context; the plan is written against the
+The brief was written when its author held the context; the plan is written against the
 code as it is at planning time. Planning should use the first without being misled by it.
 
 ## Serves
@@ -25,19 +25,19 @@ code as it is at planning time. Planning should use the first without being misl
 
 ## Scope and constraints
 
-- The `plan` action reads the item's proposal before anything else.
+- The `plan` action reads the item's brief before anything else.
 - Scope and constraints are binding on the plan.
 - Implementation suggestions are optional. Planners tend to adopt a suggestion even when it
   is labelled optional, so the action says: check each one against the current code before
-  adopting it, use the proposal's `written` and `commit` fields to judge how stale it is,
+  adopting it, use the brief's `written` and `commit` fields to judge how stale it is,
   and drop what no longer fits. `distill` applies the same rule to journal claims.
-- A proposal never replaces the planning phase. A full plan is still produced just before
+- A brief never replaces the planning phase. A full plan is still produced just before
   implementation.
-- If planning shows that the proposal's value claim or scope is wrong, correct the proposal,
+- If planning shows that the brief's value claim or scope is wrong, correct the brief,
   or raise retiring the item, and do not plan around the error.
-- An item with no proposal, as in a project that has not adopted proposals, is planned as
+- An item with no brief, as in a project that has not adopted briefs, is planned as
   it is today.
 
 ## Implementation suggestions
 
-- `surface` or `claim` could print the proposal's path to save the planner a lookup.
+- `surface` or `claim` could print the brief's path to save the planner a lookup.

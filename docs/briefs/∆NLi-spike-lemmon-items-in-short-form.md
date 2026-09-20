@@ -12,7 +12,7 @@ commit: 2633dad
 
 delto's maintainer finds out whether one-sentence items work on a real backlog that is
 known to be hard to read. They learn this before more work builds on the format, along with
-what a proposal has to hold for nothing to be lost.
+what a brief has to hold for nothing to be lost.
 
 ## Background
 
@@ -23,7 +23,7 @@ implementation that its maintainer cannot read them at a glance. The findings fe
 
 ## Serves
 
-- `∆YQb`: the findings decide what a proposal must carry and whether the two-line cap is
+- `∆YQb`: the findings decide what a brief must carry and whether the two-line cap is
   realistic, which the ADR records.
 
 ## Scope and constraints
@@ -32,11 +32,11 @@ implementation that its maintainer cannot read them at a glance. The findings fe
   (lemmon's `∆4tG`, `∆PgF`), one carrying a binding constraint (lemmon's `∆pP5`: a photo's
   URL is its stored alias, never recomputed), a defect (lemmon's `∆3oX`), and an item with
   many dependencies (lemmon's `∆MlD`).
-- For each, write the one-sentence item and the proposal, and note anything that had no
+- For each, write the one-sentence item and the brief, and note anything that had no
   place to go.
 - Questions to answer: can one sentence carry both the value and the change; are the
-  proposal's sections enough; is a two-line cap realistic; do binding constraints separate
-  cleanly from suggestions; does a defect's proposal come out as filler.
+  brief's sections enough; is a two-line cap realistic; do binding constraints separate
+  cleanly from suggestions; does a defect's brief come out as filler.
 - The measure is whether lemmon's maintainer finds the result readable. An agent's opinion
   of readability does not count.
 - Output: a write-up in `docs/experiments/` with the before/after pairs. No change to the
@@ -49,7 +49,7 @@ implementation that its maintainer cannot read them at a glance. The findings fe
   - "Value, because change" fit every item within two lines. The spike and the ADR fit
     least well, because what they deliver is knowledge or a decision.
   - Command names (`surface`, `mint`, `plan`) stayed in the sentences, since they are what
-    the user sees. File and function names moved to the proposals without loss.
+    the user sees. File and function names moved to the briefs without loss.
   - Eight of the nine `serves` links between items mirror a needs edge in reverse. The
     exception, `∆mzU` serving `∆vvd`, is a benefit that is not a hard prerequisite.
   - Groundwork items with several `serves` targets (`∆YQb`, `∆Wak`) trace to almost every
@@ -59,5 +59,6 @@ implementation that its maintainer cannot read them at a glance. The findings fe
     and none said what the beneficiary gains. The maintainer found them hard to read. The
     fix was a plain value statement from the beneficiary's side, with the problem and the
     reasoning moved to a separate Background section.
+    The files were still called proposals then, which may have invited the arguing.
 - Have a fresh agent produce the short forms from the long ones as well, as a preview of
   `∆VyU`'s eval.

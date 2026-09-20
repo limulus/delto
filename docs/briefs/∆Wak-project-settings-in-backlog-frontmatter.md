@@ -19,7 +19,7 @@ the CLI both read them from there.
 ## Background
 
 Today the journal directory is a flag that `mint` and `lint` require on every call, and an
-agent learns its value by reading header prose. This initiative adds a proposals directory
+agent learns its value by reading header prose. This initiative adds a briefs directory
 and an outcomes file, which makes three locations. The same block also records the last
 adopter-log entry the project has applied (`∆uTy`), which lets an agent tell reliably how
 the project's files are written, where guessing from the files would not.
@@ -28,11 +28,11 @@ the project's files are written, where guessing from the files would not.
 
 - `cheap-adoption`: fewer flags to get right, and migration (`∆uTy`) can read how far a
   project has migrated.
-- `∆mzU`, `∆LNK`: both have to locate a project's proposals directory.
+- `∆mzU`, `∆LNK`: both have to locate a project's briefs directory.
 
 ## Scope and constraints
 
-- YAML frontmatter at the top of `BACKLOG.md` holding: the journal directory, the proposals
+- YAML frontmatter at the top of `BACKLOG.md` holding: the journal directory, the briefs
   directory, the outcomes location, the item line cap, and the number of the last
   adopter-log entry the project has applied (`∆uTy`). There is no spec version field:
   decided 2026-09-19, the log's entry numbers are the only version the conventions have.
@@ -49,7 +49,7 @@ the project's files are written, where guessing from the files would not.
 
 ## Implementation suggestions
 
-- Key names: `journal`, `proposals`, `outcomes`, `max-lines`, `migrated-through`.
+- Key names: `journal`, `briefs`, `outcomes`, `max-lines`, `migrated-through`.
 - Check `src/lib/journal.ts` for an existing frontmatter reader before adding a YAML
   dependency.
 - Decide in planning whether a flag path stays cwd-relative.

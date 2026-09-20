@@ -7,7 +7,7 @@ written: 2026-09-19
 commit: 2633dad
 ---
 
-# Proposal files
+# Item briefs
 
 ## Value
 
@@ -29,9 +29,12 @@ one sentence.
 
 ## Scope and constraints
 
-- Every backlog item gets a proposal. The default directory is `docs/proposals/` and the
+- Every backlog item gets a brief. The default directory is `docs/briefs/` and the
   file is named `∆foo-slug.md`, like a journal entry; the same slug is reused for the
   journal entry later.
+- The name is deliberate (decided 2026-09-20). A brief gives whoever does the work the goal
+  and the constraints, and leaves the method to them. The files were first called
+  proposals; that word is tentative, and it invites writing that argues for the work.
 - Sections:
   - **Value**: one to three plain sentences from the beneficiary's side: who they are and
     what is different for them afterwards. No mechanism and no file names. The first
@@ -44,20 +47,20 @@ one sentence.
   - **Implementation suggestions**: optional. They do not go into detail about the expected
     implementation; the implementer is free to ignore them when conditions have changed.
 - The rule is uniform, so that agents and `lint` need no judgment about exemptions. The risk
-  is filler, so the writing reference must say that a small item's proposal can be three
+  is filler, so the writing reference must say that a small item's brief can be three
   lines, and show one.
-- An agent writing a proposal drifts toward justifying the work. The first draft of this
+- An agent writing a brief drifts toward justifying the work. The first draft of this
   directory did: every Value section described a problem and argued for the work, and none
   said what the beneficiary gains (see `∆NLi`). The writing reference gives a test for the
   Value section: could the overseer repeat it to someone else after reading it once?
-- Where the item sentence and the proposal disagree, the proposal is authoritative.
-- A proposal does not replace the planning phase, which happens just before implementation.
-- Deliverables: spec text in `SKILL.md`; `references/writing-proposals.md`; the `add` action
-  writes the proposal together with the item; an adopter log entry (`∆uTy`).
+- Where the item sentence and the brief disagree, the brief is authoritative.
+- A brief does not replace the planning phase, which happens just before implementation.
+- Deliverables: spec text in `SKILL.md`; `references/writing-briefs.md`; the `add` action
+  writes the brief together with the item; an adopter log entry (`∆uTy`).
 - Not in this item: the scaffold command (`∆mzU`), the value chain (`∆q4w`), the authoring
   reference rewrite (`∆VyU`), what happens at completion (`∆LNK`).
 
 ## Implementation suggestions
 
-- Start the writing reference from `docs/proposals/README.md`, and take examples from the
+- Start the writing reference from `docs/briefs/README.md`, and take examples from the
   `∆NLi` write-up.

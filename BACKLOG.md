@@ -5,7 +5,7 @@ it (and the authoring reference it points to) so the conventions below stay enfo
 
 Organized as Initiative (`##`) → Epic (`###`) → Item (`-`); initiatives are roughly
 priority-ordered, items 5 lines max. Refactors stays pinned at the top as a standing
-top-priority initiative. The initiative "Short readable items, each with a proposal"
+top-priority initiative. The initiative "Short readable items, each with a brief"
 follows its own item format, described in its intro.
 
 Each item starts with a 3-char alphanumeric ID prefixed `∆` (e.g. `- ∆OID Notify route —
@@ -20,14 +20,14 @@ only dependency mechanism in the `/delto` SKILL.md spec (v1.0).
 
 Standing initiative — do not remove, even if no items.
 
-## Short readable items, each with a proposal
+## Short readable items, each with a brief
 
 Rework the item format so the human maintainer can read the backlog at a glance: deltoids
 in backticks, one plain-language sentence per item, and the detail moved to a per-item
-proposal file that states the item's user value and traces it to a top-level outcome.
+brief that states the item's user value and traces it to a top-level outcome.
 Placed ahead of the older initiatives 2026-09-19 because it rewrites the files they tweak
 (the spec, the authoring reference, the starter templates). It can ship in two steps:
-backticks (`∆SwZ`, `∆cCz`), then short items with proposals, outcomes, and value chains as
+backticks (`∆SwZ`, `∆cCz`), then short items with briefs, outcomes, and value chains as
 one package.
 
 This is not a "v2" of the skill or the spec (decided 2026-09-19). An adopter who installs
@@ -38,8 +38,8 @@ applied (`∆Wak`).
 
 This initiative dogfoods its own format ahead of the tooling. Each item is one sentence of
 at most two lines, with backticked ids in its needs suffix. Its detail is in
-`docs/proposals/∆OID-slug.md` (shape in `docs/proposals/README.md`); the proposal is
-authoritative and must be read before the item is planned. The outcomes that proposals
+`docs/briefs/∆OID-slug.md` (shape in `docs/briefs/README.md`); the brief is
+authoritative and must be read before the item is planned. The outcomes that briefs
 trace to are in `docs/outcomes.md`. Items keep the bare item prefix until `∆SwZ` lets the
 parser read the backticked one.
 
@@ -47,14 +47,14 @@ parser read the backticked one.
 
 - ∆uTy An agent opening an older delto project understands it and guides its migration,
   because the skill ships a numbered log of adopter-facing changes and a `migrate` action
-- ∆NLi We learn whether one plain sentence can carry an item, and what its proposal must
+- ∆NLi We learn whether one plain sentence can carry an item, and what its brief must
   hold, by rewriting a sample of lemmon's backlog items
 - ∆YQb The items in this initiative share one answer to the questions that cut across
   them, because ADR-002 records the design and settles what is open; needs: `∆NLi`
 - ∆Wak Agents and the CLI learn a project's directories, line cap, and how far it has
   migrated from `BACKLOG.md` frontmatter, not from flags on every call; needs: `∆uTy`
 
-### Items and proposals
+### Items and briefs
 
 - ∆HYp `surface` stops listing an item as eligible while a prerequisite is open, because
   the parser reads only the needs suffix that ends an item
@@ -64,27 +64,27 @@ parser read the backticked one.
   that form alongside the bare one
 - ∆cCz Deltoids are easy to spot and hard to misread, because the spec, skill, and starter
   templates write them in backticks; needs: `∆uTy`, `∆SwZ`
-- ∆z3V The backlog stays short without losing detail, because every item gets a proposal
-  file holding its value, scope, and suggestions; needs: `∆YQb`, `∆uTy`
-- ∆mzU Proposals have a consistent shape and show how old their suggestions are, because
+- ∆z3V The backlog stays short without losing detail, because every item gets a brief
+  holding its value, scope, and suggestions; needs: `∆YQb`, `∆uTy`
+- ∆mzU Briefs have a consistent shape and show how old their suggestions are, because
   the CLI scaffolds them; needs: `∆z3V`, `∆Wak`
 - ∆8YP Every item's value has something to trace to, because each project states its
   top-level outcomes, drafted by the skill for the user to correct; needs: `∆YQb`, `∆uTy`
-- ∆q4w Work that serves no outcome becomes visible, because every proposal names what it
+- ∆q4w Work that serves no outcome becomes visible, because every brief names what it
   serves and `lint` checks that the chain ends at an outcome; needs: `∆z3V`, `∆8YP`, `∆mzU`
 - ∆iXR The overseer can judge an item's value before approving work, because the CLI prints
   its value chain and the `plan` and `add` actions show it; needs: `∆q4w`
 - ∆VyU Agents write items a human can read at a glance, because the authoring reference
   teaches one plain sentence within two lines; needs: `∆cCz`, `∆z3V`
 - ∆LNK Journal entries keep the reason the work was done, because `complete` carries the
-  item's proposal into them; needs: `∆z3V`, `∆Wak`
+  item's brief into them; needs: `∆z3V`, `∆Wak`
 
 ### Planning
 
 - ∆2QZ The human approving a plan can understand it, because the `plan` action asks for
   plain language with deep technical detail in its own section
-- ∆vvd Plans use what the proposal's author knew and still fit the current code, because
-  `plan` reads the proposal, holds to its scope, and checks its suggestions; needs: `∆z3V`
+- ∆vvd Plans use what the brief's author knew and still fit the current code, because
+  `plan` reads the brief, holds to its scope, and checks its suggestions; needs: `∆z3V`
 
 ### Migrate delto itself
 
