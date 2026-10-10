@@ -45,14 +45,12 @@ read the backticked one.
 
 ### Groundwork
 
-- ∆uTy An agent opening an older delto project works in its conventions and migrates it on
-  request, because the skill treats old files as valid and a reference guides the migration
 - ∆NLi We learn whether one plain sentence can carry an item, and what its brief must
   hold, by rewriting a sample of lemmon's backlog items
 - ∆YQb The items in this initiative share one answer to the questions that cut across
   them, because ADR-002 records the design and settles what is open; needs: `∆NLi`
-- ∆Wak Agents and the CLI learn a project's directories, line cap, and how far it has
-  migrated from `BACKLOG.md` frontmatter, not from flags on every call; needs: `∆uTy`
+- ∆Wak Agents and the CLI learn a project's directories and line cap from `BACKLOG.md`
+  frontmatter, not from flags on every call
 
 ### Items and briefs
 
@@ -61,13 +59,13 @@ read the backticked one.
 - ∆SwZ Projects can start writing items as "`∆foo`: sentence", because the parser accepts
   that form alongside the bare one
 - ∆cCz Deltoids are easy to spot and hard to misread, because the spec, skill, and starter
-  templates write them in backticks; needs: `∆uTy`, `∆SwZ`
+  templates write them in backticks; needs: `∆SwZ`
 - ∆z3V The backlog stays short without losing detail, because every item gets a brief
-  holding its value, scope, and suggestions; needs: `∆YQb`, `∆uTy`
+  holding its value, scope, and suggestions; needs: `∆YQb`
 - ∆mzU A new project starts with a briefs folder whose README holds the template to copy,
   because `bootstrap` creates it; needs: `∆z3V`, `∆Wak`
 - ∆8YP Every item's value has something to trace to, because each project states its
-  top-level benefits, drafted by the skill for the user to correct; needs: `∆YQb`, `∆uTy`
+  top-level benefits, drafted by the skill for the user to correct; needs: `∆YQb`
 - ∆q4w Work that benefits no one becomes visible, because every brief names what it serves
   and `lint` checks that chains end at a top-level benefit; needs: `∆z3V`, `∆8YP`, `∆Wak`
 - ∆iXR The overseer can judge an item's value before approving work, because the CLI prints
@@ -87,7 +85,7 @@ read the backticked one.
 ### Migrate delto itself
 
 - ∆8n4 Adopters get a migration guide that has already been used on a real project, because
-  delto's own backlog is migrated by following it; needs: `∆uTy`, `∆VyU`, `∆q4w`
+  delto's own backlog is migrated by following it; needs: `∆VyU`, `∆q4w`
 
 ## `/delto add` authoring quality
 

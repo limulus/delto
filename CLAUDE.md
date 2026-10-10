@@ -12,7 +12,10 @@ to dogfood properly you must run: `node ./src/bin/cli.ts <subcommand>`.
 - `.claude/skills/delto` is a symlink to `../../skills/delto` — always Read/Edit the
   canonical `skills/delto/` path.
 - `skills/delto/SKILL.md` describes the current contract only, readable by a fresh agent —
-  never reference prior behavior ("no longer…", "instead of the old…").
+  never reference prior behavior ("no longer…", "instead of the old…"). Older files are
+  described only in `skills/delto/references/migrating-older-projects.md`; a change to
+  what an adopting project's files look like adds its note there in the same change, when
+  the migration is not obvious from the spec.
 - Skill changes are validated by multi-agent evals written up in `docs/experiments/`.
   Follow their methodology: run each agent in an isolated copy of a consumer repo (rsync
   sans `.git`, own `git init`); grade against sandbox git ground truth

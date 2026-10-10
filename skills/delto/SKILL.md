@@ -131,6 +131,14 @@ and oversized items. You must specify a journal entry directory using `--journal
 Read-only — it reports violations and exits non-zero without editing anything; fixing the
 backlog is your job.
 
+## Projects on older conventions
+
+The conventions in this skill change over time, and a project may have been set up under
+earlier ones. The project's `BACKLOG.md` header, and its frontmatter if it has one, say
+what the project follows; work in that form. Where its files differ from the spec, they are
+not errors. Offer once per conversation to bring the project up to date with the `migrate`
+action, and never migrate without being asked.
+
 ## User requests
 
 The user may directly activate this skill with `/delto <action>`. If they don’t specify an
@@ -187,3 +195,15 @@ watermark lives, how to list the entries a run must review, what counts as a dur
 lesson, and why every concrete claim gets verified against current code before it is
 written. Distilling from memory is how stale guidance gets laundered into instructions
 files. Read it, then follow it.
+
+### `migrate`
+
+The user wants a project set up under earlier conventions brought up to date with this
+skill, or wants to know what that would involve.
+
+**Stop and read [how to migrate an older project](references/migrating-older-projects.md)
+before you change anything.** That reference *is* the procedure: how to find what differs
+from the spec, the order to apply changes in, which steps are mechanical and which need the
+user's judgment, and the notes on changes whose migration is not obvious from the spec.
+Migrating from memory is how a project gets rewritten in one pass with no chance to say
+stop. Read it, then follow it.
