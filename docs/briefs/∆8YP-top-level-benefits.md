@@ -42,7 +42,7 @@ final answer, and every chain stops at another piece of work.
 - The benefits are the user's statement. An agent drafts them; it does not add or change one
   without asking.
 - Location and identifiers follow ADR-002 (`∆YQb`).
-- Adopter log entry (`∆uTy`): the migration drafts benefits from the project's existing
+- Migration note (`∆uTy`): the migration drafts benefits from the project's existing
   initiatives and journal.
 
 ## Implementation suggestions

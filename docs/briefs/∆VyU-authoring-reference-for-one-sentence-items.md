@@ -40,7 +40,7 @@ implementation that its maintainer cannot read them at a glance.
   enough signal for the duplicate check.
 - `∆gmz`, `∆2hh`, and `∆IUb` change the same file. Keep what they shipped; if they have not
   shipped, they apply to the rewritten file.
-- Adopter log entry (`∆uTy`): the migration shortens items and moves their detail into
+- Migration note (`∆uTy`): the migration shortens items and moves their detail into
   briefs. It needs judgment; it is not mechanical.
 
 ## Implementation suggestions

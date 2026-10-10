@@ -27,16 +27,19 @@ make the id stand out in a line of prose.
 - Not backticked: YAML frontmatter (`id: ∆foo`), filenames, `[[∆foo]]` cross-reference
   links, commit subjects, and CLI output (`mint` keeps its bare-deltoid stdout contract).
 - The starter templates in `src/lib/templates/` follow.
-- Existing journal entries are not rewritten, and the adopter log entry says so.
+- Existing journal entries are not rewritten, and the migration note says so.
 - Before changing the skill prose, find out whether `npx @limulus/delto@1` can resolve to a
   cached 1.x older than the release that contains `∆SwZ`. If it can, pin a minimum version
   in the skill's invocation. Such a CLI would silently see zero items.
 - `SKILL.md` describes the current contract only. The bare item form is described in the
-  adopter log (`∆uTy`) and nowhere else.
-- Adopter log entry: recognized by the bare item prefix; the migration is mechanical
+  migration reference (`∆uTy`) and nowhere else.
+- Migration note: an older project shows bare item prefixes; the migration is mechanical
   (backtick each prefix and add the colon; backtick the ids in needs suffixes).
 - Eval by the methodology in `docs/experiments/`: agents given the updated skill write
-  new-form items in a sandboxed consumer repo.
+  new-form items in a sandboxed consumer repo. This is also the first eval of `∆uTy`,
+  which could not be tested while the spec and the files agreed: on a project with bare
+  items, the agent reports no errors, rewrites nothing unasked, offers to migrate once, and
+  `migrate` converts the items.
 - Skill prose is `docs(skill):`; the templates ship in the tarball, so they are `feat:`.
 
 ## Implementation suggestions

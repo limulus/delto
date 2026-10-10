@@ -21,8 +21,9 @@ delto's own backlog is the first project the guide is used on.
 
 ## Scope and constraints
 
-- Follow the `migrate` action (`∆uTy`) as an adopter would, not from memory of having built
-  it. Record every place where the guide was wrong or unclear, and fix the guide.
+- Follow the `migrate` action and its reference (`∆uTy`) as an adopter would, not from
+  memory of having built it. Record every place where the reference was wrong or unclear,
+  and fix it.
 - Expected steps: add the frontmatter; backtick the item prefixes; shorten every live item
   to one sentence with a brief; have the maintainer confirm the benefits in
   `docs/benefits.md`; bring this directory's provisional files in line with the final shape.

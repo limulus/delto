@@ -40,8 +40,8 @@ is what shows whether the work is still worth doing.
   matches its id, that its frontmatter parses, and that its required sections are present.
   No command generates briefs, so this check is what keeps them well-formed, whoever
   wrote them.
-- Deliverables: spec text, writing-reference guidance, the `lint` checks, and an adopter
-  log entry (`∆uTy`). The `serves` field is already in the brief template (`∆z3V`, `∆mzU`);
+- Deliverables: spec text, writing-reference guidance, the `lint` checks, and a migration
+  note (`∆uTy`). The `serves` field is already in the brief template (`∆z3V`, `∆mzU`);
   this item makes it required and checked.
 
 ## Implementation suggestions

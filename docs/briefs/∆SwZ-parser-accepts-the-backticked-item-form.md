@@ -27,7 +27,7 @@ form, cannot ship until the CLI reads it.
   appear in one file.
 - Backticked ids in the needs suffix already parse; add a test that keeps it so.
 - `complete` transcribes the item verbatim; confirm it does for the new form.
-- Additive: no project has to change, so there is no adopter log entry, the commit is
+- Additive: no project has to change, so there is no migration note, the commit is
   `feat:`, and the CLI stays on major version 1.
 - The warning in `src/lib/templates/backlog.ts`, that template text must never start a line
   like an item, now covers both forms.

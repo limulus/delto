@@ -62,7 +62,7 @@ one sentence.
 - A brief's frontmatter holds `id` and `serves` and nothing else. How old a brief is comes
   from git, which stays accurate when the brief is edited; a stamped date does not.
 - Deliverables: spec text in `SKILL.md`; `references/writing-briefs.md`; the `add` action
-  writes the brief together with the item; an adopter log entry (`∆uTy`).
+  writes the brief together with the item; a migration note (`∆uTy`).
 - Not in this item: the `bootstrap` support (`∆mzU`), the value chain (`∆q4w`), the
   authoring reference rewrite (`∆VyU`), what happens at completion (`∆LNK`).
 

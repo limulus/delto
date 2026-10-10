@@ -48,10 +48,11 @@ them without a new reason:
 - There is no "v2" of the skill or the spec. The skill's metadata version selects the CLI
   major, which stays 1 because every CLI change here is additive; an adopter cannot stay on
   an old skill version; and the conventions change in steps that one version jump cannot
-  describe. The adopter change log numbers its entries, and those numbers are the only
-  version the conventions have (`∆uTy`).
-- Project settings live in `BACKLOG.md` frontmatter, including the number of the last
-  adopter-log entry the project has applied (`∆Wak`).
+  describe. The conventions have no version at all (decided 2026-10-09, when the numbered
+  adopter log was dropped from `∆uTy`): every change is visible in a project's files, so
+  an agent finds what to migrate by comparing the project with the current spec, and the
+  tools learn what a project uses from the keys in its frontmatter.
+- Project settings live in `BACKLOG.md` frontmatter (`∆Wak`).
 - The top-level statements are called "benefits" (decided 2026-09-20; first called
   outcomes, a word that means a result that is then done, and that agents already use for
   the result of one task). A benefit is ongoing and is always a benefit to someone, which

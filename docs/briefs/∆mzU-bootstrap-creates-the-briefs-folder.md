@@ -42,7 +42,7 @@ comment behind.
 - An existing README is left untouched, as `bootstrap` already does for the journal README.
 - The README text must not start a line the way a backlog item starts, in either item form.
 - No subcommand generates briefs. `lint` checks that briefs are well-formed (`∆q4w`).
-- The adopter log entry for briefs (`∆z3V`) has `migrate` create the same README in an
+- The migration note for briefs (`∆z3V`) has `migrate` create the same README in an
   existing project.
 - `feat:` commit; the template ships in the tarball.
 

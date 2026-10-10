@@ -27,7 +27,7 @@ reported. One-sentence items make a quoted suffix more likely.
 
 - `suffixIds` reads only the suffix that ends the item.
 - A regression test reproducing the case above, seen failing first.
-- Not adopter-facing, so no adopter log entry. `fix:` commit.
+- Not adopter-facing, so no migration note. `fix:` commit.
 
 ## Implementation suggestions
 

@@ -32,9 +32,9 @@ chains as one package.
 
 This is not a "v2" of the skill or the spec (decided 2026-09-19). An adopter who installs
 or updates the skill gets whatever is at Git HEAD, and the conventions change in steps. So
-each item here that changes what an adopting project's files look like adds a numbered
-entry to the adopter change log (`∆uTy`), and a project records the last entry it has
-applied (`∆Wak`).
+the skill treats a project's older files as valid and offers to migrate them, a reference
+says how (`∆uTy`), and the tools learn what a project uses from its `BACKLOG.md`
+frontmatter (`∆Wak`). There is no version of the conventions (decided 2026-10-09).
 
 This initiative dogfoods its own format ahead of the tooling. Each item is one sentence of
 at most two lines, with backticked ids in its needs suffix. Its detail is in
@@ -45,8 +45,8 @@ read the backticked one.
 
 ### Groundwork
 
-- ∆uTy An agent opening an older delto project understands it and guides its migration,
-  because the skill ships a numbered log of adopter-facing changes and a `migrate` action
+- ∆uTy An agent opening an older delto project works in its conventions and migrates it on
+  request, because the skill treats old files as valid and a reference guides the migration
 - ∆NLi We learn whether one plain sentence can carry an item, and what its brief must
   hold, by rewriting a sample of lemmon's backlog items
 - ∆YQb The items in this initiative share one answer to the questions that cut across

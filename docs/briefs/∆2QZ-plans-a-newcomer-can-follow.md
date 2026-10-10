@@ -31,4 +31,4 @@ that code recently, so the approval means little.
   or two of prose that still takes effect through them. Check by eval that it changes the
   plans produced.
 - Independent of briefs; it can ship now. `docs(skill):` commit. It does not change an
-  adopter's files, so it needs no adopter log entry.
+  adopter's files, so it needs no migration note.
