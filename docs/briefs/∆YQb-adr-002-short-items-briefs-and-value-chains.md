@@ -35,7 +35,7 @@ them without a new reason:
 
 - In Markdown prose a deltoid is written in backticks; not in YAML, filenames, commit
   subjects, or CLI output. Old journal entries are not rewritten.
-- The item form is "`∆foo`: sentence", followed by the needs suffix with backticked ids.
+- The item form is "`∆foo` sentence", followed by the needs suffix with backticked ids.
   One plain-language sentence, two wrapped lines at most.
 - Every item gets a brief with these sections: a plain value statement from the
   beneficiary's side, optional background, serves, binding scope and constraints, and
@@ -75,8 +75,8 @@ Settle these:
 - What happens to a brief when its item is completed or retired. Chains that pass
   through a completed item must still resolve. This ties in with `∆Af6` (retiring items).
 - How a brief's `serves` link relates to the needs graph. In this directory most
-  `serves` links between items mirror a needs edge in reverse (`∆SwZ` serves `∆cCz`, which
-  needs `∆SwZ`). Decide whether to derive one from the other, cross-check them in `lint`,
+  `serves` links between items mirror a needs edge in reverse (`∆8YP` serves `∆q4w`, which
+  needs `∆8YP`). Decide whether to derive one from the other, cross-check them in `lint`,
   or keep them independent.
 - Whether `serves` may list several targets, as several files here do.
 - `∆Z3W`: whether items must be Markdown bullets. The parser requires it; the spec says MAY.
