@@ -26,8 +26,8 @@ Rework the item format so the human maintainer can read the backlog at a glance:
 in backticks, one plain-language sentence per item, and the detail moved to a per-item
 brief that states the item's user value and traces it to a top-level benefit.
 Placed ahead of the older initiatives 2026-09-19 because it rewrites the files they tweak
-(the spec, the authoring reference, the starter templates). It can ship in two steps:
-backticks (`∆cCz`), then short items with briefs, top-level benefits, and value
+(the spec, the authoring reference, the starter templates). It ships in two steps:
+backticks (`∆cCz`, done), then short items with briefs, top-level benefits, and value
 chains as one package.
 
 This is not a "v2" of the skill or the spec (decided 2026-09-19). An adopter who installs
@@ -40,15 +40,12 @@ This initiative dogfoods its own format ahead of the tooling. Each item is one s
 at most two lines, with backticked ids in its needs suffix. Its detail is in
 `docs/briefs/∆OID-slug.md` (shape in `docs/briefs/README.md`); the brief is authoritative
 and must be read before the item is planned. The top-level benefits that briefs trace to
-are in `docs/benefits.md`. Item prefixes are backticked too, which the parser cannot read
-until `∆cCz` lands.
+are in `docs/benefits.md`.
 
 ### Items and briefs
 
 - `∆HYp` `surface` stops listing an item as eligible while a prerequisite is open, because
   the parser reads only the needs suffix that ends an item
-- `∆cCz` Deltoids are easy to spot and hard to misread, because the spec, skill, and starter
-  templates write them in backticks and the parser reads items written that way
 - `∆z3V` The backlog stays short without losing detail, because every item gets a brief
   holding its value, scope, and suggestions
 - `∆mzU` A new project starts with a briefs folder whose README holds the template to copy,
