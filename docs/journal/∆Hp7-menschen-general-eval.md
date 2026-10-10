@@ -13,11 +13,11 @@ completed: 2026-06-16 21:55:23 -07:00
 
 ## Planning
 
-A direct response to [[∆CTB]]'s honest limit: its hardest question (the ∆GJ3
+A direct response to `∆CTB`'s honest limit: its hardest question (the ∆GJ3
 perform-vs-file trap) was undermined because the delto repo's own backlog *is about delto
 tooling*, so every plausible novel `add` prompt collided with an existing item and the trap
 never fired. menschen — a real consumer in an unrelated domain (IndieWeb/webmentions, 62
-items), and already [[∆Xtj]]'s substrate — removes that confound: novel imperative prompts
+items), and already `∆Xtj`'s substrate — removes that confound: novel imperative prompts
 (CSV export, dark-mode toggle, moderation undo) are trivial to write and verify absent.
 
 Scope kept as breadth across all actions; the rigorous repeated-trial trap measurement
@@ -40,8 +40,8 @@ documented conventions over its own tool defaults (hyphen-bullet items, inline
 pruning a dangling `needs:` edge on removal.
 
 Two standing items earned fresh, independent support: the dark-mode agent caught menschen's
-existing `prefers-color-scheme` theming ([[∆2hh]], already-shipped detection), and no
-scenario dispatched a subagent for the dup scan even against a 62-item backlog ([[∆IUb]]).
+existing `prefers-color-scheme` theming (`∆2hh`, already-shipped detection), and no
+scenario dispatched a subagent for the dup scan even against a 62-item backlog (`∆IUb`).
 
 ## Retrospective
 

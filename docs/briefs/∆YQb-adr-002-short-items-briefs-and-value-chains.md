@@ -33,8 +33,8 @@ planner answers them locally, the answers will conflict.
 Record these as decided (on 2026-09-19 unless a bullet gives another date); do not reopen
 them without a new reason:
 
-- In Markdown prose a deltoid is written in backticks; not in YAML, filenames, `[[∆foo]]`
-  links, commit subjects, or CLI output. Old journal entries are not rewritten.
+- In Markdown prose a deltoid is written in backticks; not in YAML, filenames, commit
+  subjects, or CLI output. Old journal entries are not rewritten.
 - The item form is "`∆foo`: sentence", followed by the needs suffix with backticked ids.
   One plain-language sentence, two wrapped lines at most.
 - Every item gets a brief with these sections: a plain value statement from the

@@ -14,7 +14,7 @@ completed: 2026-06-11 22:29:15 -07:00
 
 Two scope decisions reshaped the literal "verify" into something durable:
 
-- **A regression guard, not a one-off.** [[∆kl2]] had already proven the tarball shape
+- **A regression guard, not a one-off.** `∆kl2` had already proven the tarball shape
   once by hand, and its retro concluded the dry-run file list is the only trustworthy
   check — so the deliverable became an automated test rather than a second manual pass.
 - **Pack-equivalence over pipeline exercise.** There is no semantic-release config, so it
@@ -22,7 +22,7 @@ Two scope decisions reshaped the literal "verify" into something durable:
   whose packlist (same `files` allowlist, same `prepack`→build lifecycle) is identical to
   `npm pack`. Asserting pack output therefore *is* asserting the tarball semantic-release
   produces. Registry/auth stayed out of scope: that config is about to be replaced by
-  [[∆fb2]], and the live half is [[∆LwK]]'s post-publish smoke.
+  `∆fb2`, and the live half is `∆LwK`'s post-publish smoke.
 
 Plan review added two requirements: smoke-run the binary, and keep the check off the
 everyday `npm t` loop (it triggers a full build).

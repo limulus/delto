@@ -21,7 +21,7 @@ completed: 2026-09-20 08:06:03 -07:00
 
 ## What prompted it
 
-On 2026-09-19 `mint` issued `∆ctb` while [[∆CTB]] exists in the journal. The spec allows
+On 2026-09-19 `mint` issued `∆ctb` while `∆CTB` exists in the journal. The spec allows
 loose human references ("delta for F6" may mean `∆4f6` or `∆4F6`), and the agent that saw
 the pair filed this item on the reasoning that such references only work while no two ids
 differ in case alone.

@@ -16,7 +16,7 @@ completed: 2026-06-16 20:10:59 -07:00
 The fix was always going to be prose in one place — `SKILL.md`'s `### add` section — so
 planning was mostly about scope discipline and framing, not design.
 
-- **Scope held tight against [[∆GJ3]].** ∆WyS is only "get the agent to *read* the
+- **Scope held tight against `∆GJ3`.** ∆WyS is only "get the agent to *read* the
   reference once authoring is underway"; the sibling ∆GJ3 covers the agent *performing*
   the request instead of adding an item. Kept the edit to the read-gate and left routing
   alone.
@@ -27,7 +27,7 @@ planning was mostly about scope discipline and framing, not design.
   a suggestion" (the item's own words), names the failure mode so the stakes of skipping
   are explicit, and folds the `mint` mention into "follow it" so there's one authority
   instead of a competing summary that invites skipping the doc.
-- **Grounded in evidence.** [[∆Xtj]]'s eval (`docs/experiments/authoring-reference-eval.md`)
+- **Grounded in evidence.** `∆Xtj`'s eval (`docs/experiments/authoring-reference-eval.md`)
   already proved the reference lifts item quality most in exactly the dimensions ∆WyS
   names — *why*, placement, self-containment — but it *inlined* the reference for the
   treatment cell. In production it's a linked file the agent must choose to open, so a
@@ -44,7 +44,7 @@ linted, and no test asserts on this wording (verified by grep before editing).
 
 ## Retrospective
 
-Small change, but the leverage is real: an unread reference is dead weight, and [[∆Xtj]]
+Small change, but the leverage is real: an unread reference is dead weight, and `∆Xtj`
 had already paid to prove this one earns its tokens. The honest limitation is that I can't
 measure whether the gate actually changes read-behavior without an eval like ∆Xtj's — this
 ships on the same argument-alone basis that bdf1c03 originally shipped the reference on.

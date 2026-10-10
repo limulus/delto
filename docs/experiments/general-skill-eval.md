@@ -6,7 +6,7 @@ reproduce in the one clean test. Three follow-ups filed (∆GJ3 reframed, ∆2hh
 
 ## Question
 
-[[∆Xtj]] A/B-tested only the authoring reference. Does the rest of the skill — the
+`∆Xtj` A/B-tested only the authoring reference. Does the rest of the skill — the
 `add`/`plan`/`complete` actions, spec recall, and the open ∆GJ3 routing concern — behave
 correctly against the spec, and where are the weak spots worth filing?
 
@@ -45,10 +45,10 @@ correctly against the spec, and where are the weak spots worth filing?
    correctly caught existing coverage (∆PZ3 ×2, ∆rTJ, shipped `--json`). No false positives.
 3. **Already-SHIPPED detection (not just already-filed)** — one agent verified against
    `surface --help`, catching code reality the backlog text wouldn't show. The reference only
-   mentions backlog duplicates today. → filed [[∆2hh]].
+   mentions backlog duplicates today. → filed `∆2hh`.
 4. **Inconsistent subagent dispatch for the dup scan** — the reference mandates "Dispatch a
    subagent"; 2 of 5 runs did, 3 read inline. Inline was cheaper and correct at this size.
-   → filed [[∆IUb]].
+   → filed `∆IUb`.
 5. **`plan` / `complete` / loose-ref are solid** — no changes warranted.
 
 ## Honest limits

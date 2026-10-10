@@ -12,7 +12,7 @@ by `delto complete` (see `delto complete --help`).
   (`YYYY-MM-DD HH:MM:SS ±HH:MM`), per the delto spec v1.0.
 - **Sort order**: filenames are not chronological by design. The `completed` frontmatter is
   the source of truth; `git log docs/journal/` gives chronological history when needed.
-- **Cross-references**: link to other entries as `[[∆xxx]]` and to ADRs as `ADR-NNN`.
+- **Cross-references**: refer to ADRs as `ADR-NNN`.
 
 ## CLAUDE.md distillation
 

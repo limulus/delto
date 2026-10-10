@@ -42,4 +42,4 @@ Worth stating plainly: a green test suite tells you nothing about what `npm pack
 the documented `files`-vs-`.npmignore` precedence is murky enough that the only trustworthy
 check is the dry-run file list itself. This is exactly the defect ∆IsK existed to catch — it's
 satisfying that pushing that verification to a real pack is what surfaced it. The
-live-registry/pushed-ref consumer smoke still rides on [[∆LwK]] once a real publish lands.
+live-registry/pushed-ref consumer smoke still rides on `∆LwK` once a real publish lands.

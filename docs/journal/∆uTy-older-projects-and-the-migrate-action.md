@@ -27,7 +27,7 @@ Every change in the "Short readable items" initiative is visible in a project's 
 diff between the project and the spec is the migration, and the dependency order is
 visible too. A log only earns its keep for a change where old and new files look alike but
 mean different things, and none has happened. The log was dropped, with it the
-`migrated-through` key planned for [[∆Wak]], and the item was re-scoped to what was left:
+`migrated-through` key planned for `∆Wak`, and the item was re-scoped to what was left:
 
 - A "Projects on older conventions" section in `SKILL.md`: follow the project's header and
   frontmatter, treat differences from the spec as not errors, offer once per conversation
@@ -45,7 +45,7 @@ uses, and the tools check only what is named. The `∆YQb` brief records this fo
 ## Refinement
 
 No eval ran. Nothing can be tested until the spec and a project's files first disagree,
-and today they agree everywhere; the first eval is part of [[∆cCz]], whose brief says what
+and today they agree everywhere; the first eval is part of `∆cCz`, whose brief says what
 to check (an older project's bare items are not reported as errors nor rewritten unasked,
 the offer is made once, and `migrate` converts them). The brief was folded into this entry
 and deleted; what happens to briefs at completion is still open in `∆YQb`.

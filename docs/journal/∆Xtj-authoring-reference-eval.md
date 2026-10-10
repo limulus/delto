@@ -55,5 +55,5 @@ variable, BSD `diff` silently lacking GNU's `--*-line-format`), both of which pr
 empty-but-plausible output; rerunning with corrected tooling instead of trusting silence
 was the right reflex. Honest limits: n=8 scenarios and value-aligned judges make this
 evidence, not proof. The harness shape (isolated cohorts → blind panels → aggregate)
-is exactly what the [[∆dlO]] backlog-quality spike calls for, and could be lifted nearly
+is exactly what the `∆dlO` backlog-quality spike calls for, and could be lifted nearly
 verbatim.

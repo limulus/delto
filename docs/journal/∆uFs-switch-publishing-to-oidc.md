@@ -12,11 +12,11 @@ completed: 2026-06-14 21:49:29 -07:00
 
 ## Planning
 
-[[∆fb2]] scoped this as a `semantic-release` major bump **plus a Node 24 runner**. Only the
+`∆fb2` scoped this as a `semantic-release` major bump **plus a Node 24 runner**. Only the
 first half held. The bump (`semantic-release` 24 → 25, pulling `@semantic-release/npm` 13.1.5)
 was already in the working tree, and 13.1.5's engines are `^22.14.0 || >=24.10.0` — so the
 existing `node-version: 22` runner (resolving to ≥22.14) clears the bar with no runner bump and
-no churn to the stable `verify` check name ([[∆Bpr]]). That left the change small: in `cd.yaml`'s
+no churn to the stable `verify` check name (`∆Bpr`). That left the change small: in `cd.yaml`'s
 publish job, grant `id-token: write` and drop `NPM_TOKEN` from the `semantic-release` env.
 
 The mechanism, confirmed by reading the installed plugin rather than guessing: on the official
@@ -39,7 +39,7 @@ package targets official npm (`publishConfig.access: public`, no registry overri
 ## Retrospective
 
 The win was disproving the deferred-scope assumption by reading the dependency's `engines` and
-token-exchange code instead of trusting [[∆fb2]]'s note — the Node 24 runner it warned about was
+token-exchange code instead of trusting `∆fb2`'s note — the Node 24 runner it warned about was
 already obsolete by 13.1.5, which collapsed the task to two lines. Real acceptance still needs a
 versioning commit to trigger a live publish from `main`; until then the `NPM_TOKEN` secret stays
 put as a fallback and should be deleted manually once a provenance-bearing publish is confirmed.

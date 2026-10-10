@@ -12,7 +12,7 @@ completed: 2026-06-13 10:58:47 -07:00
 
 ## Planning
 
-Considered OIDC trusted publishing but **deferred it to [[∆uFs]]** — it forces a
+Considered OIDC trusted publishing but **deferred it to `∆uFs`** — it forces a
 `semantic-release` major bump (OIDC landed in `@semantic-release/npm` 13.1; we're on 12) and
 a Node 24 runner, too much to staple onto the first release. Shipped 1.0.0 with a
 package-scoped `NPM_TOKEN` instead, which also sidesteps trusted publishing's bootstrap
@@ -28,7 +28,7 @@ GitHub Packages registry, drop the now-dead `GPR_READ_TOKEN` on `npm ci`, and ad
   was read-only, so semantic-release's GitHub plugin would have aborted at `verifyConditions`
   before publishing anything. Granting the publish job `contents/issues/pull-requests: write`
   fixed it. Invisible from the repo text — only `gh api .../actions/permissions/workflow`
-  surfaced it (same external-state lesson as [[∆hXH]]).
+  surfaced it (same external-state lesson as `∆hXH`).
 - **Phantom "command not found" on first smoke.** Right after publish, `npx @limulus/delto@1`
   reported `sh: delto: command not found`. The package was fine — a clean `npm i` and a
   cache-cleared `npx` both resolved 1.0.0 and ran the bin. It was a stale npx cache, not a
@@ -39,5 +39,5 @@ GitHub Packages registry, drop the now-dead `GPR_READ_TOKEN` on `npm ci`, and ad
 Probing live external state during pre-flight is what saved the release — the read-only token
 default would have failed the first publish silently-ish, and it was invisible until queried
 directly. The token route was the right call for speed; OIDC hardening is tracked as
-[[∆uFs]]. The live-registry half of [[∆LwK]] is now confirmed; its `npx skills add <git-ref>`
+`∆uFs`. The live-registry half of `∆LwK` is now confirmed; its `npx skills add <git-ref>`
 half remains.

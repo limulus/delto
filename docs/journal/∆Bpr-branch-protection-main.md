@@ -46,7 +46,7 @@ Two course-corrections, both caught by the user:
 
 Sequencing detail: pointed the ruleset's required check at `verify` *before* merging the
 rename PR (the old `verify using node v22` would never report again). The REST API accepts a
-not-yet-seen context string; the web UI does not. Bumping the runner is now safe for [[∆uFs]]
+not-yet-seen context string; the web UI does not. Bumping the runner is now safe for `∆uFs`
 — the required-check name no longer carries the Node version.
 
 ## Retrospective
@@ -58,5 +58,5 @@ layer, but it means GitHub's rule went unproven by a direct attempt. Confirmed i
 ruleset config plus the rename actually flowing through the PR path (PR #2). Lesson: a
 dry-run push is not proof a ruleset works. The sharper lesson: I twice bolted on scope the
 task didn't need, and one addition actively broke the release flow — the minimal correct
-change was a single job rename. Unblocked by [[∆29K]] going public; protects the publish path
-from [[∆fb2]].
+change was a single job rename. Unblocked by `∆29K` going public; protects the publish path
+from `∆fb2`.

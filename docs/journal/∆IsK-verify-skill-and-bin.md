@@ -35,11 +35,11 @@ Local verification (run read-only, no tracked files touched):
   (skills.sh, v1.5.9) accepts a local source: `skills add /workspaces/delto --skill delto`
   installed a byte-identical `SKILL.md` into a temp consumer's `.claude/skills/delto/`.
 
-The verification surfaced two genuine publish blockers, filed as [[∆kl2]]: the build compiles
+The verification surfaced two genuine publish blockers, filed as `∆kl2`: the build compiles
 `src/**` — tests and `src/mocks/` included — and `files: ["dist","src"]` ships them, so the
 tarball carried 142 files of mostly test code; and three package.json URLs
 (`repository.url`, `bugs.url`, `homepage`) each duplicate the `@limulus/` scope into a broken
-path. The remaining live-registry / pushed-ref confirmations are filed as [[∆LwK]] (needs
+path. The remaining live-registry / pushed-ref confirmations are filed as `∆LwK` (needs
 ∆Sre). Completing ∆IsK also empties and retires the `### Skill Packaging` epic (its other
 item, ∆Rnm, shipped earlier today).
 
@@ -48,6 +48,6 @@ item, ∆Rnm, shipped earlier today).
 Pushing the verification all the way to a real `npm pack` + install — rather than stopping at
 "the tests pass" — is exactly what caught the tarball leak, which a green test suite says
 nothing about. The split between "verifiable now" and "needs a live publish" is real and worth
-keeping honest: marking ∆IsK done while explicitly carrying [[∆LwK]] as the post-publish half
+keeping honest: marking ∆IsK done while explicitly carrying `∆LwK` as the post-publish half
 is more truthful than either pretending it's fully done or blocking on something I can't do
 tonight.

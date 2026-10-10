@@ -24,12 +24,12 @@ default fitting a distributable open tool: a `LICENSE` file (`MIT`, 2026 Eric Mc
   carry a contradictory license claim. A license isn't "added" until every place that
   declares it agrees.
 - **Scope split recorded.** The same working tree also dropped the `publishConfig.registry`
-  GitHub Packages override, but that's [[∆fb2]]'s public-npm work, not ∆29K's — noted so the
+  GitHub Packages override, but that's `∆fb2`'s public-npm work, not ∆29K's — noted so the
   two items stay cleanly separated in history.
 
 ## Retrospective
 
 The "going public" half was a one-click GitHub toggle; the easy-to-miss half was metadata
 agreeing across files — `package.json` and the lockfile both had to move, not just the
-visible `LICENSE`. Completing this unblocked [[∆Bpr]] (branch protection requires a public
-repo on the free tier) and clears the licensing precondition for the first publish ([[∆fb2]]).
+visible `LICENSE`. Completing this unblocked `∆Bpr` (branch protection requires a public
+repo on the free tier) and clears the licensing precondition for the first publish (`∆fb2`).

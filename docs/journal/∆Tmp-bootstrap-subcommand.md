@@ -63,7 +63,7 @@ along for CLI consistency with `mint`.
   the subcommand was registered. A manual end-to-end in a temp dir ran the full
   lifecycle — bootstrap → mint → surface → claim → complete — with the ledger invisible
   to git and re-bootstrap refusing with exit 1.
-- The routing eval ([[∆CTB]] methodology; `docs/experiments/bootstrap-skill-eval.md`):
+- The routing eval (`∆CTB` methodology; `docs/experiments/bootstrap-skill-eval.md`):
   3/3 sandboxes produced correct artifacts; both with-skill runs routed to the tool,
   including from indirect phrasing that never said "delto"; the append path held
   byte-exactly on a real tracked `.gitignore`. The no-skill baseline is contaminated —
@@ -79,7 +79,7 @@ Two lifecycle misses, both worth more than the code lessons:
 
 - The implementing session committed straight to local `main` instead of branching
   first — noticed only when the user asked. The commits did reach `origin/main` in the
-  end, but branch-first is the rule ([[∆Bpr]] protects main for a reason).
+  end, but branch-first is the rule (`∆Bpr` protects main for a reason).
 - The session was deleted before `/delto complete` ran, leaving the ∆Tmp claim stale in
   the ledger and no journal entry — a live specimen of the ∆diJ gap (nothing surfaces
   claim age). This entry was reconstructed afterward by mining the deleted session's

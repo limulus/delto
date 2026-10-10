@@ -6,7 +6,7 @@ directionally positive but contaminated (see honest limits).
 
 ## Question
 
-[[∆Tmp]] added the `bootstrap` subcommand and a new `### bootstrap` routing trigger to
+`∆Tmp` added the `bootstrap` subcommand and a new `### bootstrap` routing trigger to
 `SKILL.md` ("the user wants to start using delto in a project that has no `BACKLOG.md`").
 Do agents actually route setup requests to the tool instead of hand-authoring starter
 files — including from indirect phrasing that never says "delto"? And do the materialized
@@ -16,7 +16,7 @@ artifacts survive contact with a real pre-existing `.gitignore`?
 
 - **Substrate:** a synthetic bare consumer ("wavelength", a 3-file tide-clock widget:
   `package.json`, `README.md`, `src/index.js`), copied into 3 isolated sandboxes, each with
-  its own `git init` and baseline commit. Unlike the [[∆CTB]]/[[∆Hp7]] substrates, no delto
+  its own `git init` and baseline commit. Unlike the `∆CTB`/`∆Hp7` substrates, no delto
   context exists beyond a CLAUDE.md note remapping `npx @limulus/delto@1` to the local
   checkout (this box is offline from npm). Sandbox 2's baseline additionally committed a
   `.gitignore` (`node_modules/`) to exercise the append path. Sandboxes 1–2 had the skill
@@ -56,6 +56,6 @@ artifacts survive contact with a real pre-existing `.gitignore`?
 
 n=1 per scenario, single model. The grader was the implementation's author (value-aligned),
 though grading was mechanical byte-comparison against templates. The synthetic consumer is
-tiny; a real repo with its own conventions (the [[∆Hp7]] pattern) would stress template
+tiny; a real repo with its own conventions (the `∆Hp7` pattern) would stress template
 fit, not just routing. The s3 caveat above means the skill-vs-no-skill lift remains
 unmeasured for bootstrap.

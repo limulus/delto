@@ -24,8 +24,8 @@ make the id stand out in a line of prose.
 
 - Spec text in `SKILL.md`: in Markdown prose a deltoid is always written in backticks, and
   an item takes the form "`∆foo`: sentence" followed by the needs suffix.
-- Not backticked: YAML frontmatter (`id: ∆foo`), filenames, `[[∆foo]]` cross-reference
-  links, commit subjects, and CLI output (`mint` keeps its bare-deltoid stdout contract).
+- Not backticked: YAML frontmatter (`id: ∆foo`), filenames, commit subjects, and CLI
+  output (`mint` keeps its bare-deltoid stdout contract).
 - The starter templates in `src/lib/templates/` follow.
 - Existing journal entries are not rewritten, and the migration note says so.
 - Before changing the skill prose, find out whether `npx @limulus/delto@1` can resolve to a

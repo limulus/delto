@@ -5,7 +5,7 @@ completed: 2026-07-01 22:24:36 -07:00
 
 > **Retired without the dedicated run (2026-07-01).** No measurement was performed under
 > this item; this entry records the decision to drop it. The evidence it asked for had
-> already accumulated incidentally: across the [[∆Hp7]] and [[∆CTB]] evals, agents filed
+> already accumulated incidentally: across the `∆Hp7` and `∆CTB` evals, agents filed
 > 4/4 novel imperative `/delto add` requests as backlog items (including a no-skill
 > baseline) instead of performing them. With the failure mode unobserved in every trial,
 > the user judged a dedicated repeated-trial run not worth the investment and dropped the
@@ -25,6 +25,6 @@ completed: 2026-07-01 22:24:36 -07:00
 The item was already framed measure-first ("then likely downgrade"), which made this an
 easy call: the measurement question got answered by data gathered for other work before
 anyone claimed it. The epic it anchored (`/delto add` authoring quality) survives with its
-two remaining items — [[∆2hh]] (duplicate check should cover already-shipped work) and
-[[∆IUb]] (scope the read-the-whole-backlog subagent mandate) — which are eval-validated
+two remaining items — `∆2hh` (duplicate check should cover already-shipped work) and
+`∆IUb` (scope the read-the-whole-backlog subagent mandate) — which are eval-validated
 reference tweaks independent of the misfiling question.

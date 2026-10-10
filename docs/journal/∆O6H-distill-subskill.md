@@ -13,7 +13,7 @@ completed: 2026-07-06 20:56:51 -07:00
 
 ## Planning
 
-Generalized the manual pass proven on menschen ([[∆Hp7]]'s substrate; its commit
+Generalized the manual pass proven on menschen (`∆Hp7`'s substrate; its commit
 `b558d67` and journal-README watermark section were the concrete precedent). Shape follows
 the `add` pattern: a `### distill` action in `SKILL.md` with a hard read-gate pointing at a
 new `references/distilling-journal-entries.md`, which carries the whole procedure —

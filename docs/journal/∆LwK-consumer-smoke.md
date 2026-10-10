@@ -13,8 +13,8 @@ completed: 2026-06-14 22:38:53 -07:00
 ## Planning
 
 Verification-only — no code change. The other halves of consumer install were already
-covered: the live npm registry tag (`npx @limulus/delto@1`) in [[∆fb2]], and the local
-skill-add and tarball paths in [[∆IsK]]/[[∆Sre]]. All that remained was the pushed-ref
+covered: the live npm registry tag (`npx @limulus/delto@1`) in `∆fb2`, and the local
+skill-add and tarball paths in `∆IsK`/`∆Sre`. All that remained was the pushed-ref
 path: does `npx skills add <github-ref>` clone the public repo and install `skills/delto`
 from it.
 

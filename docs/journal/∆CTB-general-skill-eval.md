@@ -12,7 +12,7 @@ completed: 2026-06-16 20:43:10 -07:00
 ## Planning
 
 Backfilled item — the eval ran before the deltoid existed. Scope was deliberately *broad*
-where [[∆Xtj]] was narrow: ∆Xtj A/B-tested only the authoring reference, so this run covered
+where `∆Xtj` was narrow: ∆Xtj A/B-tested only the authoring reference, so this run covered
 the rest of the skill's surface — the `add`/`plan`/`complete`/spec-recall actions and the
 open ∆GJ3 routing concern.
 
@@ -35,8 +35,8 @@ the authoring path, and it passed — the agent filed an item rather than implem
 
 Three findings became backlog work in the same change: ∆GJ3 was reframed from "investigate
 and fix" to "measure the failure rate first, then decide" (one clean pass is weak evidence
-the problem may already be mitigated); [[∆2hh]] captures broadening the duplicate check to
-already-*shipped* work (an agent caught `surface --json` only on its own initiative); [[∆IUb]]
+the problem may already be mitigated); `∆2hh` captures broadening the duplicate check to
+already-*shipped* work (an agent caught `surface --json` only on its own initiative); `∆IUb`
 captures scoping the unconditional "dispatch a subagent" mandate, since 3 of 5 runs sensibly
 read a small backlog inline. Full results in `docs/experiments/general-skill-eval.md`.
 

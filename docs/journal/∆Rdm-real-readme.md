@@ -22,7 +22,7 @@ README documents paths that actually resolve, not aspirational ones.
 
 Two accuracy calls worth noting. The skill install is `npx skills add limulus/delto` (Git-
 driven, per ADR-001) — ∆IsK confirmed the `skills` CLI resolves `skills/delto` from a source,
-though the remote-ref form specifically is still pending a push ([[∆LwK]]). The tool line is
+though the remote-ref form specifically is still pending a push (`∆LwK`). The tool line is
 `npx @limulus/delto@1 <subcommand>`, and because the package targets GitHub Packages
 (`publishConfig.registry`), I documented the one-line `@limulus:registry=...` `.npmrc` a
 consumer needs — otherwise the command 404s, which a getting-started must not gloss over. Each
@@ -35,4 +35,4 @@ Doing this after ∆IsK and ∆kl2 rather than before was the right order: the R
 install paths that were actually exercised and a package that's actually clean, instead of
 documenting the broken-URL, test-leaking state. The one soft spot is the exact
 `npx skills add` remote syntax, which can't be fully nailed down until the repo is pushed and
-[[∆LwK]] runs it for real.
+`∆LwK` runs it for real.

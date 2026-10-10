@@ -6,7 +6,7 @@ the no-skill baseline). The skill correctly deferred to menschen's divergent con
 
 ## Question
 
-[[∆CTB]] ran on the delto repo itself, whose delto-tooling backlog collided with every
+`∆CTB` ran on the delto repo itself, whose delto-tooling backlog collided with every
 "novel" `add` prompt, leaving the ∆GJ3 trap with a single clean data point. Does the skill
 behave correctly across all actions on **menschen** — a real consumer in an unrelated domain
 (IndieWeb/webmentions, 62 items, 10 initiatives) that diverges from the tool (shell-loop
@@ -51,9 +51,9 @@ behave correctly across all actions on **menschen** — a real consumer in an un
    `id`/`completed` frontmatter while adding menschen's README-mandated `date`/`title`. It
    also correctly pruned a dangling `needs:` edge on item removal.
 4. **Already-*shipped* detection surfaced organically again** (the dark-mode agent caught the
-   existing `prefers-color-scheme` theming) — independent support for [[∆2hh]].
+   existing `prefers-color-scheme` theming) — independent support for `∆2hh`.
 5. **No scenario dispatched a subagent for the dup scan** — all grep-scanned inline, even
-   against this 62-item backlog, and all were correct. Reinforces [[∆IUb]]; the mandate is
+   against this 62-item backlog, and all were correct. Reinforces `∆IUb`; the mandate is
    over-prescriptive even at this size when the agent greps rather than reads wholesale.
 
 ## Honest limits
