@@ -21,7 +21,7 @@ export interface HeadingRef {
 export interface BacklogItem {
   id: string
   needs: string[]
-  /** 1-based line number of the `- ∆xxx …` line. */
+  /** 1-based line number of the line the item starts on. */
   lineStart: number
   /** Source lines the item spans, counting wrapped continuation lines. */
   lineCount: number
@@ -62,7 +62,8 @@ export function suffixIds(body: string, label: string): string[] {
 /** Parse BACKLOG.md items in document order (which is priority order). */
 export function parseBacklog(repoRoot: string): BacklogItem[] {
   const items: BacklogItem[] = []
-  const itemStart = new RegExp(`^- ∆(${ID}) (.*)$`)
+  // The id may sit in backticks; the backreference rejects an unbalanced one.
+  const itemStart = new RegExp(`^- (\`?)∆(${ID})\\1 (.*)$`)
   const headingStart = /^(#+)\s+(.*\S)\s*$/
   let id = ''
   let body = ''
@@ -112,8 +113,8 @@ export function parseBacklog(repoRoot: string): BacklogItem[] {
     const m = itemStart.exec(line)
     if (m) {
       flush()
-      id = m[1]
-      body = m[2]
+      id = m[2]
+      body = m[3]
       lineStart = i + 1
       lineCount = 1
       continue

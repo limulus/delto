@@ -70,6 +70,10 @@ describe('suffixIds', () => {
   it('returns an empty array when the label is absent', () => {
     expect(suffixIds('no suffix here', 'needs')).toEqual([])
   })
+
+  it('extracts backticked ids', () => {
+    expect(suffixIds('do a thing; needs: `∆aaa`, `∆bbb`', 'needs')).toEqual(['aaa', 'bbb'])
+  })
 })
 
 describe('parseBacklog', () => {
@@ -119,6 +123,31 @@ describe('parseBacklog', () => {
     const eee = items[3]
     expect(eee.initiativeHeading?.text).toBe('Init Two')
     expect(eee.epicHeading).toBeNull()
+  })
+
+  it('parses backticked item prefixes alongside bare ones', () => {
+    const items = parse(
+      [
+        '## Init',
+        '',
+        '- `∆aaa` first item',
+        '- ∆bbb second; needs: `∆aaa`',
+        '- `∆ccc` a wrapped item that runs',
+        '  onto a second line; needs: `∆aaa`, ∆bbb',
+        '',
+      ].join('\n')
+    )
+
+    expect(items.map((i) => i.id)).toEqual(['aaa', 'bbb', 'ccc'])
+    expect(items[0].lineCount).toBe(1)
+    expect(items[1].needs).toEqual(['aaa'])
+    expect(items[2].lineCount).toBe(2)
+    expect(items[2].needs).toEqual(['aaa', 'bbb'])
+  })
+
+  it('does not start an item on an unbalanced backtick', () => {
+    const items = parse(['## Init', '', '- `∆aaa x', '', '- ∆bbb` y', ''].join('\n'))
+    expect(items).toEqual([])
   })
 
   it('tolerates a line that starts with # but is not a heading', () => {

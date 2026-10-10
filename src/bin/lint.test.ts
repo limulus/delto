@@ -113,6 +113,13 @@ describe('delto lint', () => {
     expect(text).toContain('re-run')
   })
 
+  it('treats a bare and a backticked prefix as the same ID', async () => {
+    repo.writeBacklog(['## Work', '', '- ∆aaa bare', '- `∆aaa` backticked', ''].join('\n'))
+    const stdout = new Capture()
+    expect(await lint.run(journalArgs, { stdout, cwd: repo.dir })).toBe(1)
+    expect(stdout.text).toContain('∆aaa is used by 2 items (lines 3, 4)')
+  })
+
   it('honors --max-lines', async () => {
     repo.writeBacklog(['## Work', '', '- ∆aaa wraps', '  once', ''].join('\n'))
     const stdout = new Capture()

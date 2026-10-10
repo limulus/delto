@@ -103,6 +103,16 @@ describe('delto complete', () => {
     expect(readFileSync(repo.path('out.md'), 'utf8')).toContain('id: ∆abc')
   })
 
+  it('transcribes a backticked item verbatim and keeps the frontmatter id bare', async () => {
+    repo.writeBacklog(BACKLOG.replace('- ∆abc', '- `∆abc`'))
+    const stdout = new Capture()
+    expect(await complete.run(['∆abc', 'out.md'], { stdout, cwd: repo.dir })).toBe(0)
+    const written = readFileSync(repo.path('out.md'), 'utf8')
+    expect(written).toContain('id: ∆abc\n')
+    expect(written).toContain('> - `∆abc` do the thing across')
+    expect(written).toContain('>   two lines')
+  })
+
   it('transcribes a clean blockquote from a CRLF BACKLOG.md', async () => {
     repo.writeBacklog(BACKLOG.replace(/\n/g, '\r\n'))
     const stdout = new Capture()
