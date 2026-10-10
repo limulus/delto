@@ -34,7 +34,7 @@ Each step maps to a deterministic CLI subcommand (`bootstrap`, `mint`, `surface`
 ## The backlog
 
 A delto `BACKLOG.md` is plain Markdown. The spec's only hard rules: each item carries a deltoid,
-and a trailing `; needs: ∆aaa` marks a hard dependency. The rest is up to you — the skill's
+and a trailing ``; needs: `∆aaa` `` marks a hard dependency. The rest is up to you — the skill's
 examples group items under initiative and epic headings, but that's a convention, not a
 requirement.
 
