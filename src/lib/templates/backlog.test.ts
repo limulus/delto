@@ -30,6 +30,12 @@ describe('renderBacklog', () => {
     expect(text).toContain('; needs:')
   })
 
+  it('writes deltoids in backticks', () => {
+    const text = renderBacklog({ journalDir: 'docs/journal' })
+    expect(text).toContain('written in\nbackticks, e.g. `∆7hy`')
+    expect(text).toContain('``; needs: `∆aaa`[, `∆bbb`]``')
+  })
+
   it('renders zero parseable backlog items', () => {
     repo.writeBacklog(renderBacklog({ journalDir: 'docs/journal' }))
     expect(parseBacklog(repo.dir)).toEqual([])
