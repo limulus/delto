@@ -28,7 +28,6 @@ backlog item, scaffolded by \`delto complete\` (see \`delto complete --help\`).
 - **Sort order**: filenames are not chronological by design. The \`completed\`
   frontmatter is the source of truth; \`git log ${journalDir}/\` gives chronological
   history when needed.
-- **Cross-references**: link to other entries as \`[[∆xxx]]\`.
 
 ## CLAUDE.md distillation
 

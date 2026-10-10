@@ -12,7 +12,7 @@ describe('renderJournalReadme', () => {
     expect(text).toContain('`completed`')
     expect(text).toContain('YYYY-MM-DD HH:MM:SS ±HH:MM')
     expect(text).toContain('not chronological')
-    expect(text).toContain('[[∆xxx]]')
+    expect(text).not.toContain('[[')
   })
 
   it('embeds the distilledAt datetime in the watermark line', () => {
