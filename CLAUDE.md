@@ -6,21 +6,11 @@ BACKLOG.md files.
 ## Dogfooding
 
 You are in the unique position to use the delto skill (@skills/delto/SKILL.md) to build
-delto. Note that the skill will say to run `npx @limulus/delto <subcommand>`, but in order
-to dogfood properly you must run: `node ./src/bin/cli.ts <subcommand>`.
+delto itself. Note that the skill will say to run `npx @limulus/delto <subcommand>`, but in
+order to dogfood properly you must run: `node ./src/bin/cli.ts <subcommand>`.
 
 - `.claude/skills/delto` is a symlink to `../../skills/delto` — always Read/Edit the
   canonical `skills/delto/` path.
-- `skills/delto/SKILL.md` describes the current contract only, readable by a fresh agent —
-  never reference prior behavior ("no longer…", "instead of the old…"). Older files are
-  described only in `skills/delto/references/migrating-older-projects.md`; a change to
-  what an adopting project's files look like adds its note there in the same change, when
-  the migration is not obvious from the spec.
-- Skill changes are validated by multi-agent evals written up in `docs/experiments/`.
-  Follow their methodology: run each agent in an isolated copy of a consumer repo (rsync
-  sans `.git`, own `git init`); grade against sandbox git ground truth
-  (`git diff`/`status`/`log`), never the run agent's self-report; and check that `add`
-  prompts are genuinely novel against the target backlog, or dedup will eat the scenario.
 
 ## Commands
 
@@ -106,7 +96,7 @@ Read the relevant ADR before working on an area it covers.
   after `verify` in the pre-push hook, and in CI only after the coverage artifact upload —
   keep that ordering.
 - Publishing uses npm OIDC trusted publishing: the publish job grants `id-token: write`
-  and passes no `NPM_TOKEN`. The trusted publisher is registered on npmjs.com *without* a
+  and passes no `NPM_TOKEN`. The trusted publisher is registered on npmjs.com _without_ a
   GitHub Actions environment, so never add an `environment:` key to the publish job — the
   token exchange would be rejected.
 - Tests and mocks are excluded from the build (`tsconfig.build.json`) and the tarball
