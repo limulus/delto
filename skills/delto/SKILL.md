@@ -46,6 +46,11 @@ MUST start with a `∆` followed by 3 alphanumeric characters. i.e. they match
 
 MUST be unique within the scope of the project.
 
+MUST be rendered as monospace in HTML and Markdown. e.g. using backticks in Markdown or the
+`<code>` tag in HTML.
+
+MUST be left bare in YAML frontmatter, filenames, and commit subjects.
+
 MAY be referenced by humans (and only humans) more loosely. e.g. “delta for F6” may be the
 user referring to `∆4f6` or `∆4F6` using voice to text.
 
@@ -63,9 +68,9 @@ by the user.
 ## Backlog items examples
 
 ```markdown
-- ∆7hy Frobnicator POST endpoint
-- ∆jjA Set up frontend framework
-- ∆s9F Frobnicator affordance UI element; needs: ∆7hY, ∆jjA
+- `∆7hy` Frobnicator POST endpoint
+- `∆jjA` Set up frontend framework
+- `∆s9F` Frobnicator affordance UI element; needs: `∆7hy`, `∆jjA`
 ```
 
 ## The `@limulus/delto` tool
@@ -160,8 +165,8 @@ description of the work.
 
 **Stop and read [how to write backlog items](references/authoring-backlog-items.md) before
 you mint or write anything.** This is a hard prerequisite, not a suggestion. That reference
-*is* the authoring procedure: how to mint the deltoid, what the text must carry (a real
-*why*, not just a *what*), where the item belongs, and when a `needs:` edge is honest.
+_is_ the authoring procedure: how to mint the deltoid, what the text must carry (a real
+_why_, not just a _what_), where the item belongs, and when a `needs:` edge is honest.
 Authoring from memory is exactly how items come out subtly wrong — missing the why, poorly
 placed, carrying bogus `needs:`. Read it, then follow it.
 
@@ -190,7 +195,7 @@ them. This is a periodic pass: a datetime watermark in the journal README marks 
 previous runs got, and only entries completed since need review.
 
 **Stop and read [how to distill journal entries](references/distilling-journal-entries.md)
-before you review or edit anything.** That reference *is* the procedure: where the
+before you review or edit anything.** That reference _is_ the procedure: where the
 watermark lives, how to list the entries a run must review, what counts as a durable
 lesson, and why every concrete claim gets verified against current code before it is
 written. Distilling from memory is how stale guidance gets laundered into instructions
@@ -202,7 +207,7 @@ The user wants a project set up under earlier conventions brought up to date wit
 skill, or wants to know what that would involve.
 
 **Stop and read [how to migrate an older project](references/migrating-older-projects.md)
-before you change anything.** That reference *is* the procedure: how to find what differs
+before you change anything.** That reference _is_ the procedure: how to find what differs
 from the spec, the order to apply changes in, which steps are mechanical and which need the
 user's judgment, and the notes on changes whose migration is not obvious from the spec.
 Migrating from memory is how a project gets rewritten in one pass with no chance to say

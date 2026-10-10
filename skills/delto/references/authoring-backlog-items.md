@@ -17,14 +17,14 @@ Start with the deltoid, then a short imperative phrase naming the work, then jus
 prose to stand alone:
 
 ```markdown
-- ∆7hy Frobnicator POST endpoint — accept a spline payload and enqueue reticulation,
-  so the UI (∆s9F) has something to call. Sync responses proved too slow in the ∆2qX spike.
+- `∆7hy` Frobnicator POST endpoint — accept a spline payload and enqueue reticulation,
+  so the UI (`∆s9F`) has something to call. Sync responses proved too slow in the `∆2qX`
+  spike.
 ```
 
-- **Terse.** Respect the backlog's own line limit if it declares one; 2–3 lines is a good
-  default. State the *what*, not a design — implementation detail belongs in the plan that
-  happens at claim time, not the backlog. The richer the context you hold, the harder you
-  must compress: the why is one clause, not everything you know.
+- **Terse.** 2–3 lines is ideal. State the _what_, not a design — implementation detail
+  belongs in the plan that happens at claim time, not the backlog. The richer the context
+  you hold, the harder you must compress: the why is one clause, not everything you know.
 - **Self-contained.** No pronouns pointing at today's conversation, no "as discussed", no
   relative dates. Name files, endpoints, and decisions explicitly. The reader has the repo
   and the backlog — nothing else.
@@ -45,9 +45,9 @@ line limits, journal directory). Typically:
 
 ## Set `needs:`
 
-`; needs: ∆aaa[, ∆bbb]` marks hard logical prerequisites — the item cannot be built until
-those ship. It is the only dependency mechanism in the spec, so keep it honest: "would be
-nicer afterwards" is sequencing, not a `needs:`, and belongs in priority order instead.
+``; needs: `∆aaa`[, `∆bbb`]`` marks hard logical prerequisites — the item cannot be built
+until those ship. It is the only dependency mechanism in the spec, so keep it honest: "would
+be nicer afterwards" is sequencing, not a `needs:`, and belongs in priority order instead.
 `surface` trusts these edges to decide what is eligible, so a bogus edge hides real work.
 
 Your context window holds the conversation that produced this item, not the whole backlog.

@@ -36,4 +36,11 @@ A change gets a note here only when its migration is not obvious from the spec, 
 older and current files look alike but mean different things. Each note is dated, says how
 to recognize the older form, and says what to do about it.
 
-There are none yet.
+### Deltoids in backticks (2026-10-10)
+
+Older form: items start with a bare id (`- ∆7hy Frobnicator POST endpoint`), and the ids in
+needs suffixes and in the `BACKLOG.md` header's examples are bare too.
+
+What to do: put each of those ids in backticks. This is mechanical. Do not rewrite journal
+entries. `delto lint` prints the item count; run it before and after. A lower count
+afterwards means the CLI in use cannot read backticked items, so update it before going on.
