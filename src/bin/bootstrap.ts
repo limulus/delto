@@ -14,10 +14,10 @@ const HELP = `delto bootstrap — set up delto in a fresh project
 
 Usage: delto bootstrap [--journal-dir <dir>]
 
-Materializes delto's starter files into the current directory: a BACKLOG.md whose
-header documents the backlog conventions, a journal README seeding the distillation
-watermark, and a .gitignore entry keeping the claim ledger out of version control.
-Refuses to run where a BACKLOG.md already exists; other files that are already
+Materializes delto's starter files into the current directory: a BACKLOG.md that names
+the delto skill and holds the Refactors initiative, a journal README seeding the
+distillation watermark, and a .gitignore entry keeping the claim ledger out of version
+control. Refuses to run where a BACKLOG.md already exists; other files that are already
 present are left untouched.
 
 Options:

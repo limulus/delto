@@ -7,33 +7,30 @@ import { parseBacklog } from '../backlog.ts'
 describe('renderBacklog', () => {
   const repo = useTempRepo('delto-backlog-template-')
 
-  it('embeds the journal dir in the mint instruction', () => {
-    expect(renderBacklog({ journalDir: 'docs/journal' })).toContain(
-      'npx @limulus/delto@1 mint --journal-dir docs/journal'
-    )
+  it('names the journal dir only when it is not the default', () => {
+    expect(renderBacklog({ journalDir: 'docs/journal' })).not.toContain('journaled')
     expect(renderBacklog({ journalDir: 'notes/log' })).toContain(
-      'npx @limulus/delto@1 mint --journal-dir notes/log'
+      '\n\nCompleted work is journaled in `notes/log/`.\n\n'
     )
   })
 
   it('names the delto skill as the authoring authority', () => {
     expect(renderBacklog({ journalDir: 'docs/journal' })).toContain(
-      'managed with the **delto** skill'
+      'managed with the [delto](https://github.com/limulus/delto) skill'
     )
   })
 
-  it('self-documents the backlog conventions', () => {
+  it('leaves the conventions to the skill', () => {
     const text = renderBacklog({ journalDir: 'docs/journal' })
-    expect(text).toContain('Initiative (`##`) → Epic (`###`) → Item (`-`)')
-    expect(text).toContain('5 lines max')
-    expect(text).toContain('3 alphanumerics')
-    expect(text).toContain('; needs:')
+    expect(text).not.toContain('needs:')
+    expect(text).not.toContain('∆')
   })
 
-  it('writes deltoids in backticks', () => {
-    const text = renderBacklog({ journalDir: 'docs/journal' })
-    expect(text).toContain('written in\nbackticks, e.g. `∆7hy`')
-    expect(text).toContain('``; needs: `∆aaa`[, `∆bbb`]``')
+  it('starts with the standing Refactors initiative', () => {
+    const headings = renderBacklog({ journalDir: 'docs/journal' })
+      .split('\n')
+      .filter((line) => line.startsWith('#'))
+    expect(headings).toEqual(['# Backlog', '## Refactors'])
   })
 
   it('renders zero parseable backlog items', () => {

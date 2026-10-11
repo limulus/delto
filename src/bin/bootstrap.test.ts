@@ -59,8 +59,11 @@ describe('delto bootstrap', () => {
     const { code, stdout, stderr } = await runBootstrap()
     expect(code).toBe(0)
     const backlog = readFileSync(repo.path('BACKLOG.md'), 'utf8')
-    expect(backlog).toContain('managed with the **delto** skill')
-    expect(backlog).toContain('--journal-dir docs/journal')
+    expect(backlog).toContain(
+      'managed with the [delto](https://github.com/limulus/delto) skill'
+    )
+    expect(backlog).not.toContain('journaled')
+    expect(backlog).toContain('## Refactors')
     const readme = readFileSync(repo.path('docs', 'journal', 'README.md'), 'utf8')
     expect(readme).toMatch(
       /\*\*Last distilled: \d{4}-\d\d-\d\d \d\d:\d\d:\d\d [+-]\d\d:\d\d\.\*\*/
@@ -84,7 +87,7 @@ describe('delto bootstrap', () => {
     const readme = readFileSync(repo.path('notes', 'log', 'README.md'), 'utf8')
     expect(readme).toContain("grep -H '^completed:' notes/log/∆*.md")
     expect(readFileSync(repo.path('BACKLOG.md'), 'utf8')).toContain(
-      '--journal-dir notes/log'
+      'journaled in `notes/log/`'
     )
     expect(stdout.text).toContain('  • wrote notes/log/README.md\n')
   })
@@ -94,7 +97,7 @@ describe('delto bootstrap', () => {
     expect(code).toBe(0)
     expect(existsSync(repo.path('docs', 'journal', 'README.md'))).toBe(true)
     const backlog = readFileSync(repo.path('BACKLOG.md'), 'utf8')
-    expect(backlog).toContain('--journal-dir docs/journal')
+    expect(backlog).not.toContain('journaled')
     expect(backlog).not.toContain('docs/journal//')
     const readme = readFileSync(repo.path('docs', 'journal', 'README.md'), 'utf8')
     expect(readme).not.toContain('docs/journal//')

@@ -4,30 +4,26 @@ export interface BacklogTemplateParams {
 }
 
 /**
- * The starter `BACKLOG.md` for a freshly bootstrapped project: a header that names the
- * delto skill as the backlog's authoring authority and self-documents the conventions,
- * with no items yet.
+ * The starter `BACKLOG.md` for a freshly bootstrapped project: a preamble that names the
+ * delto skill as the backlog's authority, then the standing Refactors initiative. The
+ * conventions live in the skill, so the preamble states only what differs from them — a
+ * journal directory other than the spec's default.
  *
  * Nothing in the rendered text may start a line like an item, with the id bare or in
  * backticks — `parseBacklog` would treat it as a live item in every consumer repo.
  */
 export function renderBacklog({ journalDir }: BacklogTemplateParams): string {
+  const journal =
+    journalDir === 'docs/journal'
+      ? ''
+      : `\nCompleted work is journaled in \`${journalDir}/\`.\n`
   return `# Backlog
 
-This backlog is managed with the **delto** skill — before adding or changing items,
-consult it (and the authoring reference it points to) so the conventions below stay
-enforced.
+This backlog is managed with the [delto](https://github.com/limulus/delto) skill. Consult
+it before adding or changing items.
+${journal}
+## Refactors
 
-Organized as Initiative (\`##\`) → Epic (\`###\`) → Item (\`-\`); initiatives are roughly
-priority-ordered, items 5 lines max.
-
-Each item starts with a “deltoid” — \`∆\` followed by 3 alphanumerics, written in
-backticks, e.g. \`∆7hy\`. Deltoids are immutable and travel with the item into its
-completed-work journal entry in \`${journalDir}/\`. To mint a collision-free deltoid, run
-\`npx @limulus/delto@1 mint --journal-dir ${journalDir}\` (see \`delto mint --help\`).
-
-Hard prerequisites use a trailing \`\`; needs: \`∆aaa\`[, \`∆bbb\`]\`\` suffix — the only
-dependency mechanism: \`delto surface\` trusts these edges to decide what is eligible to
-work on.
+Standing initiative. Keep it first, even when it has no items.
 `
 }
