@@ -50,7 +50,8 @@ export function backlogLines(repoRoot: string): string[] {
 
 /** Extract the `∆xxx` ids from a `; <label>: ∆a, ∆b` dependency suffix. */
 export function suffixIds(body: string, label: string): string[] {
-  const m = new RegExp(`;\\s*${label}:\\s*([^;]*)`).exec(body)
+  // The greedy prefix takes the last suffix: prose earlier in the item may quote the form.
+  const m = new RegExp(`.*;\\s*${label}:\\s*([^;]*)`).exec(body)
   if (!m) return []
   const ids: string[] = []
   const re = new RegExp(`∆(${ID})`, 'g')

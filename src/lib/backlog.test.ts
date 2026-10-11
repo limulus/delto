@@ -67,6 +67,12 @@ describe('suffixIds', () => {
     expect(suffixIds('x; needs: ∆aaa; later: ∆bbb', 'needs')).toEqual(['aaa'])
   })
 
+  it('reads the last suffix when the prose quotes the suffix form', () => {
+    expect(suffixIds('quotes `; needs: ∆zzz` in prose; needs: ∆aaa', 'needs')).toEqual([
+      'aaa',
+    ])
+  })
+
   it('returns an empty array when the label is absent', () => {
     expect(suffixIds('no suffix here', 'needs')).toEqual([])
   })

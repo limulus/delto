@@ -83,6 +83,23 @@ describe('delto surface', () => {
     expect(bbb.reason).toBe('in-flight (claimed); needs ∆aaa')
   })
 
+  it('holds back an item whose prose quotes another needs suffix', async () => {
+    repo.writeBacklog(
+      [
+        '## Work',
+        '',
+        '- ∆aaa open prerequisite',
+        '- ∆bbb quotes `; needs: ∆zzz` in prose and really ends; needs: ∆aaa',
+        '',
+      ].join('\n')
+    )
+    const stdout = new Capture()
+    expect(await surface.run(['--json'], { stdout, cwd: repo.dir })).toBe(0)
+    const report = JSON.parse(stdout.text)
+    expect(report.eligible.map((e: { id: string }) => e.id)).toEqual(['aaa'])
+    expect(report.excluded).toEqual([{ id: 'bbb', reason: 'needs ∆aaa' }])
+  })
+
   it('says so when nothing is eligible', async () => {
     repo.writeBacklog(['## Work', '', '- ∆aaa only item', ''].join('\n'))
     claim(repo.dir, 'aaa')
