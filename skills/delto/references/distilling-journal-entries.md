@@ -8,7 +8,7 @@ sessions instead of staying buried in per-item write-ups.
 
 ## Locate the pieces
 
-- **The journal directory** — `docs/journal/` unless the backlog header or the user names
+- **The journal directory** — `docs/journal/` unless the backlog preamble or the user names
   another.
 - **The instructions file** — whichever file the project's agents actually load
   (`CLAUDE.md`, `AGENTS.md`, or similar). If more than one exists, ask the user which is

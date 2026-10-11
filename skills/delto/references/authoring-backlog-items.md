@@ -1,8 +1,8 @@
 # How to author delto BACKLOG.md items
 
-A backlog item is a promise to a future reader — likely an agent with none of today's
-context. Write it so that reader can pick it up cold, months from now, and know what to
-build and why it matters.
+The user reads the backlog to see where the work stands, so an item has to be readable at a
+glance. An agent reads it later with none of today's context, so it also has to say what
+the work is.
 
 ## Mint the deltoid first
 
@@ -11,44 +11,88 @@ it lets the tool avoid colliding with deltoids from completed work, not just liv
 Adding several items at once? Mint them together with `--count <n>` so they stay mutually
 distinct.
 
-## Write the text
-
-Start with the deltoid, then a short imperative phrase naming the work, then just enough
-prose to stand alone:
+## Write the item
 
 ```markdown
-- `∆7hy` Frobnicator POST endpoint — accept a spline payload and enqueue reticulation,
-  so the UI (`∆s9F`) has something to call. Sync responses proved too slow in the `∆2qX`
-  spike.
+- `∆7hy` Frobnicator POST endpoint
+  - Accepts a spline payload and enqueues reticulation, because sync responses proved too
+    slow.
+  - needs: `∆jjA`
 ```
 
-- **Terse.** 2–3 lines is ideal. State the _what_, not a design — implementation detail
-  belongs in the plan that happens at claim time, not the backlog. The richer the context
-  you hold, the harder you must compress: the why is one clause, not everything you know.
-- **Self-contained.** No pronouns pointing at today's conversation, no "as discussed", no
-  relative dates. Name files, endpoints, and decisions explicitly. The reader has the repo
-  and the backlog — nothing else.
-- **Capture the why.** The what tells a reader how to do the work; the why tells them
-  whether it is still worth doing, and lets them make good judgment calls when reality has
-  drifted from the item. One clause is often enough: what prompted this, what it unblocks,
-  or what breaks without it.
+- **Title.** The deltoid, then a short phrase that names the work, on one line. It is what
+  the user scans, so use the words they would use for the work. No trailing punctuation and
+  no detail.
+- **Description.** One sub-bullet of at most two lines: what the work is, and why it
+  matters in a clause. Leave it out when the title says enough. It is self-contained: no
+  pronouns pointing at today's conversation, no "as discussed", no relative dates.
+- **Nothing else.** No design and no implementation detail; those belong in the plan made
+  when the item is claimed.
+
+## Pass known context down in a brief
+
+A brief holds what the backlog item cannot: the value of the work, its background, its scope
+and constraints, and any implementation suggestions. Whether to write one depends on a
+single question: is there known context that whoever plans and does the work will need? If
+the user has given you that context, in conversation or in writing, write the brief. If not,
+write the item alone, then offer once to take down a brief if the user has context to pass
+on. Do not press; a quick capture should stay quick.
+
+An agent given a title and a blank page will produce a plausible brief, and the next agent
+will treat it as the user's intent. Nothing in the brief marks which parts the user said and
+which parts were guessed, so a guess binds the plan as firmly as a decision. That is why a
+brief records only what the user has said or decided, and never what you infer:
+
+- Every statement traces to the conversation, to something the user wrote, or to something
+  you verified in the code and the user agreed matters.
+- When the context does not settle something the brief has to say (who benefits, what is
+  out of scope, which of two readings is meant), ask the user. Do not pick one.
+- Show the user the brief when you write it.
+
+Save the brief as `∆xxx-slug.md` in the briefs directory (`docs/briefs/` unless the project
+says otherwise). The item does not link to it; the deltoid in the filename is the link. The
+same slug is reused for the journal entry later. Use only the sections you have content
+for:
+
+```markdown
+# Short title
+
+## Value
+
+Who benefits, and what is different for them afterwards. One to three plain sentences, with
+no mechanism and no file names.
+
+## Background
+
+The problem as it is today, the evidence, and the reasoning.
+
+## Scope and constraints
+
+- What the work must cover, and what it must not break. Binding on the plan.
+
+## Implementation suggestions
+
+- Optional ideas. The planner checks them against the current code and may drop them.
+```
+
+Where an item and its brief disagree, the brief is authoritative; fix the item.
 
 ## Place it
 
-Read the backlog's header — a delto backlog self-documents its conventions (hierarchy,
-line limits, journal directory). Typically:
-
 - Put the item under the best-fitting epic within the initiative its work supports. If no
   epic fits, add one; add a whole initiative only for a genuinely scope-bounded milestone.
+  An initiative or epic description is one paragraph at most.
+- Refactoring work goes under the standing `## Refactors` initiative.
 - Append by default. Document order is priority order, so place an item earlier only when
   it truly outranks what is already there.
 
 ## Set `needs:`
 
-``; needs: `∆aaa`[, `∆bbb`]`` marks hard logical prerequisites — the item cannot be built
-until those ship. It is the only dependency mechanism in the spec, so keep it honest: "would
-be nicer afterwards" is sequencing, not a `needs:`, and belongs in priority order instead.
-`surface` trusts these edges to decide what is eligible, so a bogus edge hides real work.
+A `needs:` sub-bullet, placed last, lists hard logical prerequisites: the item cannot be
+built until those ship. It is the only dependency mechanism in the spec, so keep it honest:
+"would be nicer afterwards" is sequencing, not a `needs:`, and belongs in priority order
+instead. `surface` trusts these edges to decide what is eligible, so a bogus edge hides
+real work.
 
 Your context window holds the conversation that produced this item, not the whole backlog.
 Dispatch a subagent to read the entire `BACKLOG.md` against the new item's text and report:
@@ -63,6 +107,6 @@ Apply its findings yourself; the subagent reports, you edit.
 
 ## Before you finish
 
-Reread the item as the cold reader: deltoid matches `∆` + 3 alphanumerics, the why is
-present, every `needs:` reference resolves to a live item, and nothing depends on context
-that lives only in your head.
+Reread the item as the user scanning the file: the title fits on one line and names the
+work, and the description is at most two lines. Then run `delto lint` to check that the
+deltoid is unique and every `needs:` reference resolves.

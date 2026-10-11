@@ -6,14 +6,14 @@ description: >-
   “deltoid” (backlog item ID): i.e. `∆u2o`, `∆5Fn`, etc.
 metadata:
   author: limulus
-  version: '1.0.0'
+  version: '1.1.0'
 ---
 
 # Delto
 
 Delto is a way of keeping a human readable backlog alongside the code.
 
-## The delto spec (v1.0)
+## The delto spec
 
 This specification will help you understand if the project being worked on uses delto, and
 if so, how you are expected to interact with `BACKLOG.md`, its backlog items, and journal
@@ -23,21 +23,54 @@ entry files.
 
 MUST be a Markdown file named `BACKLOG.md`.
 
-SHOULD self-document conventions like initiative/epic hierarchy, max item line count,
-completion journal directory.
+MUST open with a short preamble that says the backlog is managed with the delto skill,
+linking to `https://github.com/limulus/delto`. The preamble SHOULD NOT restate this spec;
+it MUST state what the project does differently, such as a journal directory other than
+`docs/journal/`.
 
-### Backlog items…
+MUST be organized as initiatives, in priority order, each holding work items directly or
+grouped under epics.
 
-MUST start with a “deltoid”.
+### Initiatives…
 
-MAY have a `; needs: ` suffix that lists deltoids that the item depends on.
+MUST be a `##` heading followed by a description of at most one paragraph.
 
-MAY be put in Markdown list items.
+MUST start with `## Refactors`, a standing initiative that is kept even when it has no
+items.
+
+### Epics…
+
+MAY group an initiative’s work items. An epic is a `###` heading, optionally followed by a
+description of at most one paragraph.
+
+### Work items…
+
+MUST be a Markdown list item that starts with a deltoid followed by a title: a short phrase
+on one line that names the work.
+
+MAY have a description as a sub-bullet, of at most two lines.
+
+MAY have a `needs:` sub-bullet that lists the deltoids of the items it depends on.
 
 MUST be claimed when the work it represents has started.
 
 MUST be removed from `BACKLOG.md` after the work it represents has been completed and
 accepted, per the user’s work acceptance preferences.
+
+### Briefs…
+
+MAY exist for a work item, to hold what does not fit in it: its value, background, scope
+and constraints, and implementation suggestions.
+
+MUST be written only from what the user has said or decided, in conversation or in
+writing. With no such context, no brief is written. Where the context does not settle
+something the brief has to say, the user MUST be asked; an agent MUST NOT fill the gap by
+inference.
+
+MUST be a Markdown file named like `∆7hy-frobnicator-post-endpoint.md`, placed in either
+`docs/briefs/` or a directory otherwise specified by the user.
+
+MUST be folded into the item's journal entry and deleted when the item is completed.
 
 ### Deltoids…
 
@@ -65,12 +98,34 @@ completion datetime in `YYYY-MM-DD HH:MM:SS ±HH:MM` format using the system’s
 MUST be placed in either `docs/journal/` or a directory otherwise specified
 by the user.
 
-## Backlog items examples
+## Backlog example
 
 ```markdown
+# Backlog
+
+This backlog is managed with the [delto](https://github.com/limulus/delto) skill. Consult
+it before adding or changing items.
+
+## Refactors
+
+Standing initiative. Keep it first, even when it has no items.
+
+## Frobnication
+
+Let users reticulate splines from the browser.
+
+### API
+
 - `∆7hy` Frobnicator POST endpoint
+  - Accepts a spline payload and enqueues reticulation, because sync responses proved too
+    slow.
+
+### UI
+
 - `∆jjA` Set up frontend framework
-- `∆s9F` Frobnicator affordance UI element; needs: `∆7hy`, `∆jjA`
+- `∆s9F` Frobnicator affordance UI element
+  - The button and progress indicator that call the endpoint.
+  - needs: `∆7hy`, `∆jjA`
 ```
 
 ## The `@limulus/delto` tool
@@ -95,7 +150,7 @@ detailed help on a specific subcommand.
 #### `bootstrap`
 
 Use in a project that has no `BACKLOG.md` yet. Materializes the starter files — a
-`BACKLOG.md` whose header self-documents the conventions, a journal README, and a
+`BACKLOG.md` with its preamble and the Refactors initiative, a journal README, and a
 `.gitignore` entry for the claim ledger — and refuses to run where a `BACKLOG.md`
 already exists.
 
@@ -139,8 +194,8 @@ backlog is your job.
 ## Projects on older conventions
 
 The conventions in this skill change over time, and a project may have been set up under
-earlier ones. The project's `BACKLOG.md` header, and its frontmatter if it has one, say
-what the project follows; work in that form. Where its files differ from the spec, they are
+earlier ones. The project's `BACKLOG.md` preamble and its existing items show what the
+project follows; work in that form. Where its files differ from the spec, they are
 not errors. Offer once per conversation to bring the project up to date with the `migrate`
 action, and never migrate without being asked.
 
@@ -165,16 +220,21 @@ description of the work.
 
 **Stop and read [how to write backlog items](references/authoring-backlog-items.md) before
 you mint or write anything.** This is a hard prerequisite, not a suggestion. That reference
-_is_ the authoring procedure: how to mint the deltoid, what the text must carry (a real
-_why_, not just a _what_), where the item belongs, and when a `needs:` edge is honest.
-Authoring from memory is exactly how items come out subtly wrong — missing the why, poorly
-placed, carrying bogus `needs:`. Read it, then follow it.
+_is_ the authoring procedure: how to mint the deltoid, how to write the title and
+description, when and how to write a brief, where the item belongs, and when a `needs:`
+edge is honest. Authoring from memory is exactly how items come out subtly wrong —
+unreadable at a glance, poorly placed, carrying bogus `needs:`. Read it, then follow it.
 
 ### `plan`
 
 The user is looking to plan an item from the backlog. If they do not specify an item, use
 the `surface` tool to find an eligible item. Then `claim` that item and begin planning it.
 You should consider using planning tools or skills available to you.
+
+Look in the briefs directory for the item's brief. If it has one, read it first: its scope
+and constraints bind the plan, and its suggestions are checked against the current code.
+Where the item and its brief leave a question open, ask the user; do not guess. Write the
+plan in plain language, with deep technical detail in a section of its own.
 
 ### `complete`
 
@@ -186,6 +246,9 @@ Order matters. Run `complete` **while the item is still in `BACKLOG.md`** — th
 item from the backlog and transcribes it into the journal entry, so it must still be there.
 Only once the entry is written should you remove the item from `BACKLOG.md`. Doing it the
 other way around leaves `complete` with nothing to transcribe.
+
+If the item has a brief, fold its content into the journal entry and delete the brief, so
+the journal keeps why the work was done and what constrained it.
 
 ### `distill`
 
