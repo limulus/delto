@@ -33,10 +33,15 @@ Each step maps to a deterministic CLI subcommand (`bootstrap`, `mint`, `surface`
 
 ## The backlog
 
-A delto `BACKLOG.md` is plain Markdown. The spec's only hard rules: each item carries a deltoid,
-and a trailing ``; needs: `∆aaa` `` marks a hard dependency. The rest is up to you — the skill's
-examples group items under initiative and epic headings, but that's a convention, not a
-requirement.
+A delto `BACKLOG.md` is plain Markdown: initiatives (`##`), optional epics (`###`), and work
+items. An item is a deltoid and a one-line title, with an optional short description and an
+optional `needs:` sub-bullet naming the items it depends on:
+
+```markdown
+- `∆s9F` Frobnicator affordance UI element
+  - The button and progress indicator that call the endpoint.
+  - needs: `∆7hy`, `∆jjA`
+```
 
 ## The `∆` sigil
 
