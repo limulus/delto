@@ -2,7 +2,7 @@ import { findUpSync } from 'find-up-simple'
 import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 
-/** The 3-char alphanumeric body of a deltoid (`∆xxx`), per the BACKLOG.md header. */
+/** The 3-char alphanumeric body of a deltoid (`∆xxx`), per the delto spec. */
 export const ID = '[A-Za-z0-9]{3}'
 
 /** Strip an optional leading ∆ and return the 3-char deltoid body, or null when `raw`
@@ -48,16 +48,19 @@ export function backlogLines(repoRoot: string): string[] {
   return readFileSync(join(repoRoot, 'BACKLOG.md'), 'utf8').split(/\r?\n/)
 }
 
+function deltoidsIn(text: string): string[] {
+  const ids: string[] = []
+  const re = new RegExp(`∆(${ID})`, 'g')
+  let x: RegExpExecArray | null
+  while ((x = re.exec(text)) !== null) ids.push(x[1])
+  return ids
+}
+
 /** Extract the `∆xxx` ids from a `; <label>: ∆a, ∆b` dependency suffix. */
 export function suffixIds(body: string, label: string): string[] {
   // The greedy prefix takes the last suffix: prose earlier in the item may quote the form.
   const m = new RegExp(`.*;\\s*${label}:\\s*([^;]*)`).exec(body)
-  if (!m) return []
-  const ids: string[] = []
-  const re = new RegExp(`∆(${ID})`, 'g')
-  let x: RegExpExecArray | null
-  while ((x = re.exec(m[1])) !== null) ids.push(x[1])
-  return ids
+  return m ? deltoidsIn(m[1]) : []
 }
 
 /** Parse BACKLOG.md items in document order (which is priority order). */
@@ -66,8 +69,12 @@ export function parseBacklog(repoRoot: string): BacklogItem[] {
   // The id may sit in backticks; the backreference rejects an unbalanced one.
   const itemStart = new RegExp(`^- (\`?)∆(${ID})\\1 (.*)$`)
   const headingStart = /^(#+)\s+(.*\S)\s*$/
+  const needsBullet = /^- needs:(.*)$/
   let id = ''
   let body = ''
+  // The text of the item's `needs:` sub-bullet, or null when it has none.
+  let needsText: string | null = null
+  let inNeedsBullet = false
   let lineStart = 0
   let lineCount = 0
   let initiativeHeading: HeadingRef | null = null
@@ -76,7 +83,8 @@ export function parseBacklog(repoRoot: string): BacklogItem[] {
     if (id) {
       items.push({
         id,
-        needs: suffixIds(body, 'needs'),
+        // A `needs:` sub-bullet is unambiguous, so it wins over a suffix in the prose.
+        needs: needsText === null ? suffixIds(body, 'needs') : deltoidsIn(needsText),
         lineStart,
         lineCount,
         initiativeHeading,
@@ -85,6 +93,8 @@ export function parseBacklog(repoRoot: string): BacklogItem[] {
     }
     id = ''
     body = ''
+    needsText = null
+    inNeedsBullet = false
     lineStart = 0
     lineCount = 0
   }
@@ -126,7 +136,17 @@ export function parseBacklog(repoRoot: string): BacklogItem[] {
     // whitespace would then silently drop the rest of the item — including any trailing
     // `needs:`/`touches:` suffix.
     if (id && line.trim() !== '') {
-      body += ' ' + line.trim()
+      const text = line.trim()
+      const n = needsBullet.exec(text)
+      if (n) {
+        needsText = n[1]
+        inNeedsBullet = true
+      } else if (inNeedsBullet && !text.startsWith('- ')) {
+        needsText += ' ' + text
+      } else {
+        inNeedsBullet = false
+        body += ' ' + text
+      }
       lineCount++
       continue
     }

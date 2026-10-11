@@ -151,6 +151,33 @@ describe('parseBacklog', () => {
     expect(items[2].needs).toEqual(['aaa', 'bbb'])
   })
 
+  it('reads needs from a sub-bullet', () => {
+    const items = parse(
+      [
+        '## Init',
+        '',
+        '- `∆aaa` First title',
+        '- `∆bbb` Second title',
+        '  - A description that quotes `; needs: ∆zzz` and wraps',
+        '    onto a second line.',
+        '  - needs: `∆aaa`,',
+        '    `∆ccc`',
+        '- `∆ccc` Third title',
+        '  - needs: `∆aaa`',
+        '  - A description after the needs sub-bullet, naming ∆bbb.',
+        '- `∆eee` Fourth title',
+        '  - needs:',
+        '',
+      ].join('\n')
+    )
+
+    expect(items.map((i) => i.id)).toEqual(['aaa', 'bbb', 'ccc', 'eee'])
+    expect(items[1].needs).toEqual(['aaa', 'ccc'])
+    expect(items[1].lineCount).toBe(5)
+    expect(items[2].needs).toEqual(['aaa'])
+    expect(items[3].needs).toEqual([])
+  })
+
   it('does not start an item on an unbalanced backtick', () => {
     const items = parse(['## Init', '', '- `∆aaa x', '', '- ∆bbb` y', ''].join('\n'))
     expect(items).toEqual([])
