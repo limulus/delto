@@ -44,8 +44,6 @@ are in `docs/benefits.md`.
 
 ### Items and briefs
 
-- `∆HYp` `surface` stops listing an item as eligible while a prerequisite is open, because
-  the parser reads only the needs suffix that ends an item
 - `∆z3V` The backlog stays short without losing detail, because every item gets a brief
   holding its value, scope, and suggestions
 - `∆mzU` A new project starts with a briefs folder whose README holds the template to copy,
