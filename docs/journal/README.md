@@ -14,10 +14,10 @@ by `delto complete` (see `delto complete --help`).
   the source of truth; `git log docs/journal/` gives chronological history when needed.
 - **Cross-references**: refer to ADRs as `ADR-NNN`.
 
-## CLAUDE.md distillation
+## AGENTS.md distillation
 
 Journal entries are periodically reviewed and their durable lessons distilled into
-`CLAUDE.md`. Everything completed at or before the watermark below is settled —
+`AGENTS.md`. Everything completed at or before the watermark below is settled —
 incorporated or deliberately excluded — and is not revisited on later runs.
 
 **Last distilled: 2026-07-06 20:36:29 -07:00.**
@@ -33,7 +33,7 @@ Review every entry completed after the watermark. When one sits near the boundar
 review it — a redundant read is cheap, a missed lesson is not.
 
 When running a distillation: verify every concrete claim (helper names, script names,
-config values) against the current code before writing it into `CLAUDE.md` — entries
+config values) against the current code before writing it into `AGENTS.md` — entries
 describe the code as it was, and later work may have superseded them. Then advance the
-watermark in the same commit as the `CLAUDE.md` changes, using the datetime at which the
+watermark in the same commit as the `AGENTS.md` changes, using the datetime at which the
 review ran.
