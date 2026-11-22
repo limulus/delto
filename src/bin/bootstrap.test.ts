@@ -81,6 +81,22 @@ describe('delto bootstrap', () => {
     expect(stderr.text).toBe('')
   })
 
+  it('names CLAUDE.md in the journal README when the project has no AGENTS.md', async () => {
+    await runBootstrap()
+    const readme = readFileSync(repo.path('docs', 'journal', 'README.md'), 'utf8')
+    expect(readme).toContain('## CLAUDE.md distillation')
+    expect(readme).not.toContain('AGENTS.md')
+  })
+
+  it('names AGENTS.md in the journal README when the project has one', async () => {
+    writeFileSync(repo.path('AGENTS.md'), '# Guide\n')
+    writeFileSync(repo.path('CLAUDE.md'), '@AGENTS.md\n')
+    await runBootstrap()
+    const readme = readFileSync(repo.path('docs', 'journal', 'README.md'), 'utf8')
+    expect(readme).toContain('## AGENTS.md distillation')
+    expect(readme).not.toContain('CLAUDE.md')
+  })
+
   it('honors a custom nested --journal-dir', async () => {
     const { code, stdout } = await runBootstrap(['--journal-dir', 'notes/log'])
     expect(code).toBe(0)

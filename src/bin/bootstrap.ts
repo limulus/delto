@@ -20,6 +20,9 @@ distillation watermark, and a .gitignore entry keeping the claim ledger out of v
 control. Refuses to run where a BACKLOG.md already exists; other files that are already
 present are left untouched.
 
+The journal README names the agent instructions file that lessons are distilled into:
+AGENTS.md when the current directory has one, CLAUDE.md otherwise.
+
 Options:
   --journal-dir <dir>  Directory for completed-work journal entries, relative to the
                        current directory (default: docs/journal).
@@ -93,7 +96,11 @@ export const bootstrap: Subcommand = {
       mkdirSync(journalTarget, { recursive: true })
       writeFileSync(
         readmeTarget,
-        renderJournalReadme({ journalDir, distilledAt: formatCompleted(new Date()) })
+        renderJournalReadme({
+          journalDir,
+          distilledAt: formatCompleted(new Date()),
+          instructionsFile: existsSync(join(dir, 'AGENTS.md')) ? 'AGENTS.md' : 'CLAUDE.md',
+        })
       )
       written.push(`wrote ${journalDir}/README.md`)
     }

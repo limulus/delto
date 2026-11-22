@@ -2,9 +2,22 @@ import { describe, expect, it } from 'vitest'
 
 import { renderJournalReadme } from './journal-readme.ts'
 
-const params = { journalDir: 'docs/journal', distilledAt: '2026-01-02 03:04:05 -07:00' }
+const params = {
+  journalDir: 'docs/journal',
+  distilledAt: '2026-01-02 03:04:05 -07:00',
+  instructionsFile: 'CLAUDE.md',
+}
 
 describe('renderJournalReadme', () => {
+  it('names the instructions file throughout the distillation section', () => {
+    const text = renderJournalReadme({ ...params, instructionsFile: 'AGENTS.md' })
+    expect(text).toContain('## AGENTS.md distillation')
+    expect(text).toContain('distilled into\n`AGENTS.md`.')
+    expect(text).toContain('before writing it into `AGENTS.md`')
+    expect(text).toContain('same commit as the `AGENTS.md` changes')
+    expect(text).not.toContain('CLAUDE.md')
+  })
+
   it('documents the journal conventions', () => {
     const text = renderJournalReadme(params)
     expect(text).toContain('∆xxx-slug.md')

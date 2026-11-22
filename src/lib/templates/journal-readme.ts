@@ -3,6 +3,8 @@ export interface JournalReadmeParams {
   journalDir: string
   /** Watermark datetime in the journal's `completed` format (see `formatCompleted`). */
   distilledAt: string
+  /** The agent instructions file lessons are distilled into (e.g. `AGENTS.md`). */
+  instructionsFile: string
 }
 
 /**
@@ -13,6 +15,7 @@ export interface JournalReadmeParams {
 export function renderJournalReadme({
   journalDir,
   distilledAt,
+  instructionsFile,
 }: JournalReadmeParams): string {
   return `# Journal
 
@@ -29,10 +32,10 @@ backlog item, scaffolded by \`delto complete\` (see \`delto complete --help\`).
   frontmatter is the source of truth; \`git log ${journalDir}/\` gives chronological
   history when needed.
 
-## CLAUDE.md distillation
+## ${instructionsFile} distillation
 
 Journal entries are periodically reviewed and their durable lessons distilled into
-\`CLAUDE.md\`. Everything completed at or before the watermark below is settled —
+\`${instructionsFile}\`. Everything completed at or before the watermark below is settled —
 incorporated or deliberately excluded — and is not revisited on later runs.
 
 **Last distilled: ${distilledAt}.**
@@ -48,9 +51,9 @@ Review every entry completed after the watermark. When one sits near the boundar
 review it — a redundant read is cheap, a missed lesson is not.
 
 When running a distillation: verify every concrete claim (helper names, script names,
-config values) against the current code before writing it into \`CLAUDE.md\` — entries
+config values) against the current code before writing it into \`${instructionsFile}\` — entries
 describe the code as it was, and later work may have superseded them.
-Then advance the watermark in the same commit as the \`CLAUDE.md\` changes, using the
+Then advance the watermark in the same commit as the \`${instructionsFile}\` changes, using the
 datetime at which the review ran.
 `
 }
